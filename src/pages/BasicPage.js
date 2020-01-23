@@ -1,6 +1,10 @@
 import React from 'react';
-import { useLoading, useDefaultData } from '../hooks';
-import { ImgSlide, TeamBox } from '../components';
+import { useLoading, useDefaultData, useDefaultDataPeople } from '../hooks';
+
+//import { useDefaultDataPeople } from '../hooks';
+
+import { ImgSlide, TeamBox, PeopleBox } from '../components';
+
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -23,6 +27,10 @@ const BasicPage = () => {
     const classes = useStyles();
     const [{loadState}, setLoadState, dispatch] = useLoading();
     const [{hotProjectState}, setHotProjectState] = useDefaultData();
+
+    const [{mainPeopleState}, setmainPeopleState] = useDefaultDataPeople();
+
+
     const tempImgList = ['http://mblogthumb2.phinf.naver.net/MjAxNzAzMTFfMjMz/MDAxNDg5MjAwMjk1MjUw.sZECfaiA1Hts6WmY3sYxdGV_x0jj8BtmafjUujZMiLIg.utoHLXP9CkM7bzpHxSfMGE3kM3fKNv7xWvR5bp8LOYIg.JPEG.happyfamily502/L.A._Lakers_Team_Logo_Image.jpg?type=w2', 'https://i.pinimg.com/originals/72/1a/8b/721a8bd73983160aa979575c9d65a085.jpg', 'https://i.ytimg.com/vi/OG_aWAmeKCc/maxresdefault.jpg'];
     
     const handleClick = () => {
@@ -46,6 +54,13 @@ const BasicPage = () => {
             {hotProjectState.map((value, i) => (
                 <span style={{margin: '20px'}} id={value.title + i}>
                     <TeamBox state={value} />
+                </span>
+            ))}
+            </Grid>
+            <Grid container>
+            {mainPeopleState.map((value, i) => (
+                <span style={{margin: '10px'}} id={value.name + i}>
+                    <PeopleBox state={value} />
                 </span>
             ))}
             </Grid>
