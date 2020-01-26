@@ -28,6 +28,7 @@ export const useProjectData = () => {
   const dispatch = useDispatch();
   const { projectCard } = useSelector(state => state.Project);
   const [projectState, setProjectState] = useState([{
+    projectId: '',
     imgUrl: '',
     projectName: '',
     teamName: '',

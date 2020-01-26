@@ -9,6 +9,26 @@ const projectSlice = createSlice({
       open: false,
       text: ''
     },
+    project: {
+      imgUrl: '',
+      projectName: '',
+      teamName: '',
+      currentMember: {
+        developer: 0,
+        planner: 0,
+        other: 0,
+        designer: 0
+      },
+      needMember: {
+        developer: 0,
+        planner: 0,
+        other: 0,
+        designer: 0
+      },
+      endDate: 0,
+      projectDescription: '',
+      memberList: [{userId: '', status: 0}]
+    },
     projectCard: [{
       imgUrl: '',
       projectName: '',
@@ -39,6 +59,20 @@ const projectSlice = createSlice({
     getProjectFail(state, action) {
       state.isLoading = false;
       state.isError = false;
+    },
+    getMainData(state, action){
+      state.isLoading = true;
+    },
+    getMainDataSuccess(state, action){
+      state.isLoading = false;
+      state.projectCard = action.payload;
+    },
+    getProjectDetail(state, action){
+      state.isLoading = true;
+    },
+    getProjectDetailSuccess(state, action){
+      state.project = action.payload;
+      state.isLoading = false;
     }
   },
 });
@@ -46,6 +80,10 @@ const projectSlice = createSlice({
 export const {
     getProjectData,
     getProjectDataSuccess,
-    getProjectFail
+    getProjectFail,
+    getMainData,
+    getMainDataSuccess,
+    getProjectDetail,
+    getProjectDetailSuccess
 } = projectSlice.actions;
 export default projectSlice.reducer;
