@@ -26,17 +26,24 @@ import { getProjectData } from '../reducers/Project'
 
 export const useProjectData = () => {
   const dispatch = useDispatch();
-  const { projectData } = useSelector(state => state.Project);
+  const { projectCard } = useSelector(state => state.Project);
   const [projectState, setProjectState] = useState([{
-    img: '',
-    title: '',
-    people: '',
-    remain: 0,
-    day: 0,
-    developer: 0,
-    designer: 0,
-    planner: 0,
-    field: []
+    imgUrl: '',
+    projectName: '',
+    teamName: '',
+    currentMember: {
+      developer: 0,
+      planner: 0,
+      other: 0,
+      designer: 0
+    },
+    needMember: {
+      developer: 0,
+      planner: 0,
+      other: 0,
+      designer: 0
+    },
+    Dday: 0
   }]);
   const [navState, setNavState] = useState({
     field:'',
@@ -48,13 +55,13 @@ export const useProjectData = () => {
   }, [dispatch]);
 
   useEffect(()=>{
-    setProjectState(projectData);
-  }, [projectData])
+    setProjectState(projectCard);
+  }, [projectCard])
 
   useEffect(()=>{
     let tempData = [];
     if(navState.field){
-      projectData.forEach(value=>{
+      projectCard.forEach(value=>{
         let Flag = false;
         value.field.forEach(value2 => {
          if(value2 === navState.field)
@@ -62,13 +69,13 @@ export const useProjectData = () => {
         });
         if(navState.jobGroup !== ''){
           if(navState.jobGroup === 'developer')
-            if(value.developer === 0)
+            if((value.needMember.developer - value.currentMember.developer) === 0)
               Flag = false;
           if(navState.jobGroup === 'designer')
-            if(value.designer === 0)
+            if((value.needMember.designer - value.currentMember.designer) === 0)
               Flag = false;
           if(navState.jobGroup === 'planner')
-            if(value.planner === 0)
+            if((value.needMember.planner - value.currentMember.planner) === 0)
               Flag = false;
         }
         if(Flag)

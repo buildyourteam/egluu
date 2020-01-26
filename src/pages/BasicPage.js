@@ -49,28 +49,6 @@ const BasicPage = () => {
                 </span>
             ))}
             </Grid>
-            {/*
-            <Button onClick={handleClick}>
-            인기 추천 프로젝트 팀 >
-            </Button>
-            <Grid container>
-            {hotProjectState.map(value => (
-                <span style={{margin: '20px'}}>
-                    <TeamBox state={value} />
-                </span>
-            ))}
-            </Grid>
-            <Button onClick={handleClick}>
-            신규 추천 프로젝트 팀 >
-            </Button>
-            <Grid container>
-            {hotProjectState.map(value => (
-                <span style={{margin: '20px'}}>
-                    <TeamBox state={value} />
-                </span>
-            ))}
-            </Grid>
-            */}
             <Dialog open={loadState.open}>
                 <MuiDialogContent
                 style={{

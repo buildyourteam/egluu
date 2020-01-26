@@ -47,7 +47,7 @@ const ProjectPage = () => {
             </AppBar>
             <Grid>
             <FormControl className={classes.formcontrol}>
-                <InputLabel shrink={false} id="fieldLabel">{navState.field === '' ? '지역' : ''}</InputLabel>
+                <InputLabel shrink={false} id="fieldLabel">{navState.field === '' ? '분야' : ''}</InputLabel>
                 <Select
                     className={classes.select}
                     labelId="fieldLabel"

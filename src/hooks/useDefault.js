@@ -26,25 +26,32 @@ import { getMainData } from "../reducers/Default";
 
 export const useDefaultData = () => {
   const dispatch = useDispatch();
-  const { mainData } = useSelector(state => state.Default);
+  const { projectCard } = useSelector(state => state.Default);
   const [hotProjectState, setHotProjectState] = useState([{
-    img: '',
-    title: '',
-    people: '',
-    remain: 0,
-    day: 0,
-    developer: 0,
-    designer: 0,
-    planner: 0
-}]);
-
+    imgUrl: '',
+    projectName: '',
+    teamName: '',
+    currentMember: {
+      developer: 0,
+      planner: 0,
+      other: 0,
+      designer: 0
+    },
+    needMember: {
+      developer: 0,
+      planner: 0,
+      other: 0,
+      designer: 0
+    },
+    Dday: 0
+  }]);
   useEffect(()=>{
     dispatch(getMainData());
   }, [dispatch]);
 
   useEffect(()=>{
-    setHotProjectState(mainData);
-  }, [mainData])
+    setHotProjectState(projectCard);
+  }, [projectCard]);
 
   return [{hotProjectState}, setHotProjectState];
 }

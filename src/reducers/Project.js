@@ -9,23 +9,31 @@ const projectSlice = createSlice({
       open: false,
       text: ''
     },
-    projectData: [{
-      img: '',
-      title: '',
-      people: '',
-      remain: 0,
-      day: 0,
-      developer: 0,
-      designer: 0,
-      planner: 0
-  }]
+    projectCard: [{
+      imgUrl: '',
+      projectName: '',
+      teamName: '',
+      currentMember: {
+        developer: 0,
+        planner: 0,
+        other: 0,
+        designer: 0
+      },
+      needMember: {
+        developer: 0,
+        planner: 0,
+        other: 0,
+        designer: 0
+      },
+      Dday: 0
+    }],
   },
   reducers: {
     getProjectData(state, action) {
       state.isLoading = true;
     },
     getProjectDataSuccess(state, action) {
-      state.projectData = action.payload
+      state.projectCard = action.payload
       state.isLoading = false;
     },
     getProjectFail(state, action) {

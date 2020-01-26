@@ -9,23 +9,38 @@ const defaultSlice = createSlice({
       open: false,
       text: ''
     },
-    mainData: [{
-      img: '',
-      title: '',
-      people: '',
-      remain: 0,
-      day: 0,
-      developer: 0,
-      designer: 0,
-      planner: 0
-  }]
+    projectCard: [{
+      imgUrl: '',
+      projectName: '',
+      teamName: '',
+      currentMember: {
+        developer: 0,
+        planner: 0,
+        other: 0,
+        designer: 0
+      },
+      needMember: {
+        developer: 0,
+        planner: 0,
+        other: 0,
+        designer: 0
+      },
+      Dday: 0
+    }],
+    peopleCard: [{
+      userId: '',
+      imgUrl: '',
+      name: '',
+      tag: [],
+      level: 0
+    }]
   },
   reducers: {
     getDefault(state, action) {
       state.isLoading = true;
     },
     getDefaultSuccess(state, action) {
-      state.Default = action.payload
+      state.projectCard = action.payload
       state.isLoading = false;
     },
     getDefaultFail(state, action) {
@@ -37,7 +52,7 @@ const defaultSlice = createSlice({
     },
     getMainDataSuccess(state, action){
       state.isLoading = false;
-      state.mainData = action.payload;
+      state.projectCard = action.payload;
     }
   },
 });

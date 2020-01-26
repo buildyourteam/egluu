@@ -55,6 +55,13 @@ const useStyles = makeStyles({
     marginRight: 4,
     marginLeft: 4
   },
+  other: {
+    color: '#ffffff',
+    backgroundColor: '#BBC3CE',
+    fontSize: 12,
+    marginRight: 4,
+    marginLeft: 4
+  },
   cardContent: {
     padding: 5
   }
@@ -62,38 +69,41 @@ const useStyles = makeStyles({
 
 export default function TeamBox(props) {
   const classes = useStyles();
-  const {state} = props
+  const {state} = props;
+  const nowDay = new Date();
+  const remainSum = state.needMember.developer + state.needMember.planner + state.needMember.other + state.needMember.designer - state.currentMember.developer - state.currentMember.planner - state.currentMember.other - state.currentMember.designer;
+  const remainDay = parseInt((state.Dday - nowDay)/(3600*60*24));
   return (
     <Card className={classes.card}>
       <CardActions className={classes.cardAction}>
-        <img src={state.img} alt="11" style={{width: "100%", height: "180px", objectFit: 'cover'}}/>
+        <img src={state.imgUrl} alt="11" style={{width: "100%", height: "180px", objectFit: 'cover'}}/>
       </CardActions>
         <CardContent className={classes.cardContent}>
         <Typography variant="h5" component="h2">
-        {state.title}
+        {state.projectName}
         </Typography>
         <Grid container spacing={12}>
           <Grid container item xs={6}>
             <Typography className={classes.subtitle} color="textSecondary" gutterBottom>
-            {state.people}
+            {state.teamName}
             </Typography>
             <Grid container>
               <PeopleAltSharpIcon />
               <Typography variant="body2">
-            {state.remain}명 남았습니다.
+            {remainSum}명 남았습니다.
             </Typography>
             </Grid>
             <Grid container>
               <InsertInvitationIcon />
               <Typography variant="body2">
-            {state.day}일 남았습니다.
+            {remainDay}일 남았습니다.
             </Typography>
             </Grid>
           </Grid>
           <Grid container item xs={6}>
             <div style={{textAlign: "center", lineHeight: '20px'}}>
               <Avatar variant="circle" className={classes.developer}>
-                {state.developer}명
+                {state.needMember.developer - state.currentMember.developer}명
               </Avatar>
               <Typography variant="caption" align="justify">
                 개발자
@@ -101,7 +111,7 @@ export default function TeamBox(props) {
             </div>
             <div style={{textAlign: "center", lineHeight: '20px'}}>
             <Avatar variant="circle" className={classes.designer}>
-              {state.designer}명
+              {state.needMember.designer - state.currentMember.designer}명
             </Avatar>
               <Typography variant="caption" align="justify">
                 디자이너
@@ -109,10 +119,18 @@ export default function TeamBox(props) {
             </div>
             <div style={{textAlign: "center", lineHeight: '20px'}}>
             <Avatar variant="circle" className={classes.planner}>
-              {state.planner}명
+              {state.needMember.planner - state.currentMember.planner}명
             </Avatar>
               <Typography variant="caption" align="justify">
                 기획자
+              </Typography> 
+            </div>
+            <div style={{textAlign: "center", lineHeight: '20px'}}>
+            <Avatar variant="circle" className={classes.other}>
+              {state.needMember.other - state.currentMember.other}명
+            </Avatar>
+              <Typography variant="caption" align="justify">
+                기타
               </Typography> 
             </div>
           </Grid>
