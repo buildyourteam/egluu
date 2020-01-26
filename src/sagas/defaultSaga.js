@@ -180,8 +180,8 @@ function* setProjectDetailLoad(action){
     const data = tempList.filter(value =>{
       return value.projectId === useUrl
     }); // 임시 데이터
-    console.log(data);
-    const tempDate = Date.parse(data[0].Dday);
+    const tempDate = new Date(data[0].Dday);
+    console.log(tempDate);
     const tempData = { // 임시 데이터
       ...data[0],
       endDate: tempDate,
