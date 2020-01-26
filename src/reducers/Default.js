@@ -8,7 +8,17 @@ const defaultSlice = createSlice({
     Default: {
       open: false,
       text: ''
-    }
+    },
+    mainData: [{
+      img: '',
+      title: '',
+      people: '',
+      remain: 0,
+      day: 0,
+      developer: 0,
+      designer: 0,
+      planner: 0
+  }]
   },
   reducers: {
     getDefault(state, action) {
@@ -21,6 +31,13 @@ const defaultSlice = createSlice({
     getDefaultFail(state, action) {
       state.isLoading = false;
       state.isError = false;
+    },
+    getMainData(state, action){
+      state.isLoading = true;
+    },
+    getMainDataSuccess(state, action){
+      state.isLoading = false;
+      state.mainData = action.payload;
     }
   },
 });
@@ -28,6 +45,8 @@ const defaultSlice = createSlice({
 export const {
   getDefault,
   getDefaultSuccess,
-  getDefaultFail
+  getDefaultFail,
+  getMainData,
+  getMainDataSuccess
 } = defaultSlice.actions;
 export default defaultSlice.reducer;
