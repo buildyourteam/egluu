@@ -39,7 +39,6 @@ export const useDefaultData = () => {
 }]);
 
   useEffect(()=>{
-    console.log("??");
     dispatch(getMainData());
   }, [dispatch]);
 

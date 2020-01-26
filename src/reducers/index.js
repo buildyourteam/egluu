@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import Default from './Default';
+import Project from './Project';
 
 const PersistConfig = {
   key: 'Default',
@@ -9,6 +10,13 @@ const PersistConfig = {
   whitelist: [''], // only navigation will be persisted
 };
 
+const PersistConfigProject = {
+  key: 'Project',
+  storage,
+  whitelist: [''], // only navigation will be persisted
+};
+
 export default combineReducers({
   Default: persistReducer(PersistConfig, Default),
+  Project: persistReducer(PersistConfigProject, Project)
 });
