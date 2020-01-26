@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getMainData } from "../reducers/Project";
+import { getProjectDetail } from '../reducers/Project'
 
- export function useLoading() {
+ export function useProjectDetailLoading() {
   const dispatch = useDispatch();
   const { isLoading, isError } = useSelector(state => state.Project);
   const [loadState, setLoadState] = useState({
@@ -24,10 +24,11 @@ import { getMainData } from "../reducers/Project";
   return [{loadState}, setLoadState, dispatch];
 }
 
-export const useDefaultData = () => {
+export const useProjectDetailData = () => {
   const dispatch = useDispatch();
-  const { projectCard } = useSelector(state => state.Project);
-  const [hotProjectState, setHotProjectState] = useState([{
+  const { project } = useSelector(state => state.Project);
+  const [projectDetailState, setProjectDetailState] = useState({
+    projectId: '',
     imgUrl: '',
     projectName: '',
     teamName: '',
@@ -43,15 +44,17 @@ export const useDefaultData = () => {
       other: 0,
       designer: 0
     },
-    Dday: 0
-  }]);
+    endDate: 0,
+    projectDescription: '',
+    memberList: [{userId: '', status: 0}]
+  });
   useEffect(()=>{
-    dispatch(getMainData());
+    dispatch(getProjectDetail());
   }, [dispatch]);
 
   useEffect(()=>{
-    setHotProjectState(projectCard);
-  }, [projectCard]);
+    setProjectDetailState(project);
+  }, [project])
 
-  return [{hotProjectState}, setHotProjectState];
+  return [{projectDetailState}, setProjectDetailState];
 }

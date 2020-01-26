@@ -46,13 +46,6 @@ const defaultSlice = createSlice({
     getDefaultFail(state, action) {
       state.isLoading = false;
       state.isError = false;
-    },
-    getMainData(state, action){
-      state.isLoading = true;
-    },
-    getMainDataSuccess(state, action){
-      state.isLoading = false;
-      state.projectCard = action.payload;
     }
   },
 });
@@ -60,8 +53,6 @@ const defaultSlice = createSlice({
 export const {
   getDefault,
   getDefaultSuccess,
-  getDefaultFail,
-  getMainData,
-  getMainDataSuccess
+  getDefaultFail
 } = defaultSlice.actions;
 export default defaultSlice.reducer;

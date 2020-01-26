@@ -115,7 +115,8 @@ const ProjectPage = () => {
             </div>
             <Grid container>
             {projectState.map((value, i) => (
-                <span style={{margin: '20px'}} id={value.title + i}>
+                <span style={{margin: '20px'}} id={value.title + i} onClick={()=>
+                    window.location = `/project/${value.projectId}`}>
                     <TeamBox state={value} />
                 </span>
             ))}
