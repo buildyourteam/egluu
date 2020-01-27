@@ -3,7 +3,7 @@ import { useLoading, useDefaultData, useDefaultDataPeople } from '../hooks';
 
 //import { useDefaultDataPeople } from '../hooks';
 
-import { ImgSlide, TeamBox, PeopleBox } from '../components';
+import { ImgSlide, TmpBox, PeopleBox } from '../components';
 
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,7 +53,7 @@ const BasicPage = () => {
             <Grid container>
             {hotProjectState.map((value, i) => (
                 <span style={{margin: '20px'}} id={value.title + i}>
-                    <TeamBox state={value} />
+                    <TmpBox state={value} />
                 </span>
             ))}
             </Grid>
