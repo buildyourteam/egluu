@@ -28,6 +28,7 @@ export const useDefaultData = () => {
   const dispatch = useDispatch();
   const { projectCard } = useSelector(state => state.Default);
   const [hotProjectState, setHotProjectState] = useState([{
+
     imgUrl: '',
     projectName: '',
     teamName: '',
@@ -48,6 +49,8 @@ export const useDefaultData = () => {
   useEffect(()=>{
     dispatch(getMainData());
   }, [dispatch]);
+
+
 
   useEffect(()=>{
     setHotProjectState(projectCard);
