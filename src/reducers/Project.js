@@ -73,6 +73,13 @@ const projectSlice = createSlice({
     getProjectDetailSuccess(state, action){
       state.project = action.payload;
       state.isLoading = false;
+    },
+    setProjectDetail(state, action){
+      state.isLoading = true;
+    },
+    setProjectDetailSuccess(state, action){
+      state.isLoading = false;
+      state.project = action.payload;
     }
   },
 });
@@ -84,6 +91,8 @@ export const {
     getMainData,
     getMainDataSuccess,
     getProjectDetail,
-    getProjectDetailSuccess
+    getProjectDetailSuccess,
+    setProjectDetail,
+    setProjectDetailSuccess
 } = projectSlice.actions;
 export default projectSlice.reducer;

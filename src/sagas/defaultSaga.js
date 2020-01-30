@@ -11,7 +11,9 @@ import {
   getMainData,
   getMainDataSuccess,
   getProjectDetail,
-  getProjectDetailSuccess
+  getProjectDetailSuccess,
+  setProjectDetail,
+  setProjectDetailSuccess
 } from '../reducers/Project'
 
 const tempList = [{
@@ -135,7 +137,7 @@ const tempList = [{
   field: ['기타 개발']
 }]
 
-function* setDefaultLoad(action) {
+function* getDefaultLoad(action) {
   try {
     // const data = action.payload;
     yield put(getDefaultSuccess(tempList));
@@ -144,11 +146,11 @@ function* setDefaultLoad(action) {
     yield put(getDefaultFail());
   }
 }
-function* watchSetDefaultLoad() {
-  yield takeLatest(getDefault, setDefaultLoad);
+function* watchGetDefaultLoad() {
+  yield takeLatest(getDefault, getDefaultLoad);
 }
 
-function* setProjectListLoad(){
+function* getProjectListLoad(){
   try {
 
     yield put(getMainDataSuccess(tempList));
@@ -157,11 +159,11 @@ function* setProjectListLoad(){
     yield put(getDefaultFail());
   }
 }
-function* watchSetMainPageLoad() {
-  yield takeLatest(getMainData, setProjectListLoad);
+function* watchGetMainPageLoad() {
+  yield takeLatest(getMainData, getProjectListLoad);
 }
 
-function* setProjectLoad(){
+function* getProjectLoad(){
   try {
     yield put(getProjectDataSuccess(tempList));
   } catch(err){
@@ -169,22 +171,20 @@ function* setProjectLoad(){
     yield put(getProjectFail());
   }
 }
-function* watchSetProjectLoad() {
-  yield takeLatest(getProjectData, setProjectLoad);
+function* watchGetProjectLoad() {
+  yield takeLatest(getProjectData, getProjectLoad);
 }
 
-function* setProjectDetailLoad(action){
+function* getProjectDetailLoad(action){
   try {
     const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
     let useUrl = url[2];
     const data = tempList.filter(value =>{
       return value.projectId === useUrl
     }); // 임시 데이터
-    const tempDate = new Date(data[0].Dday);
-    console.log(tempDate);
     const tempData = { // 임시 데이터
       ...data[0],
-      endDate: tempDate,
+      endDate: data[0].Dday,
       projectDescription: `${data[0].projectName}의 projectDescription입니다.<a href="https://en.wikipedia.org/wiki/HTML">HTML</a>`,
       memberList: [{userId: 11, status: 0}, {userId: 12, status: 1}, {userId: 13, status: 2}]
     }
@@ -195,15 +195,29 @@ function* setProjectDetailLoad(action){
     yield put(getProjectFail());
   }
 }
+function* watchGetProjectDetailLoad() {
+  yield takeLatest(getProjectDetail, getProjectDetailLoad);
+}
+
+function* setProjectDetailLoad(action){
+  try {
+    const data = action.payload;
+    yield put(setProjectDetailSuccess(data));
+  } catch(err){
+    console.log(err);
+    yield put(getProjectFail());
+  }
+}
 function* watchSetProjectDetailLoad() {
-  yield takeLatest(getProjectDetail, setProjectDetailLoad);
+  yield takeLatest(setProjectDetail, setProjectDetailLoad);
 }
 
 export default function* defaultSaga() {
     yield all([
-      fork(watchSetDefaultLoad),
-      fork(watchSetMainPageLoad),
-      fork(watchSetProjectLoad),
+      fork(watchGetDefaultLoad),
+      fork(watchGetMainPageLoad),
+      fork(watchGetProjectLoad),
+      fork(watchGetProjectDetailLoad),
       fork(watchSetProjectDetailLoad)
     ]);
   }
