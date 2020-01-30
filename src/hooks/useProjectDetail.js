@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProjectDetail } from '../reducers/Project'
 
- export function useProjectDetailLoading() {
+export function useProjectDetailLoading() {
   const dispatch = useDispatch();
   const { isLoading, isError } = useSelector(state => state.Project);
   const [loadState, setLoadState] = useState({
@@ -48,6 +48,9 @@ export const useProjectDetailData = () => {
     projectDescription: '',
     memberList: [{userId: '', status: 0}]
   });
+  const [open, setOpen] = useState({
+    change: false
+  });
   useEffect(()=>{
     dispatch(getProjectDetail());
   }, [dispatch]);
@@ -56,5 +59,5 @@ export const useProjectDetailData = () => {
     setProjectDetailState(project);
   }, [project])
 
-  return [{projectDetailState}, setProjectDetailState];
+  return [{projectDetailState, open}, setProjectDetailState, setOpen];
 }
