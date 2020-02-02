@@ -33,7 +33,6 @@ const BasicPage = () => {
   ];
 
   const handleClick = () => {
-    dispatch(getDefault(loadState));
     setLoadState({ ...loadState, open: true });
   };
   console.log(hotProjectState);
