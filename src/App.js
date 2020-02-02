@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { NotFound, BasicPage, ProjectPage, ProjectPageDetail } from './pages';
 
 function App() {

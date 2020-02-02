@@ -7,7 +7,7 @@ const projectSlice = createSlice({
     isError: false,
     Default: {
       open: false,
-      text: ''
+      text: '',
     },
     project: {
       imgUrl: '',
@@ -17,82 +17,84 @@ const projectSlice = createSlice({
         developer: 0,
         planner: 0,
         other: 0,
-        designer: 0
+        designer: 0,
       },
       needMember: {
         developer: 0,
         planner: 0,
         other: 0,
-        designer: 0
+        designer: 0,
       },
       endDate: 0,
       projectDescription: '',
-      memberList: [{userId: '', status: 0}]
+      memberList: [{ userId: '', status: 0 }],
     },
-    projectCard: [{
-      imgUrl: '',
-      projectName: '',
-      teamName: '',
-      currentMember: {
-        developer: 0,
-        planner: 0,
-        other: 0,
-        designer: 0
+    projectCard: [
+      {
+        imgUrl: '',
+        projectName: '',
+        teamName: '',
+        currentMember: {
+          developer: 0,
+          planner: 0,
+          other: 0,
+          designer: 0,
+        },
+        needMember: {
+          developer: 0,
+          planner: 0,
+          other: 0,
+          designer: 0,
+        },
+        Dday: 0,
       },
-      needMember: {
-        developer: 0,
-        planner: 0,
-        other: 0,
-        designer: 0
-      },
-      Dday: 0
-    }],
+    ],
   },
   reducers: {
     getProjectData(state, action) {
       state.isLoading = true;
     },
     getProjectDataSuccess(state, action) {
-      state.projectCard = action.payload
+      state.projectCard = action.payload;
       state.isLoading = false;
     },
     getProjectFail(state, action) {
       state.isLoading = false;
       state.isError = false;
     },
-    getMainData(state, action){
+    getMainData(state, action) {
       state.isLoading = true;
     },
-    getMainDataSuccess(state, action){
+    getMainDataSuccess(state, action) {
       state.isLoading = false;
       state.projectCard = action.payload;
     },
-    getProjectDetail(state, action){
+    getProjectDetail(state, action) {
       state.isLoading = true;
     },
-    getProjectDetailSuccess(state, action){
+    getProjectDetailSuccess(state, action) {
       state.project = action.payload;
       state.isLoading = false;
     },
-    setProjectDetail(state, action){
+    setProjectDetail(state, action) {
       state.isLoading = true;
     },
-    setProjectDetailSuccess(state, action){
+    setProjectDetailSuccess(state, action) {
       state.isLoading = false;
       state.project = action.payload;
-    }
+    },
   },
 });
 
 export const {
-    getProjectData,
-    getProjectDataSuccess,
-    getProjectFail,
-    getMainData,
-    getMainDataSuccess,
-    getProjectDetail,
-    getProjectDetailSuccess,
-    setProjectDetail,
-    setProjectDetailSuccess
+  getProjectData,
+  getProjectDataSuccess,
+  getProjectFail,
+  getMainData,
+  getMainDataSuccess,
+  getProjectDetail,
+  getProjectDetailSuccess,
+  setProjectDetail,
+  setProjectDetailSuccess,
 } = projectSlice.actions;
 export default projectSlice.reducer;
