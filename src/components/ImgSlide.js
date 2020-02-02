@@ -85,7 +85,7 @@ export function ImgInput({ state, setState }) {
           url: URL.createObjectURL(file),
         }),
       );
-      setState({ ...state, imgUrl: imgFile });
+      setState({ ...state, imgUrl: imgFile[0] });
     },
   });
 
@@ -113,7 +113,7 @@ export function ImgInput({ state, setState }) {
           />
         ) : (
           <div>
-            {typeof state.imgUrl[0] !== 'string' ? (
+            {typeof state.imgUrl !== 'string' ? (
               <img
                 src={state.imgUrl.url}
                 alt="이미지 에러"
