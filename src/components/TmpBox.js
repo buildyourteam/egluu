@@ -11,6 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
 import Avatar from '@material-ui/core/Avatar';
 import { lineHeight } from '@material-ui/system';
+import { Line, Circle } from 'rc-progress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles({
   card: {
@@ -55,19 +57,18 @@ const useStyles = makeStyles({
     marginRight: 4,
     marginLeft: 4,
   },
-  other: {
-    color: '#ffffff',
-    backgroundColor: '#BBC3CE',
-    fontSize: 12,
-    marginRight: 4,
-    marginLeft: 4,
-  },
   cardContent: {
     padding: 5,
   },
+  prog: {
+    width: '100%',
+    '& > * + *': {
+      // marginTop: theme.spacing(2),
+    },
+  },
 });
 
-export default function TeamBox(props) {
+export default function TmpBox(props) {
   const classes = useStyles();
   const { state } = props;
   const nowDay = new Date();
@@ -83,6 +84,9 @@ export default function TeamBox(props) {
   const remainDay = parseInt((state.Dday - nowDay) / (3600 * 60 * 24));
   return (
     <Card className={classes.card}>
+      <div>
+        <Line percent="100" strokeWidth="4" strokeColor="#2db7f5" />
+      </div>
       <CardActions className={classes.cardAction}>
         <img
           src={state.imgUrl}
@@ -113,37 +117,15 @@ export default function TeamBox(props) {
             </Grid>
           </Grid>
           <Grid container item xs={6}>
-            <div style={{ textAlign: 'center', lineHeight: '20px' }}>
-              <Avatar variant="circle" className={classes.developer}>
-                {state.needMember.developer - state.currentMember.developer}명
-              </Avatar>
-              <Typography variant="caption" align="justify">
-                개발자
-              </Typography>
-            </div>
-            <div style={{ textAlign: 'center', lineHeight: '20px' }}>
-              <Avatar variant="circle" className={classes.designer}>
-                {state.needMember.designer - state.currentMember.designer}명
-              </Avatar>
-              <Typography variant="caption" align="justify">
-                디자이너
-              </Typography>
-            </div>
-            <div style={{ textAlign: 'center', lineHeight: '20px' }}>
-              <Avatar variant="circle" className={classes.planner}>
-                {state.needMember.planner - state.currentMember.planner}명
-              </Avatar>
-              <Typography variant="caption" align="justify">
-                기획자
-              </Typography>
-            </div>
-            <div style={{ textAlign: 'center', lineHeight: '20px' }}>
-              <Avatar variant="circle" className={classes.other}>
-                {state.needMember.other - state.currentMember.other}명
-              </Avatar>
-              <Typography variant="caption" align="justify">
-                기타
-              </Typography>
+            <LinearProgress variant="determinate" value="50" />
+            <Line percent="10" strokeWidth="4" strokeColor="#D3D3D3" />
+            <div className={classes.root}>
+              <LinearProgress variant="determinate" value="50" />
+              <LinearProgress
+                variant="determinate"
+                value="100"
+                color="secondary"
+              />
             </div>
           </Grid>
         </Grid>
