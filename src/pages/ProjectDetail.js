@@ -14,8 +14,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import ReactMarkdown from 'react-markdown/with-html';
+import TextField from '@material-ui/core/TextField';
 import { useProjectDetailLoading, useProjectDetailData } from '../hooks';
 import { ImgInput } from '../components';
+import { setProjectDetail } from '../reducers/Project';
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -33,6 +35,30 @@ const ProjectPageDetail = () => {
   ] = useProjectDetailData();
   const tempDate = new Date(projectDetailState.Dday);
 
+  const handleInput = e => {
+    e.persist();
+    setProjectDetailState({
+      ...projectDetailState,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleInputMember = e => {
+    setProjectDetailState({
+      ...projectDetailState,
+      needMember: {
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  const handleSave = async () => {
+    setOpen({ ...open, change: !open.change });
+    await dispatch(setProjectDetail(projectDetailState));
+  };
+
+  console.log(projectDetailState.projectName);
+
   return (
     <div>
       <AppBar
@@ -47,10 +73,81 @@ const ProjectPageDetail = () => {
           <Button onClick={() => setOpen({ ...open, change: !open.change })}>
             수정하기
           </Button>
+          <div>
+            <img src="fds" alt="" />
+          </div>
         </Toolbar>
       </AppBar>
       {open.change ? (
-        <ImgInput state={projectDetailState} setState={setProjectDetailState} />
+        <div>
+          <ImgInput
+            state={projectDetailState}
+            setState={setProjectDetailState}
+          />
+          <TextField
+            name="projectName"
+            value={projectDetailState.projectName}
+            onChange={handleInput}
+            fullWidth
+            label="프로젝트 이름"
+          />
+          <TextField
+            name="teamName"
+            value={projectDetailState.teamName}
+            onChange={handleInput}
+            fullWidth
+            label="팀 이름"
+          />
+          <TextField
+            name="projectDescription"
+            value={projectDetailState.projectDescription}
+            onChange={handleInput}
+            fullWidth
+            label="프로젝트 설명"
+            multiline
+          />
+          <ReactMarkdown
+            source={projectDetailState.projectDescription}
+            escapeHtml={false}
+          />
+          <div>
+            개발자 :
+            <TextField
+              name="projectDescription"
+              type="number"
+              value={projectDetailState.needMember.developer}
+              onChange={handleInputMember}
+            />
+          </div>
+          <div>
+            기획자 :
+            <TextField
+              name="projectDescription"
+              type="number"
+              value={projectDetailState.needMember.planner}
+              onChange={handleInputMember}
+            />
+          </div>
+          <div>
+            디자이너 :
+            <TextField
+              name="projectDescription"
+              type="number"
+              value={projectDetailState.needMember.designer}
+              onChange={handleInputMember}
+            />
+          </div>
+          <div>
+            기타 :
+            <TextField
+              name="projectDescription"
+              type="number"
+              value={projectDetailState.needMember.other}
+              onChange={handleInputMember}
+            />
+          </div>
+          <Button onClick={handleSave}>저장하기</Button>
+        </div>
       ) : (
         <div>
           <div style={{ backgroundColor: '#000000', position: 'relative' }}>
@@ -65,14 +162,16 @@ const ProjectPageDetail = () => {
                   style={{ display: 'block', opacity: '0.5', hover: 1 }}
                 />
               ) : (
-                <img
-                  src={projectDetailState.imgUrl}
-                  alt="이미지 에러"
-                  align="center"
-                  height="30%"
-                  width="100%"
-                  style={{ display: 'block', opacity: '0.5', hover: 1 }}
-                />
+                <div>
+                  <img
+                    src={projectDetailState.imgUrl}
+                    alt="이미지 에러"
+                    align="center"
+                    height="30%"
+                    width="100%"
+                    style={{ display: 'block', opacity: '0.5', hover: 1 }}
+                  />
+                </div>
               )}
             </div>
           </div>
