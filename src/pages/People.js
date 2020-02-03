@@ -55,30 +55,30 @@ const PeoplePage = () => {
       </AppBar>
       <Grid>
         <FormControl className={classes.formcontrol}>
-          <InputLabel shrink={false} id="fieldLabel">
-            {navState.field === "" ? "분야" : ""}
+          <InputLabel shrink={false} id="tagLabel">
+            {navState.tag === "" ? "분야" : ""}
           </InputLabel>
           <Select
             className={classes.select}
-            labelId="fieldLabel"
-            id="field"
-            name="field"
-            value={navState.field}
+            labelId="tagLabel"
+            id="tag"
+            name="tag"
+            value={navState.tag}
             onChange={handleClickNav}
             autoWidth
             variant="standard"
             disableUnderline
           >
-            <MenuItem value="앱 서비스">앱 서비스</MenuItem>
-            <MenuItem value="웹 서비스">웹 서비스</MenuItem>
-            <MenuItem value="AI 서비스">AI 서비스</MenuItem>
-            <MenuItem value="블록체인">블록체인</MenuItem>
-            <MenuItem value="HW 개발">HW 개발</MenuItem>
-            <MenuItem value="시스템 개발">시스템 개발</MenuItem>
-            <MenuItem value="기타 개발">기타 개발</MenuItem>
+            <MenuItem value="Python">Python</MenuItem>
+            <MenuItem value="Django">Django</MenuItem>
+            <MenuItem value="JAVA">JAVA</MenuItem>
+            <MenuItem value="React JS">React JS</MenuItem>
+            <MenuItem value="Vue JS">Vue JS</MenuItem>
+            <MenuItem value="Spring boot">Spring boot</MenuItem>
+            <MenuItem value="Ruby on Rails">Ruby on Rails</MenuItem>
           </Select>
         </FormControl>
-        <FormControl className={classes.formcontrol}>
+        {/* <FormControl className={classes.formcontrol}>
           <InputLabel shrink={false} id="jobGroupLabel">
             {navState.jobGroup === "" ? "직군" : ""}
           </InputLabel>
@@ -98,31 +98,9 @@ const PeoplePage = () => {
             <MenuItem value="planner">기획자</MenuItem>
             <MenuItem value="other">기타직군</MenuItem>
           </Select>
-        </FormControl>
-        <FormControl className={classes.formcontrol}>
-          <InputLabel shrink={false} id="areaLabel">
-            {navState.area === "" ? "지역" : ""}
-          </InputLabel>
-          <Select
-            className={classes.select}
-            labelId="areaLabel"
-            id="area"
-            name="area"
-            value={navState.area}
-            onChange={handleClickNav}
-            autoWidth
-            variant="standard"
-            disableUnderline
-          >
-            <MenuItem value="서울">서울</MenuItem>
-            <MenuItem value="인천">인천</MenuItem>
-            <MenuItem value="경기북부">경기북부</MenuItem>
-            <MenuItem value="경기남부">경기남부</MenuItem>
-          </Select>
-        </FormControl>
-        <Button>프로젝트 팀 개설하기 ></Button>
+        </FormControl> */}
       </Grid>
-      <div>{peopleState.length}개의 팀이 있습니다.</div>
+      <div>{peopleState.length}마리의 User가 있습니다.</div>
       <Grid container>
         {peopleState.map((value, i) => (
           <span

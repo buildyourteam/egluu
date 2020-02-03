@@ -51,31 +51,18 @@ export const usePeopleData = () => {
 
   useEffect(() => {
     let tempData = [];
-    if (navState.field) {
+    if (navState.tag) {
       peopleCard.forEach(value => {
         let Flag = false;
-        value.field.forEach(value2 => {
-          if (value2 === navState.field) Flag = true;
+        value.tag.forEach(value2 => {
+          if (value2 === navState.tag) Flag = true;
         });
-        if (navState.jobGroup !== "") {
-          if (navState.jobGroup === "developer")
-            if (
-              value.needMember.developer - value.currentMember.developer ===
-              0
-            )
-              Flag = false;
-          if (navState.jobGroup === "designer")
-            if (value.needMember.designer - value.currentMember.designer === 0)
-              Flag = false;
-          if (navState.jobGroup === "planner")
-            if (value.needMember.planner - value.currentMember.planner === 0)
-              Flag = false;
-        }
+
         if (Flag) tempData.push(value);
       });
+      setPeopleState(tempData);
     }
-    setPeopleState(tempData);
-  }, [navState.field, navState.jobGroup, peopleCard]);
+  }, [navState.tag, navState.jobGroup, peopleCard]);
   console.log(peopleState);
 
   return [{ peopleState, navState }, setPeopleState, setNavState];
