@@ -1,32 +1,32 @@
-import React from "react";
-import { useProjectLoading, useProjectData } from "../hooks";
-import { TmpBox } from "../components";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MuiCircularProgress from "@material-ui/core/CircularProgress";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import Dialog from "@material-ui/core/Dialog";
-import Grid from "@material-ui/core/Grid";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import MuiCircularProgress from '@material-ui/core/CircularProgress';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@material-ui/core/Dialog';
+import Grid from '@material-ui/core/Grid';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import { TmpBox } from '../components';
+import { useProjectLoading, useProjectData } from '../hooks';
 
 const useStyles = makeStyles(theme => ({
   appbar: {
-    margin: "0px"
+    margin: '0px',
   },
   select: {
-    width: "100%",
-    borderColor: "#000000"
+    width: '100%',
+    borderColor: '#000000',
   },
   formcontrol: {
-    width: "25%"
-  }
+    width: '25%',
+  },
 }));
 
 const ProjectPage = () => {
@@ -35,7 +35,7 @@ const ProjectPage = () => {
   const [
     { projectState, navState },
     setProjectState,
-    setNavState
+    setNavState,
   ] = useProjectData();
   const handleClickNav = event => {
     setNavState({ ...navState, [event.target.name]: event.target.value });
@@ -45,9 +45,9 @@ const ProjectPage = () => {
       <AppBar
         position="static"
         color="inherit"
-        style={{ boxShadow: "none", textAlign: "center" }}
+        style={{ boxShadow: 'none', textAlign: 'center' }}
       >
-        <Toolbar style={{ textAlign: "center" }}>
+        <Toolbar style={{ textAlign: 'center' }}>
           <Typography variant="h6" align="center" display="inline">
             ESKIMO
           </Typography>
@@ -56,7 +56,7 @@ const ProjectPage = () => {
       <Grid>
         <FormControl className={classes.formcontrol}>
           <InputLabel shrink={false} id="fieldLabel">
-            {navState.field === "" ? "분야" : ""}
+            {navState.field === '' ? '분야' : ''}
           </InputLabel>
           <Select
             className={classes.select}
@@ -80,7 +80,7 @@ const ProjectPage = () => {
         </FormControl>
         <FormControl className={classes.formcontrol}>
           <InputLabel shrink={false} id="jobGroupLabel">
-            {navState.jobGroup === "" ? "직군" : ""}
+            {navState.jobGroup === '' ? '직군' : ''}
           </InputLabel>
           <Select
             className={classes.select}
@@ -101,7 +101,7 @@ const ProjectPage = () => {
         </FormControl>
         <FormControl className={classes.formcontrol}>
           <InputLabel shrink={false} id="areaLabel">
-            {navState.area === "" ? "지역" : ""}
+            {navState.area === '' ? '지역' : ''}
           </InputLabel>
           <Select
             className={classes.select}
@@ -126,7 +126,7 @@ const ProjectPage = () => {
       <Grid container>
         {projectState.map((value, i) => (
           <span
-            style={{ margin: "20px" }}
+            style={{ margin: '20px' }}
             id={value.title + i}
             onClick={() => (window.location = `/project/${value.projectId}`)}
           >
@@ -137,14 +137,14 @@ const ProjectPage = () => {
       <Dialog open={loadState.open}>
         <MuiDialogContent
           style={{
-            background: "white",
-            width: "160px",
-            minHeight: "80px",
-            textAlign: "center"
+            background: 'white',
+            width: '160px',
+            minHeight: '80px',
+            textAlign: 'center',
           }}
         >
-          <MuiCircularProgress style={{ width: "20%", height: "20%" }} />
-          <div style={{ marginTop: "12px" }}>{loadState.text}</div>
+          <MuiCircularProgress style={{ width: '20%', height: '20%' }} />
+          <div style={{ marginTop: '12px' }}>{loadState.text}</div>
           <Button
             onClick={() => {
               setLoadState({ ...loadState, open: false });
@@ -156,12 +156,12 @@ const ProjectPage = () => {
       </Dialog>
       <footer
         style={{
-          backgroundColor: "#eeeeee",
-          height: "100px",
-          textAlign: "center"
+          backgroundColor: '#eeeeee',
+          height: '100px',
+          textAlign: 'center',
         }}
       >
-        <Typography variant="h4" align="center" style={{ padding: "10px" }}>
+        <Typography variant="h4" align="center" style={{ padding: '10px' }}>
           ESKIMO
         </Typography>
         <Typography variant="h6" align="center">

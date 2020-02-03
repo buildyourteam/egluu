@@ -7,12 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import MuiCircularProgress from '@material-ui/core/CircularProgress';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import Dialog from '@material-ui/core/Dialog';
-import Grid from '@material-ui/core/Grid';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import ReactMarkdown from 'react-markdown/with-html';
 import TextField from '@material-ui/core/TextField';
 import { useProjectDetailLoading, useProjectDetailData } from '../hooks';
@@ -56,8 +50,6 @@ const ProjectPageDetail = () => {
     setOpen({ ...open, change: !open.change });
     await dispatch(setProjectDetail(projectDetailState));
   };
-
-  console.log(projectDetailState.projectName);
 
   return (
     <div>
