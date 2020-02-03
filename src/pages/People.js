@@ -1,6 +1,6 @@
 import React from "react";
-import { useProjectLoading, useProjectData } from "../hooks";
-import { TmpBox } from "../components";
+import { usePeopleLoading, usePeopleData } from "../hooks";
+import { PeopleBox } from "../components";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -10,7 +10,6 @@ import MuiCircularProgress from "@material-ui/core/CircularProgress";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import Grid from "@material-ui/core/Grid";
-import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -29,17 +28,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ProjectPage = () => {
+const PeoplePage = () => {
   const classes = useStyles();
-  const [{ loadState }, setLoadState, dispatch] = useProjectLoading();
+  const [{ loadState }, setLoadState, dispatch] = usePeopleLoading();
   const [
-    { projectState, navState },
-    setProjectState,
+    { peopleState, navState },
+    setPeopleState,
     setNavState
-  ] = useProjectData();
+  ] = usePeopleData();
   const handleClickNav = event => {
     setNavState({ ...navState, [event.target.name]: event.target.value });
   };
+  console.log(peopleState);
   return (
     <div>
       <AppBar
@@ -122,15 +122,15 @@ const ProjectPage = () => {
         </FormControl>
         <Button>프로젝트 팀 개설하기 ></Button>
       </Grid>
-      <div>{projectState.length}개의 팀이 있습니다.</div>
+      <div>{peopleState.length}개의 팀이 있습니다.</div>
       <Grid container>
-        {projectState.map((value, i) => (
+        {peopleState.map((value, i) => (
           <span
             style={{ margin: "20px" }}
-            id={value.title + i}
-            onClick={() => (window.location = `/project/${value.projectId}`)}
+            id={value.name + i}
+            onClick={() => (window.location = `/people/${value.userId}`)}
           >
-            <TmpBox state={value} />
+            <PeopleBox state={value} />
           </span>
         ))}
       </Grid>
@@ -172,4 +172,4 @@ const ProjectPage = () => {
   );
 };
 
-export default ProjectPage;
+export default PeoplePage;

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getProjectData } from "../reducers/Project";
+import { getPeopleData } from "../reducers/People";
 
-export function useProjectLoading() {
+export function usePeopleLoading() {
   const dispatch = useDispatch();
-  const { isLoading, isError } = useSelector(state => state.Project);
+  const { isLoading, isError } = useSelector(state => state.People);
   const [loadState, setLoadState] = useState({
     open: false,
     text: "로딩 중..."
@@ -24,28 +24,16 @@ export function useProjectLoading() {
   return [{ loadState }, setLoadState, dispatch];
 }
 
-export const useProjectData = () => {
+export const usePeopleData = () => {
   const dispatch = useDispatch();
-  const { projectCard } = useSelector(state => state.Project);
-  const [projectState, setProjectState] = useState([
+  const { peopleCard } = useSelector(state => state.People);
+  const [peopleState, setPeopleState] = useState([
     {
-      projectId: "",
+      userId: "",
       imgUrl: "",
-      projectName: "",
-      teamName: "",
-      currentMember: {
-        developer: 0,
-        planner: 0,
-        other: 0,
-        designer: 0
-      },
-      needMember: {
-        developer: 0,
-        planner: 0,
-        other: 0,
-        designer: 0
-      },
-      Dday: 0
+      name: "",
+      tag: [],
+      level: 0
     }
   ]);
   const [navState, setNavState] = useState({
@@ -54,17 +42,17 @@ export const useProjectData = () => {
     area: ""
   });
   useEffect(() => {
-    dispatch(getProjectData());
+    dispatch(getPeopleData());
   }, [dispatch]);
 
   useEffect(() => {
-    setProjectState(projectCard);
-  }, [projectCard]);
+    setPeopleState(peopleCard);
+  }, [peopleCard]);
 
   useEffect(() => {
     let tempData = [];
     if (navState.field) {
-      projectCard.forEach(value => {
+      peopleCard.forEach(value => {
         let Flag = false;
         value.field.forEach(value2 => {
           if (value2 === navState.field) Flag = true;
@@ -86,8 +74,9 @@ export const useProjectData = () => {
         if (Flag) tempData.push(value);
       });
     }
-    setProjectState(tempData);
-  }, [navState.field, navState.jobGroup, projectCard]);
+    setPeopleState(tempData);
+  }, [navState.field, navState.jobGroup, peopleCard]);
+  console.log(peopleState);
 
-  return [{ projectState, navState }, setProjectState, setNavState];
+  return [{ peopleState, navState }, setPeopleState, setNavState];
 };

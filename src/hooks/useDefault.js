@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getMainData } from '../reducers/Project';
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getMainData } from "../reducers/Project";
 
 export function useLoading() {
   const dispatch = useDispatch();
   const { isLoading, isError } = useSelector(state => state.Project);
   const [loadState, setLoadState] = useState({
     open: false,
-    text: '로딩 중...',
+    text: "로딩 중..."
   }); // 메시지 상태메시지
 
   useEffect(() => {
@@ -27,25 +27,26 @@ export function useLoading() {
 export const useDefaultData = () => {
   const dispatch = useDispatch();
   const { projectCard } = useSelector(state => state.Project);
+  console.log(useSelector(state => state.Project));
   const [hotProjectState, setHotProjectState] = useState([
     {
-      imgUrl: '',
-      projectName: '',
-      teamName: '',
+      imgUrl: "",
+      projectName: "",
+      teamName: "",
       currentMember: {
         developer: 0,
         planner: 0,
         other: 0,
-        designer: 0,
+        designer: 0
       },
       needMember: {
         developer: 0,
         planner: 0,
         other: 0,
-        designer: 0,
+        designer: 0
       },
-      Dday: 0,
-    },
+      Dday: 0
+    }
   ]);
   useEffect(() => {
     dispatch(getMainData());
