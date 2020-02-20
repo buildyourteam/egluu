@@ -4,3 +4,4 @@ export { default as ProjectPage } from "./Project";
 export { default as PeoplePage } from "./People";
 
 export { default as ProjectPageDetail } from "./ProjectDetail";
+export { default as PeoplePageDetail } from "./PeopleDetail";

@@ -7,3 +7,4 @@ export {
   useProjectDetailLoading,
   useProjectDetailData
 } from "./useProjectDetail";
+export { usePeopleDetailLoading, usePeopleDetailData } from "./usePeopleDetail";

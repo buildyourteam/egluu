@@ -93,7 +93,7 @@ const tempList = [
 
 const peopleList = [
   {
-    userId: 0,
+    userId: '0',
     imgUrl:
       'http://mblogthumb3.phinf.naver.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800',
     name: '라이언',
@@ -101,7 +101,7 @@ const peopleList = [
     level: 1,
   },
   {
-    userId: 1,
+    userId: '1',
     imgUrl:
       'https://img.insight.co.kr/static/2017/05/25/700/8b0150slwpwuni6385m0.jpg',
     name: '오리',
@@ -116,7 +116,7 @@ const peopleList = [
     level: 4,
   },
   {
-    userId: 3,
+    userId: '3',
     imgUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWDagz6NBt8oHxMbMQu2HVcFGhUrIZNQNZNUbVz206cxDUtxdC&s',
     name: '네오',
@@ -124,7 +124,7 @@ const peopleList = [
     level: 13,
   },
   {
-    userId: 4,
+    userId: '4',
     imgUrl:
       'http://mblogthumb3.phinf.naver.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800',
     name: '라이언',
@@ -200,6 +200,7 @@ function* getProjectDetailLoad(action) {
     const data = tempList.filter(value => {
       return value.projectId === useUrl;
     }); // 임시 데이터
+
     const tempData = {
       // 임시 데이터
       ...data[0],
@@ -233,6 +234,48 @@ function* setProjectDetailLoad(action) {
 }
 function* watchSetProjectDetailLoad() {
   yield takeLatest(setProjectDetail, setProjectDetailLoad);
+}
+
+// PeopleDetail 페이지에서 project Get
+function* getPeopleDetailLoad(action) {
+  try {
+    const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
+    const useUrl = url[2];
+    console.log(useUrl);
+    const data = peopleList.filter(value => {
+      return value.userId === useUrl;
+    }); // 임시 데이터
+    console.log(data[0]);
+    const tempData = {
+      // 임시 데이터
+      ...data[0],
+      technicalStack: [`python`, `Django`, `ReactJS`],
+      role: [`Frontend`, `Backend`],
+      contact: `${data[0].name}의 연락처..`,
+      area: `Seoul`,
+    };
+    yield put(getPeopleDetailSuccess(tempData));
+  } catch (err) {
+    console.log(err);
+    yield put(getPeopleFail());
+  }
+}
+function* watchGetPeopleDetailLoad() {
+  yield takeLatest(getPeopleDetail, getPeopleDetailLoad);
+}
+
+// PeopleDetail 페이지에서 project Set
+function* setPeopleDetailLoad(action) {
+  try {
+    const data = action.payload;
+    yield put(setPeopleDetailSuccess(data));
+  } catch (err) {
+    console.log(err);
+    yield put(getPeopleFail());
+  }
+}
+function* watchSetPeopleDetailLoad() {
+  yield takeLatest(setPeopleDetail, setPeopleDetailLoad);
 }
 
 export default function* defaultSaga() {

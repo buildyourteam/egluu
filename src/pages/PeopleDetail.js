@@ -9,9 +9,9 @@ import MuiDialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import ReactMarkdown from "react-markdown/with-html";
 import TextField from "@material-ui/core/TextField";
-import { useProjectDetailLoading, useProjectDetailData } from "../hooks";
+import { usePeopleDetailLoading, usePeopleDetailData } from "../hooks";
 import { ImgInput } from "../components";
-import { setProjectDetail } from "../reducers/Project";
+import { setPeopleDetail } from "../reducers/People";
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -19,36 +19,36 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ProjectPageDetail = () => {
+const PeoplePageDetail = () => {
   const classes = useStyles();
-  const [{ loadState }, setLoadState, dispatch] = useProjectDetailLoading();
+  const [{ loadState }, setLoadState, dispatch] = usePeopleDetailLoading();
   const [
-    { projectDetailState, open },
-    setProjectDetailState,
+    { peopleDetailState, open },
+    setPeopleDetailState,
     setOpen
-  ] = useProjectDetailData();
-  const tempDate = new Date(projectDetailState.Dday);
+  ] = usePeopleDetailData();
+  console.log(peopleDetailState);
 
   const handleInput = e => {
     e.persist();
-    setProjectDetailState({
-      ...projectDetailState,
+    setPeopleDetailState({
+      ...peopleDetailState,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleInputMember = e => {
-    setProjectDetailState({
-      ...projectDetailState,
-      needMember: {
-        [e.target.name]: e.target.value
-      }
-    });
-  };
+  // const handleInputMember = e => {
+  //   setPeopleDetailState({
+  //     ...peopleDetailState,
+  //     needMember: {
+  //       [e.target.name]: e.target.value
+  //     }
+  //   });
+  // };
 
   const handleSave = async () => {
     setOpen({ ...open, change: !open.change });
-    await dispatch(setProjectDetail(projectDetailState));
+    await dispatch(setPeopleDetail(peopleDetailState));
   };
 
   return (
@@ -72,81 +72,78 @@ const ProjectPageDetail = () => {
       </AppBar>
       {open.change ? (
         <div>
-          <ImgInput
-            state={projectDetailState}
-            setState={setProjectDetailState}
-          />
+          <ImgInput state={peopleDetailState} setState={setPeopleDetailState} />
           <TextField
-            name="projectName"
-            value={projectDetailState.projectName}
+            name="name"
+            value={peopleDetailState.name}
             onChange={handleInput}
             fullWidth
-            label="프로젝트 이름"
+            label="이름"
           />
           <TextField
-            name="teamName"
-            value={projectDetailState.teamName}
+            name="area"
+            value={peopleDetailState.area}
             onChange={handleInput}
             fullWidth
-            label="팀 이름"
+            label="활동 범위"
           />
           <TextField
-            name="projectDescription"
-            value={projectDetailState.projectDescription}
+            name="contact"
+            value={peopleDetailState.contact}
             onChange={handleInput}
             fullWidth
-            label="프로젝트 설명"
+            label="연락처"
             multiline
           />
           <ReactMarkdown
-            source={projectDetailState.projectDescription}
+            source={peopleDetailState.peopleDescription}
             escapeHtml={false}
           />
-          <div>
+          {/* <div>
             개발자 :
             <TextField
-              name="projectDescription"
+              name="peopleDescription"
               type="number"
-              value={projectDetailState.needMember.developer}
+              value={peopleDetailState.needMember.developer}
               onChange={handleInputMember}
             />
           </div>
           <div>
             기획자 :
             <TextField
-              name="projectDescription"
+              name="peopleDescription"
               type="number"
-              value={projectDetailState.needMember.planner}
+              value={peopleDetailState.needMember.planner}
               onChange={handleInputMember}
             />
           </div>
           <div>
             디자이너 :
             <TextField
-              name="projectDescription"
+              name="peopleDescription"
               type="number"
-              value={projectDetailState.needMember.designer}
+              value={peopleDetailState.needMember.designer}
               onChange={handleInputMember}
             />
           </div>
           <div>
             기타 :
             <TextField
-              name="projectDescription"
+              name="peopleDescription"
               type="number"
-              value={projectDetailState.needMember.other}
+              value={peopleDetailState.needMember.other}
               onChange={handleInputMember}
             />
-          </div>
+          </div> */}
           <Button onClick={handleSave}>저장하기</Button>
         </div>
       ) : (
         <div>
           <div style={{ backgroundColor: "#000000", position: "relative" }}>
             <div>
-              {typeof projectDetailState.imgUrl !== "string" ? (
+              {typeof peopleDetailState.imgUrl !== "string" ? (
                 <img
-                  src={projectDetailState.imgUrl.url}
+                  src={peopleDetailState.imgUrl.url}
                   alt="이미지 에러"
                   align="center"
                   height="30%"
@@ -156,7 +153,7 @@ const ProjectPageDetail = () => {
               ) : (
                 <div>
                   <img
-                    src={projectDetailState.imgUrl}
+                    src={peopleDetailState.imgUrl}
                     alt="이미지 에러"
                     align="center"
                     height="30%"
@@ -167,43 +164,35 @@ const ProjectPageDetail = () => {
               )}
             </div>
           </div>
-          <div style={{ margin: "5%", position: "relative", top: "-30vh" }}>
+          <div style={{ margin: "5%", position: "relative", top: "-40vh" }}>
             <Typography variant="h1" className={classes.text}>
-              {projectDetailState.projectName}
+              {peopleDetailState.name}
             </Typography>
             <Typography variant="h3" className={classes.text}>
-              {projectDetailState.teamName}
+              Lev.{peopleDetailState.level}
             </Typography>
           </div>
           <div style={{ margin: "5%", position: "relative", top: "-30vh" }}>
-            <ReactMarkdown
-              source={projectDetailState.projectDescription}
+            <Typography variant="h3">개인정보</Typography>
+            {/* <ReactMarkdown
+              source={peopleDetailState.contact}
               escapeHtml={false}
-            />
-            <Typography variant="h3">팀원 현황</Typography>
+            /> */}
             <Typography variant="h6">
-              개발 :{" "}
-              {projectDetailState.needMember.developer -
-                projectDetailState.currentMember.developer}
+              레벨 : {peopleDetailState.level}
             </Typography>
             <Typography variant="h6">
-              기획 :{" "}
-              {projectDetailState.needMember.planner -
-                projectDetailState.currentMember.planner}
+              연락처 : {peopleDetailState.contact}
             </Typography>
-            <Typography variant="h6">
-              디자이너 :{" "}
-              {projectDetailState.needMember.designer -
-                projectDetailState.currentMember.designer}
-            </Typography>
-            <Typography variant="h6">
-              기타 :{" "}
-              {projectDetailState.needMember.other -
-                projectDetailState.currentMember.other}
-            </Typography>
-            <Typography variant="h6">
-              마감 일 :{" "}
-              {`${tempDate.getFullYear()}년${tempDate.getMonth()}${1}월${tempDate.getDate()}일`}
+            <Typography
+              className={classes.stack}
+              variant="body2"
+              component="p"
+              color="textPrimary"
+            >
+              {peopleDetailState.technicalStack.map((value, i) => (
+                <span>#{value} </span>
+              ))}
             </Typography>
           </div>
           <Typography variant="h6">
@@ -249,4 +238,4 @@ const ProjectPageDetail = () => {
   );
 };
 
-export default ProjectPageDetail;
+export default PeoplePageDetail;
