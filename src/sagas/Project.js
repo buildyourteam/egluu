@@ -143,7 +143,7 @@ function* getProjectListLoad() {
       `${BASEURL}/api/projects?page=0&size=10&sort=projectName%2CDESC&occupation=developer&field=WEB`,
     );
     console.log(res);
-    yield put(getMainDataSuccess(res.data._embedded.projectList));
+    yield put(getMainDataSuccess(tempList));
   } catch (err) {
     console.log(err);
     yield put(getDefaultFail());

@@ -1,7 +1,15 @@
+/* eslint-disable radix */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  MuiThemeProvider,
+  createMuiTheme,
+  lighten,
+  withStyles,
+} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,6 +19,8 @@ import Grid from '@material-ui/core/Grid';
 import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
 import Avatar from '@material-ui/core/Avatar';
 import { lineHeight } from '@material-ui/system';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles({
   card: {
@@ -65,9 +75,29 @@ const useStyles = makeStyles({
   cardContent: {
     padding: 5,
   },
+  peopleCard: {
+    maxWidth: 180,
+    height: 180,
+  },
+  media: {
+    height: 180,
+  },
+  stack: {
+    width: 180,
+    height: 180,
+  },
 });
 
-export default function TeamBox(props) {
+const theme = createMuiTheme({
+  palette: {
+    text: {
+      primary: '#ffffff',
+      secondary: '#000000',
+    },
+  },
+});
+
+export function TeamBox(props) {
   const classes = useStyles();
   const { state } = props;
   const nowDay = new Date();
@@ -81,6 +111,25 @@ export default function TeamBox(props) {
     state.currentMember.other -
     state.currentMember.designer;
   const remainDay = parseInt((state.Dday - nowDay) / (3600 * 60 * 24));
+  const developerPercent =
+    (state.currentMember.developer / state.needMember.developer) * 100;
+  const plannerPercent =
+    (state.currentMember.planner / state.needMember.deveplannerloper) * 100;
+  const otherPercent =
+    (state.currentMember.other / state.needMember.other) * 100;
+  const designerPercent =
+    (state.currentMember.designer / state.needMember.designer) * 100;
+
+  const BorderLinearProgress = withStyles({
+    root: {
+      height: 10,
+      backgroundColor: lighten('#ff6c5c', 0.5),
+    },
+    bar: {
+      borderRadius: 20,
+      backgroundColor: '#ff6c5c',
+    },
+  })(LinearProgress);
   return (
     <Card className={classes.card}>
       <CardActions className={classes.cardAction}>
@@ -113,41 +162,117 @@ export default function TeamBox(props) {
             </Grid>
           </Grid>
           <Grid container item xs={6}>
-            <div style={{ textAlign: 'center', lineHeight: '20px' }}>
-              <Avatar variant="circle" className={classes.developer}>
-                {state.needMember.developer - state.currentMember.developer}명
-              </Avatar>
-              <Typography variant="caption" align="justify">
-                개발자
-              </Typography>
-            </div>
-            <div style={{ textAlign: 'center', lineHeight: '20px' }}>
-              <Avatar variant="circle" className={classes.designer}>
-                {state.needMember.designer - state.currentMember.designer}명
-              </Avatar>
-              <Typography variant="caption" align="justify">
-                디자이너
-              </Typography>
-            </div>
-            <div style={{ textAlign: 'center', lineHeight: '20px' }}>
-              <Avatar variant="circle" className={classes.planner}>
-                {state.needMember.planner - state.currentMember.planner}명
-              </Avatar>
-              <Typography variant="caption" align="justify">
-                기획자
-              </Typography>
-            </div>
-            <div style={{ textAlign: 'center', lineHeight: '20px' }}>
-              <Avatar variant="circle" className={classes.other}>
-                {state.needMember.other - state.currentMember.other}명
-              </Avatar>
-              <Typography variant="caption" align="justify">
-                기타
-              </Typography>
-            </div>
+            <Grid container spacing={1}>
+              <Grid container item xs={12} spacing={1}>
+                <>
+                  <Grid item xs={4}>
+                    <Typography className={classes.rule}>개발자</Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <BorderLinearProgress
+                      className={classes.margin}
+                      variant="determinate"
+                      color="secondary"
+                      value={developerPercent}
+                    />
+                  </Grid>
+                </>
+              </Grid>
+              <Grid container item xs={12} spacing={1}>
+                <>
+                  <Grid item xs={4}>
+                    <Typography className={classes.rule}>디자이너</Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <BorderLinearProgress
+                      className={classes.margin}
+                      variant="determinate"
+                      color="secondary"
+                      value={designerPercent}
+                    />
+                  </Grid>
+                </>
+              </Grid>
+              <Grid container item xs={12} spacing={1}>
+                <>
+                  <Grid item xs={4}>
+                    <Typography className={classes.rule}>기획자</Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <BorderLinearProgress
+                      className={classes.margin}
+                      variant="determinate"
+                      color="secondary"
+                      value={plannerPercent}
+                    />
+                  </Grid>
+                </>
+              </Grid>
+              <Grid container item xs={12} spacing={1}>
+                <>
+                  <Grid item xs={4}>
+                    <Typography className={classes.rule}>기타</Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <BorderLinearProgress
+                      className={classes.margin}
+                      variant="determinate"
+                      color="secondary"
+                      value={otherPercent}
+                    />
+                  </Grid>
+                </>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </CardContent>
+    </Card>
+  );
+}
+
+export function PeopleBox(props) {
+  const classes = useStyles();
+  const { state } = props;
+  return (
+    <Card
+      className={classes.peopleCard}
+      style={{ backgroundImage: `url(${state.imgUrl})`, backgroundSize: 250 }}
+    >
+      <CardActionArea>
+        <CardContent
+          style={{ backgroundColor: 'rgba( 0, 0, 0, 0.5 )' }}
+          align="justify"
+        >
+          <MuiThemeProvider theme={theme}>
+            <br />
+            <br />
+            <br />
+            <br />
+            <Typography color="textPrimary" align="justify">
+              Lev.{state.level}
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              color="textPrimary"
+            >
+              {state.name}
+            </Typography>
+            <Typography
+              className={classes.stack}
+              variant="body2"
+              component="p"
+              color="textPrimary"
+            >
+              {state.tag.map((value, i) => (
+                <span>#{value} </span>
+              ))}
+            </Typography>
+          </MuiThemeProvider>
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 }

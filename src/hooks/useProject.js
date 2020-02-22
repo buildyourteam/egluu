@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProjectData } from '../reducers/Project';
+import { getProjectCardList } from '../reducers/Project';
 
 export function useProjectLoading() {
   const dispatch = useDispatch();
@@ -18,7 +18,6 @@ export function useProjectLoading() {
     } else {
       setLoadState({ ...loadState, open: false });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isError]);
 
   return [{ loadState }, setLoadState, dispatch];
@@ -54,7 +53,7 @@ export const useProjectData = () => {
     area: '',
   });
   useEffect(() => {
-    dispatch(getProjectData());
+    dispatch(getProjectCardList());
   }, [dispatch]);
 
   useEffect(() => {

@@ -1,63 +1,63 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const projectSlice = createSlice({
-  name: "Project",
+  name: 'Project',
   initialState: {
     isLoading: false,
     isError: false,
     Default: {
       open: false,
-      text: ""
+      text: '',
     },
     // project 상세페이지 초기 데이터
     project: {
-      imgUrl: "",
-      projectName: "",
-      teamName: "",
+      imgUrl: '',
+      projectName: '',
+      teamName: '',
       currentMember: {
         developer: 0,
         planner: 0,
         other: 0,
-        designer: 0
+        designer: 0,
       },
       needMember: {
         developer: 0,
         planner: 0,
         other: 0,
-        designer: 0
+        designer: 0,
       },
       endDate: 0,
-      projectDescription: "",
-      memberList: [{ userId: "", status: 0 }]
+      projectDescription: '',
+      memberList: [{ userId: '', status: 0 }],
     },
     // 메인페이지 project card 데이터
     projectCard: [
       {
-        imgUrl: "",
-        projectName: "",
-        teamName: "",
+        imgUrl: '',
+        projectName: '',
+        teamName: '',
         currentMember: {
           developer: 0,
           planner: 0,
           other: 0,
-          designer: 0
+          designer: 0,
         },
         needMember: {
           developer: 0,
           planner: 0,
           other: 0,
-          designer: 0
+          designer: 0,
         },
-        Dday: 0
-      }
-    ]
+        Dday: 0,
+      },
+    ],
   },
   reducers: {
-    //project list용
-    getProjectData(state, action) {
+    // project list용
+    getProjectCardList(state, action) {
       state.isLoading = true;
     },
-    getProjectDataSuccess(state, action) {
+    getProjectCardListSuccess(state, action) {
       state.projectCard = action.payload;
       state.isLoading = false;
     },
@@ -65,7 +65,7 @@ const projectSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
     },
-    //메인페이지 project용(인기, 추천, 신규)
+    // 메인페이지 project용(인기, 추천, 신규)
     getMainData(state, action) {
       state.isLoading = true;
     },
@@ -73,7 +73,7 @@ const projectSlice = createSlice({
       state.isLoading = false;
       state.projectCard = action.payload;
     },
-    //project detail 페이지 용
+    // project detail 페이지 용
     getProjectDetail(state, action) {
       state.isLoading = true;
     },
@@ -87,19 +87,19 @@ const projectSlice = createSlice({
     setProjectDetailSuccess(state, action) {
       state.isLoading = false;
       state.project = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const {
-  getProjectData,
-  getProjectDataSuccess,
+  getProjectCardList,
+  getProjectCardListSuccess,
   getProjectFail,
   getMainData,
   getMainDataSuccess,
   getProjectDetail,
   getProjectDetailSuccess,
   setProjectDetail,
-  setProjectDetailSuccess
+  setProjectDetailSuccess,
 } = projectSlice.actions;
 export default projectSlice.reducer;
