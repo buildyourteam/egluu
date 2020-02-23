@@ -20,7 +20,6 @@ export function useLoading() {
       setLoadState({ ...loadState, open: false });
     }
   }, [isLoading, isError]);
-
   return [{ loadState }, setLoadState, dispatch];
 }
 

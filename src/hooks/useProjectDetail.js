@@ -46,6 +46,7 @@ export const useProjectDetailData = () => {
     },
     endDate: 0,
     description: '',
+    projectField: '',
     memberList: [{ userId: '', status: 0 }],
   });
   const [open, setOpen] = useState({

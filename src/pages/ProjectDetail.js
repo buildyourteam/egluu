@@ -16,7 +16,7 @@ import {
 import { format } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { ko } from 'date-fns/locale';
-import { setProjectDetail } from '../reducers/Project';
+import { setProjectDetail, setProjectDelete } from '../reducers/Project';
 import { ImgInput } from '../components';
 import { useProjectDetailLoading, useProjectDetailData } from '../hooks';
 
@@ -34,7 +34,7 @@ const ProjectPageDetail = () => {
     setProjectDetailState,
     setOpen,
   ] = useProjectDetailData();
-
+  console.log(projectDetailState);
   const handleInput = e => {
     e.persist();
     setProjectDetailState({
@@ -82,6 +82,13 @@ const ProjectPageDetail = () => {
           </Typography>
           <Button onClick={() => setOpen({ ...open, change: !open.change })}>
             수정하기
+          </Button>
+          <Button
+            onClick={() => {
+              dispatch(setProjectDelete());
+            }}
+          >
+            삭제
           </Button>
           <div>
             <img src="fds" alt="" />
