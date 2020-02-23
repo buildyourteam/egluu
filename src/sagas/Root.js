@@ -177,12 +177,18 @@ function* getProjectListLoad() {
 // BasicPage에서 peopleCard
 function* getPeopleListLoad() {
   try {
-    yield put(getMainPeopleDataSuccess(peopleList));
-    // const res = yield call(
-    //   [axios, "get"],
-    //   `${BASEURL}/api/people?page=0&size=3&sort=user_name%2CDESC&level=1&role=LEADER&area=Seoul`
-    // );
-    // console.log(res);
+    //yield put(getMainPeopleDataSuccess(peopleList));
+    const res = yield call([axios, "get"], `${BASEURL}/api/people`);
+    console.log(res.data._embedded);
+    const data = res.data._embedded.peopleList.map(value => {
+      return {
+        ...value,
+        imgUrl:
+          "http://mblogthumb3.phinf.naver.net/20160625_210/bjy0524_1466833747375ihpeN_PNG/%B7%BF%C3%F7%B8%C1%B0%ED%B6%F3%C0%CC%BE%F0%BB%E7%C1%F8.png?type=w800"
+      };
+    });
+
+    yield put(getMainPeopleDataSuccess(data));
   } catch (err) {
     console.log(err);
     yield put(getPeopleFail());

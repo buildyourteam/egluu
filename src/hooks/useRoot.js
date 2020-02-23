@@ -20,7 +20,7 @@ export function useLoading() {
       setLoadState({ ...loadState, open: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, isError, loadState]);
+  }, [isLoading, isError]);
 
   return [{ loadState }, setLoadState, dispatch];
 }
