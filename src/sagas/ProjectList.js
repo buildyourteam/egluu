@@ -15,7 +15,7 @@ function* getProjectCardListLoad() {
       [axios, 'get'],
       `${BASEURL}/api/projects?page=0&size=10&sort=projectName%2CDESC&occupation=developer&field=WEB`,
     );
-    yield put(getProjectCardListSuccess(tempList));
+    yield put(getProjectCardListSuccess(res.data));
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());

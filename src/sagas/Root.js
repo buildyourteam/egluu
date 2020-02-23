@@ -21,7 +21,9 @@ function* getProjectListLoad() {
       `${BASEURL}/api/projects?page=0&size=10&sort=projectName%2CDESC&occupation=developer&field=WEB`,
     );
     console.log(res);
-    yield put(getMainDataSuccess(res.data)));
+    const projectRes = yield call([axios, 'get'], `${BASEURL}/api/projects`);
+    console.log(projectRes);
+    yield put(getMainDataSuccess(res.data.page));
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());
@@ -31,7 +33,7 @@ function* getProjectListLoad() {
 // BasicPage에서 peopleCard
 function* getPeopleListLoad() {
   try {
-    yield put(getMainPeopleDataSuccess(peopleList));
+    yield put(getMainPeopleDataSuccess([]));
   } catch (err) {
     console.log(err);
     yield put(getPeopleFail());

@@ -9,7 +9,7 @@ import MuiCircularProgress from '@material-ui/core/CircularProgress';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
-import { ImgSlide, TmpBox, PeopleBox, TeamBox } from '../components';
+import { ImgSlide, PeopleBox, TeamBox } from '../components';
 import { useLoading, useDefaultData, useDefaultPeopleData } from '../hooks';
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +34,6 @@ const BasicPage = () => {
   const handleClick = () => {
     setLoadState({ ...loadState, open: true });
   };
-  console.log(hotProjectState);
   return (
     <div>
       <AppBar position="static" color="inherit">
@@ -49,7 +48,7 @@ const BasicPage = () => {
       <Grid container>
         {hotProjectState.map((value, i) => (
           <span style={{ margin: '20px' }} id={value.title + i}>
-            <TmpBox state={value} />
+            <TeamBox state={value} />
           </span>
         ))}
       </Grid>

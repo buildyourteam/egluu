@@ -27,7 +27,6 @@ export function useLoading() {
 export const useDefaultData = () => {
   const dispatch = useDispatch();
   const { projectCard } = useSelector(state => state.Project);
-  console.log(useSelector(state => state.Project));
   const [hotProjectState, setHotProjectState] = useState([
     {
       imgUrl: '',
@@ -61,7 +60,6 @@ export const useDefaultData = () => {
 
 export const useDefaultPeopleData = () => {
   const dispatch = useDispatch();
-  console.log(useSelector(state => state.Project));
   const { peopleCard } = useSelector(state => state.People);
   const [hotPeopleState, setHotPeopleState] = useState([
     {
