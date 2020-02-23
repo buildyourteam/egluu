@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProjectData } from '../reducers/Project';
+import { getProjectCardList } from '../reducers/Project';
 
 export function useProjectLoading() {
   const dispatch = useDispatch();
@@ -18,7 +18,6 @@ export function useProjectLoading() {
     } else {
       setLoadState({ ...loadState, open: false });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isError]);
 
   return [{ loadState }, setLoadState, dispatch];
@@ -36,13 +35,13 @@ export const useProjectData = () => {
       currentMember: {
         developer: 0,
         planner: 0,
-        other: 0,
+        etc: 0,
         designer: 0,
       },
       needMember: {
         developer: 0,
         planner: 0,
-        other: 0,
+        etc: 0,
         designer: 0,
       },
       Dday: 0,
@@ -54,7 +53,7 @@ export const useProjectData = () => {
     area: '',
   });
   useEffect(() => {
-    dispatch(getProjectData());
+    dispatch(getProjectCardList());
   }, [dispatch]);
 
   useEffect(() => {

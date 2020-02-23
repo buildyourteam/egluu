@@ -1,22 +1,22 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MuiCircularProgress from "@material-ui/core/CircularProgress";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import Dialog from "@material-ui/core/Dialog";
-import ReactMarkdown from "react-markdown/with-html";
-import TextField from "@material-ui/core/TextField";
-import { usePeopleDetailLoading, usePeopleDetailData } from "../hooks";
-import { ImgInput } from "../components";
-import { setPeopleDetail } from "../reducers/People";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import MuiCircularProgress from '@material-ui/core/CircularProgress';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@material-ui/core/Dialog';
+import ReactMarkdown from 'react-markdown/with-html';
+import TextField from '@material-ui/core/TextField';
+import { usePeopleDetailLoading, usePeopleDetailData } from '../hooks';
+import { ImgInput } from '../components';
+import { setPeopleDetail } from '../reducers/People';
 
 const useStyles = makeStyles(theme => ({
   text: {
-    color: "#ffffff"
-  }
+    color: '#ffffff',
+  },
 }));
 
 const PeoplePageDetail = () => {
@@ -25,7 +25,7 @@ const PeoplePageDetail = () => {
   const [
     { peopleDetailState, open },
     setPeopleDetailState,
-    setOpen
+    setOpen,
   ] = usePeopleDetailData();
   console.log(peopleDetailState);
 
@@ -33,7 +33,7 @@ const PeoplePageDetail = () => {
     e.persist();
     setPeopleDetailState({
       ...peopleDetailState,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -56,9 +56,9 @@ const PeoplePageDetail = () => {
       <AppBar
         position="static"
         color="inherit"
-        style={{ boxShadow: "none", textAlign: "center" }}
+        style={{ boxShadow: 'none', textAlign: 'center' }}
       >
-        <Toolbar style={{ textAlign: "center" }}>
+        <Toolbar style={{ textAlign: 'center' }}>
           <Typography variant="h6" align="center" display="inline">
             ESKIMO
           </Typography>
@@ -131,7 +131,7 @@ const PeoplePageDetail = () => {
             <TextField
               name="peopleDescription"
               type="number"
-              value={peopleDetailState.needMember.other}
+              value={peopleDetailState.needMember.etc}
               onChange={handleInputMember}
             />
           </div> */}
@@ -139,16 +139,16 @@ const PeoplePageDetail = () => {
         </div>
       ) : (
         <div>
-          <div style={{ backgroundColor: "#000000", position: "relative" }}>
+          <div style={{ backgroundColor: '#000000', position: 'relative' }}>
             <div>
-              {typeof peopleDetailState.imgUrl !== "string" ? (
+              {typeof peopleDetailState.imgUrl !== 'string' ? (
                 <img
                   src={peopleDetailState.imgUrl.url}
                   alt="이미지 에러"
                   align="center"
                   height="30%"
                   width="100%"
-                  style={{ display: "block", opacity: "0.5", hover: 1 }}
+                  style={{ display: 'block', opacity: '0.5', hover: 1 }}
                 />
               ) : (
                 <div>
@@ -158,13 +158,13 @@ const PeoplePageDetail = () => {
                     align="center"
                     height="30%"
                     width="100%"
-                    style={{ display: "block", opacity: "0.5", hover: 1 }}
+                    style={{ display: 'block', opacity: '0.5', hover: 1 }}
                   />
                 </div>
               )}
             </div>
           </div>
-          <div style={{ margin: "5%", position: "relative", top: "-40vh" }}>
+          <div style={{ margin: '5%', position: 'relative', top: '-40vh' }}>
             <Typography variant="h1" className={classes.text}>
               {peopleDetailState.name}
             </Typography>
@@ -172,7 +172,7 @@ const PeoplePageDetail = () => {
               Lev.{peopleDetailState.level}
             </Typography>
           </div>
-          <div style={{ margin: "5%", position: "relative", top: "-30vh" }}>
+          <div style={{ margin: '5%', position: 'relative', top: '-30vh' }}>
             <Typography variant="h3">개인정보</Typography>
             {/* <ReactMarkdown
               source={peopleDetailState.contact}
@@ -201,14 +201,14 @@ const PeoplePageDetail = () => {
           <Dialog open={loadState.open}>
             <MuiDialogContent
               style={{
-                background: "white",
-                width: "160px",
-                minHeight: "80px",
-                textAlign: "center"
+                background: 'white',
+                width: '160px',
+                minHeight: '80px',
+                textAlign: 'center',
               }}
             >
-              <MuiCircularProgress style={{ width: "20%", height: "20%" }} />
-              <div style={{ marginTop: "12px" }}>{loadState.text}</div>
+              <MuiCircularProgress style={{ width: '20%', height: '20%' }} />
+              <div style={{ marginTop: '12px' }}>{loadState.text}</div>
               <Button
                 onClick={() => {
                   setLoadState({ ...loadState, open: false });
@@ -222,12 +222,12 @@ const PeoplePageDetail = () => {
       )}
       <footer
         style={{
-          backgroundColor: "#eeeeee",
-          height: "100px",
-          textAlign: "center"
+          backgroundColor: '#eeeeee',
+          height: '100px',
+          textAlign: 'center',
         }}
       >
-        <Typography variant="h4" align="center" style={{ padding: "10px" }}>
+        <Typography variant="h4" align="center" style={{ padding: '10px' }}>
           ESKIMO
         </Typography>
         <Typography variant="h6" align="center">

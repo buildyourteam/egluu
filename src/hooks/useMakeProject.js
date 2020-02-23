@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProjectDetail } from '../reducers/Project';
 
-export function useProjectDetailLoading() {
+export function useMakeProjectLoading() {
   const dispatch = useDispatch();
   const { isLoading, isError } = useSelector(state => state.Project);
   const [loadState, setLoadState] = useState({
@@ -18,16 +18,14 @@ export function useProjectDetailLoading() {
     } else {
       setLoadState({ ...loadState, open: false });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isError]);
 
   return [{ loadState }, setLoadState, dispatch];
 }
 
-export const useProjectDetailData = () => {
-  const dispatch = useDispatch();
-  const { project } = useSelector(state => state.Project);
-  const [projectDetailState, setProjectDetailState] = useState({
+export const useMakeProjectData = () => {
+  const date = new Date();
+  const [MakeprojectState, setMakeProjectState] = useState({
     projectId: '',
     imgUrl: '',
     projectName: '',
@@ -44,20 +42,10 @@ export const useProjectDetailData = () => {
       etc: 0,
       designer: 0,
     },
-    endDate: 0,
+    endDate: date,
     description: '',
     memberList: [{ userId: '', status: 0 }],
   });
-  const [open, setOpen] = useState({
-    change: false,
-  });
-  useEffect(() => {
-    dispatch(getProjectDetail());
-  }, [dispatch]);
 
-  useEffect(() => {
-    setProjectDetailState(project);
-  }, [project]);
-
-  return [{ projectDetailState, open }, setProjectDetailState, setOpen];
+  return [{ MakeprojectState }, setMakeProjectState];
 };

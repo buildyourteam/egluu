@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import { TmpBox } from '../components';
+import { TeamBox } from '../components';
 import { useProjectLoading, useProjectData } from '../hooks';
 
 const useStyles = makeStyles(theme => ({
@@ -96,7 +96,7 @@ const ProjectPage = () => {
             <MenuItem value="developer">개발자</MenuItem>
             <MenuItem value="designer">디자이너</MenuItem>
             <MenuItem value="planner">기획자</MenuItem>
-            <MenuItem value="other">기타직군</MenuItem>
+            <MenuItem value="etc">기타직군</MenuItem>
           </Select>
         </FormControl>
         <FormControl className={classes.formcontrol}>
@@ -130,7 +130,7 @@ const ProjectPage = () => {
             id={value.title + i}
             onClick={() => (window.location = `/project/${value.projectId}`)}
           >
-            <TmpBox state={value} />
+            <TeamBox state={value} />
           </span>
         ))}
       </Grid>
