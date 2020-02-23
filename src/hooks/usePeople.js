@@ -18,9 +18,8 @@ export function usePeopleLoading() {
     } else {
       setLoadState({ ...loadState, open: false });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, isError]);
-
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, isError, loadState]);
   return [{ loadState }, setLoadState, dispatch];
 }
 
@@ -31,8 +30,8 @@ export const usePeopleData = () => {
     {
       userId: "",
       imgUrl: "",
-      name: "",
-      tag: [],
+      userName: "",
+      stack: "",
       level: 0
     }
   ]);
@@ -49,20 +48,20 @@ export const usePeopleData = () => {
     setPeopleState(peopleCard);
   }, [peopleCard]);
 
-  useEffect(() => {
-    let tempData = [];
-    if (navState.tag) {
-      peopleCard.forEach(value => {
-        let Flag = false;
-        value.tag.forEach(value2 => {
-          if (value2 === navState.tag) Flag = true;
-        });
+  // useEffect(() => {
+  //   let tempData = [];
+  //   if (navState.tag) {
+  //     peopleCard.forEach(value => {
+  //       let Flag = false;
+  //       value.tag.forEach(value2 => {
+  //         if (value2 === navState.tag) Flag = true;
+  //       });
 
-        if (Flag) tempData.push(value);
-      });
-      setPeopleState(tempData);
-    }
-  }, [navState.tag, navState.jobGroup, peopleCard]);
+  //       if (Flag) tempData.push(value);
+  //     });
+  //     setPeopleState(tempData);
+  //   }
+  // }, [navState.tag, navState.jobGroup, peopleCard]);
   console.log(peopleState);
 
   return [{ peopleState, navState }, setPeopleState, setNavState];

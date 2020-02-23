@@ -19,8 +19,7 @@ export function usePeopleDetailLoading() {
       setLoadState({ ...loadState, open: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, isError]);
-
+  }, [isLoading, isError, loadState]);
   return [{ loadState }, setLoadState, dispatch];
 }
 

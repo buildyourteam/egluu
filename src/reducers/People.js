@@ -12,19 +12,20 @@ const peopleSlice = createSlice({
     people: {
       userId: "",
       imgUrl: "",
-      name: "",
-      role: [],
-      technicalStack: [],
+      userName: "",
+      role: "",
+      stack: "",
       contact: "",
       area: "",
-      level: 0
+      level: 0,
+      description: ""
     },
     peopleCard: [
       {
         userId: "",
         imgUrl: "",
-        name: "",
-        tag: [],
+        userName: "",
+        stack: "",
         level: 0
       }
     ]
