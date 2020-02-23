@@ -23,7 +23,7 @@ const tempList = [
       etc: 1,
       designer: 2,
     },
-    Dday: 1580047192000 + 3600 * 1000 * 6,
+    endDay: 1580047192000 + 3600 * 1000 * 6,
     field: ['앱 서비스', 'AI 서비스'],
   },
   {
@@ -43,7 +43,7 @@ const tempList = [
       etc: 1,
       designer: 2,
     },
-    Dday: 1580047192000 + 3600 * 1000 * 15,
+    endDay: 1580047192000 + 3600 * 1000 * 15,
     field: ['웹 서비스', 'AI 서비스'],
   },
   {
@@ -64,7 +64,7 @@ const tempList = [
       etc: 2,
       designer: 3,
     },
-    Dday: 1580047192000 + 3600 * 1000 * 5,
+    endDay: 1580047192000 + 3600 * 1000 * 5,
     field: ['블록체인', 'AI 서비스'],
   },
 ];
@@ -117,12 +117,38 @@ const BASEURL = 'https://api.codingnome.dev';
 // Project 페이지에서 project
 function* getProjectCardListLoad() {
   try {
-    console.log('getProjectCardListLoad');
-    /* const res = yield call(
+    const res = yield call(
       [axios, 'get'],
       `${BASEURL}/api/projects?page=0&size=10&sort=projectName%2CDESC&occupation=developer&field=WEB`,
-    ); */
-    yield put(getProjectCardListSuccess(tempList));
+    );
+    console.log(res);
+    const projectListData = yield call(
+      // 원래 아래것처럼 해야하니만 -를 사용시 자동으로 띄어쓰기가 적용되 임시로 고정데이터 사용
+      [axios, 'get'],
+      `${BASEURL}/api/projects`,
+    );
+    // const res = yield call([axios, 'get'], `${res.data.project-list.href}`);
+    const projectData = projectListData.data._embedded.projectList.map(
+      value => {
+        if (value.currentMember === null) {
+          return {
+            ...value,
+            imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+            currentMember: {
+              developer: 0,
+              planner: 0,
+              etc: 0,
+              designer: 0,
+            },
+          };
+        }
+        return {
+          ...value,
+          imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+        };
+      },
+    );
+    yield put(getProjectCardListSuccess(projectData));
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());

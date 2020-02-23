@@ -100,7 +100,6 @@ const theme = createMuiTheme({
 export function TeamBox(props) {
   const classes = useStyles();
   const { state } = props;
-  const nowDay = new Date();
   const remainSum =
     state.needMember.developer +
     state.needMember.planner +
@@ -110,7 +109,7 @@ export function TeamBox(props) {
     state.currentMember.planner -
     state.currentMember.etc -
     state.currentMember.designer;
-  const remainDay = parseInt((state.Dday - nowDay) / (3600 * 60 * 24));
+
   const developerPercent =
     (state.currentMember.developer / state.needMember.developer) * 100;
   const plannerPercent =
@@ -157,7 +156,9 @@ export function TeamBox(props) {
             </Grid>
             <Grid container>
               <InsertInvitationIcon />
-              <Typography variant="body2">{remainDay}일 남았습니다.</Typography>
+              <Typography variant="body2">
+                {state.dday}일 남았습니다.
+              </Typography>
             </Grid>
           </Grid>
           <Grid container item xs={6}>

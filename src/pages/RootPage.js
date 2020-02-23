@@ -53,6 +53,7 @@ const BasicPage = () => {
         ))}
       </Grid>
       <Grid container>
+        {console.log(hotPeopleState)}
         {hotPeopleState.map((value, i) => (
           <span style={{ margin: '10px' }} id={value.name + i}>
             <PeopleBox state={value} />

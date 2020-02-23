@@ -28,7 +28,6 @@ export const useProjectData = () => {
   const { projectCard } = useSelector(state => state.Project);
   const [projectState, setProjectState] = useState([
     {
-      projectId: '',
       imgUrl: '',
       projectName: '',
       teamName: '',
@@ -44,7 +43,9 @@ export const useProjectData = () => {
         etc: 0,
         designer: 0,
       },
-      Dday: 0,
+      projectField: '',
+      endDay: '',
+      dday: 0,
     },
   ]);
   const [navState, setNavState] = useState({

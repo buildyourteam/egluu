@@ -27,7 +27,7 @@ const MakeProject = () => {
   const classes = useStyles();
   const [{ loadState }, setLoadState, dispatch] = useMakeProjectLoading();
   const [{ MakeprojectState }, setMakeProjectState] = useMakeProjectData();
-  // const tempDate = new Date(MakeprojectState.Dday);
+  // const tempDate = new Date(MakeprojectState.endDay);
 
   const handleInput = e => {
     e.persist();

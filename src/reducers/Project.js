@@ -48,7 +48,7 @@ const projectSlice = createSlice({
           etc: 0,
           designer: 0,
         },
-        Dday: 0,
+        endDay: 0,
       },
     ],
   },

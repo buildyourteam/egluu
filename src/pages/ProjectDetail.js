@@ -47,6 +47,7 @@ const ProjectPageDetail = () => {
     setProjectDetailState({
       ...projectDetailState,
       needMember: {
+        ...projectDetailState.needMember,
         [e.target.name]: e.target.value,
       },
     });
@@ -122,36 +123,36 @@ const ProjectPageDetail = () => {
           <div>
             개발자 :
             <TextField
-              name="description"
+              name="developer"
               type="number"
-              value={projectDetailState.currentMember.developer}
+              value={projectDetailState.needMember.developer}
               onChange={handleInputMember}
             />
           </div>
           <div>
             기획자 :
             <TextField
-              name="description"
+              name="planner"
               type="number"
-              value={projectDetailState.currentMember.planner}
+              value={projectDetailState.needMember.planner}
               onChange={handleInputMember}
             />
           </div>
           <div>
             디자이너 :
             <TextField
-              name="description"
+              name="designer"
               type="number"
-              value={projectDetailState.currentMember.designer}
+              value={projectDetailState.needMember.designer}
               onChange={handleInputMember}
             />
           </div>
           <div>
             기타 :
             <TextField
-              name="description"
+              name="etc"
               type="number"
-              value={projectDetailState.currentMember.etc}
+              value={projectDetailState.needMember.etc}
               onChange={handleInputMember}
             />
           </div>
@@ -212,7 +213,7 @@ const ProjectPageDetail = () => {
               source={projectDetailState.description}
               escapeHtml={false}
             />
-            <Typography variant="h3">팀원 현황</Typography>
+            <Typography variant="h3">필요 인력</Typography>
             <Typography variant="h6">
               개발 :{' '}
               {projectDetailState.needMember.developer -

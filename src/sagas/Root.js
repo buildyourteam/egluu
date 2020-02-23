@@ -28,7 +28,7 @@ const tempList = [
       etc: 1,
       designer: 2,
     },
-    Dday: 1580047192000 + 3600 * 1000 * 6,
+    endDay: 1580047192000 + 3600 * 1000 * 6,
     field: ['앱 서비스', 'AI 서비스'],
   },
   {
@@ -48,7 +48,7 @@ const tempList = [
       etc: 1,
       designer: 2,
     },
-    Dday: 1580047192000 + 3600 * 1000 * 15,
+    endDay: 1580047192000 + 3600 * 1000 * 15,
     field: ['웹 서비스', 'AI 서비스'],
   },
   {
@@ -69,7 +69,7 @@ const tempList = [
       etc: 2,
       designer: 3,
     },
-    Dday: 1580047192000 + 3600 * 1000 * 5,
+    endDay: 1580047192000 + 3600 * 1000 * 5,
     field: ['블록체인', 'AI 서비스'],
   },
 ];
@@ -120,16 +120,20 @@ const axios = require('axios');
 
 const BASEURL = 'https://api.codingnome.dev';
 // BasicPage에서 projectCard (인기, 추천, 신규)
-function* getProjectListLoad() {
+function* getProjectListLoad(action) {
   try {
-    const res = yield call(
+    const data = action.payload;
+    const projectRes = yield call(
       [axios, 'get'],
-      `${BASEURL}/api/projects?page=0&size=10&sort=projectName%2CDESC&occupation=developer&field=WEB`,
+      `${BASEURL}/api/projects/deadline?page=${data.pageNum}&size=10&sort=projectName%2CDESC`,
     );
-    console.log(res);
-    const projectRes = yield call([axios, 'get'], `${BASEURL}/api/projects`);
     console.log(projectRes);
-    const data = projectRes.data._embedded.projectList.map(value => {
+    const firstRes = yield call(
+      [axios, 'get'],
+      `${projectRes.data._links.first.href}`,
+    );
+    console.log(firstRes);
+    const projectData = firstRes.data._embedded.projectList.map(value => {
       if (value.currentMember === null) {
         return {
           ...value,
@@ -147,7 +151,7 @@ function* getProjectListLoad() {
         imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
       };
     });
-    yield put(getMainDataSuccess(data));
+    yield put(getMainDataSuccess(projectData));
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());
@@ -155,8 +159,19 @@ function* getProjectListLoad() {
 }
 
 // BasicPage에서 peopleCard
-function* getPeopleListLoad() {
+function* getPeopleListLoad(action) {
   try {
+    const data = action.payload;
+    const peopleRes = yield call(
+      [axios, 'get'],
+      `${BASEURL}/api/people?page=${data.pageNum}&size=3&sort=user_name%2CDESC&level=1&role=LEADER&area=Seoul`,
+    );
+    const firstRes = yield call(
+      [axios, 'get'],
+      `${peopleRes.data._links.first.href}`,
+    );
+    console.log(firstRes);
+    const peopleData = firstRes.data._embedded.peopleList;
     yield put(getMainPeopleDataSuccess(peopleList));
   } catch (err) {
     console.log(err);

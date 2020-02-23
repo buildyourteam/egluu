@@ -48,7 +48,25 @@ function* watchGetProjectDetailLoad() {
 function* setProjectDetailLoad(action) {
   try {
     const data = action.payload;
-    yield put(setProjectDetailSuccess(data));
+    console.log(data);
+    const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
+    const useUrl = url[2];
+    const inputData = {
+      projectName: data.projectName,
+      teamName: data.teamName,
+      endDate: data.endDate,
+      description: data.description,
+      projectField: data.projectField,
+      needMember: data.needMember,
+      currentMember: data.currentMember,
+    };
+    const res = yield call(
+      [axios, 'put'],
+      `${BASEURL}/api/projects/${useUrl}`,
+      inputData,
+    );
+    console.log(res);
+    yield put(setProjectDetailSuccess(res.data));
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());

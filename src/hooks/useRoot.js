@@ -44,11 +44,15 @@ export const useDefaultData = () => {
         etc: 0,
         designer: 0,
       },
-      Dday: 0,
+      endDay: '',
+      dday: 0,
     },
   ]);
   useEffect(() => {
-    dispatch(getMainData());
+    const defaultData = {
+      pageNum: 10,
+    };
+    dispatch(getMainData(defaultData));
   }, [dispatch]);
 
   useEffect(() => {
@@ -71,7 +75,10 @@ export const useDefaultPeopleData = () => {
     },
   ]);
   useEffect(() => {
-    dispatch(getMainPeopleData());
+    const defaultData = {
+      pageNum: 10,
+    };
+    dispatch(getMainPeopleData(defaultData));
   }, [dispatch]);
 
   useEffect(() => {
