@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     marginRight: 4,
     marginLeft: 4,
   },
-  other: {
+  etc: {
     color: '#ffffff',
     backgroundColor: '#BBC3CE',
     fontSize: 12,
@@ -104,19 +104,18 @@ export function TeamBox(props) {
   const remainSum =
     state.needMember.developer +
     state.needMember.planner +
-    state.needMember.other +
+    state.needMember.etc +
     state.needMember.designer -
     state.currentMember.developer -
     state.currentMember.planner -
-    state.currentMember.other -
+    state.currentMember.etc -
     state.currentMember.designer;
   const remainDay = parseInt((state.Dday - nowDay) / (3600 * 60 * 24));
   const developerPercent =
     (state.currentMember.developer / state.needMember.developer) * 100;
   const plannerPercent =
     (state.currentMember.planner / state.needMember.deveplannerloper) * 100;
-  const otherPercent =
-    (state.currentMember.other / state.needMember.other) * 100;
+  const etcPercent = (state.currentMember.etc / state.needMember.etc) * 100;
   const designerPercent =
     (state.currentMember.designer / state.needMember.designer) * 100;
 
@@ -218,7 +217,7 @@ export function TeamBox(props) {
                       className={classes.margin}
                       variant="determinate"
                       color="secondary"
-                      value={otherPercent}
+                      value={etcPercent}
                     />
                   </Grid>
                 </>

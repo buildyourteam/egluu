@@ -35,13 +35,13 @@ export const useDefaultData = () => {
       currentMember: {
         developer: 0,
         planner: 0,
-        other: 0,
+        etc: 0,
         designer: 0,
       },
       needMember: {
         developer: 0,
         planner: 0,
-        other: 0,
+        etc: 0,
         designer: 0,
       },
       Dday: 0,

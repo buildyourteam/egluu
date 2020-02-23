@@ -17,17 +17,17 @@ const projectSlice = createSlice({
       currentMember: {
         developer: 0,
         planner: 0,
-        other: 0,
+        etc: 0,
         designer: 0,
       },
       needMember: {
         developer: 0,
         planner: 0,
-        other: 0,
+        etc: 0,
         designer: 0,
       },
       endDate: 0,
-      projectDescription: '',
+      description: '',
       memberList: [{ userId: '', status: 0 }],
     },
     // 메인페이지 project card 데이터
@@ -39,13 +39,13 @@ const projectSlice = createSlice({
         currentMember: {
           developer: 0,
           planner: 0,
-          other: 0,
+          etc: 0,
           designer: 0,
         },
         needMember: {
           developer: 0,
           planner: 0,
-          other: 0,
+          etc: 0,
           designer: 0,
         },
         Dday: 0,
@@ -88,6 +88,13 @@ const projectSlice = createSlice({
       state.isLoading = false;
       state.project = action.payload;
     },
+    // proejct make 페이지용
+    makeProject(state, action) {
+      state.isLoading = true;
+    },
+    makeProjectSuccess(state, action) {
+      state.isLoading = false;
+    },
   },
 });
 
@@ -101,5 +108,7 @@ export const {
   getProjectDetailSuccess,
   setProjectDetail,
   setProjectDetailSuccess,
+  makeProject,
+  makeProjectSuccess,
 } = projectSlice.actions;
 export default projectSlice.reducer;

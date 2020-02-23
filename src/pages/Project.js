@@ -96,7 +96,7 @@ const ProjectPage = () => {
             <MenuItem value="developer">개발자</MenuItem>
             <MenuItem value="designer">디자이너</MenuItem>
             <MenuItem value="planner">기획자</MenuItem>
-            <MenuItem value="other">기타직군</MenuItem>
+            <MenuItem value="etc">기타직군</MenuItem>
           </Select>
         </FormControl>
         <FormControl className={classes.formcontrol}>

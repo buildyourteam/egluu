@@ -7,6 +7,7 @@ import {
   PeoplePage,
   ProjectPageDetail,
   PeoplePageDetail,
+  MakeProject,
 } from './pages';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/people/:userId" component={PeoplePageDetail} />
         <Route exact path="/project" component={ProjectPage} />
         <Route exact path="/people" component={PeoplePage} />
+        <Route exact path="/makeproject" component={MakeProject} />
         <Route path="*" component={NotFound} />
       </Switch>
     </Router>

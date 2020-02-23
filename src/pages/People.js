@@ -1,31 +1,31 @@
-import React from "react";
-import { usePeopleLoading, usePeopleData } from "../hooks";
-import { PeopleBox } from "../components";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MuiCircularProgress from "@material-ui/core/CircularProgress";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import Dialog from "@material-ui/core/Dialog";
-import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
+import React from 'react';
+import { usePeopleLoading, usePeopleData } from '../hooks';
+import { PeopleBox } from '../components';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import MuiCircularProgress from '@material-ui/core/CircularProgress';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@material-ui/core/Dialog';
+import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const useStyles = makeStyles(theme => ({
   appbar: {
-    margin: "0px"
+    margin: '0px',
   },
   select: {
-    width: "100%",
-    borderColor: "#000000"
+    width: '100%',
+    borderColor: '#000000',
   },
   formcontrol: {
-    width: "25%"
-  }
+    width: '25%',
+  },
 }));
 
 const PeoplePage = () => {
@@ -34,7 +34,7 @@ const PeoplePage = () => {
   const [
     { peopleState, navState },
     setPeopleState,
-    setNavState
+    setNavState,
   ] = usePeopleData();
   const handleClickNav = event => {
     setNavState({ ...navState, [event.target.name]: event.target.value });
@@ -45,9 +45,9 @@ const PeoplePage = () => {
       <AppBar
         position="static"
         color="inherit"
-        style={{ boxShadow: "none", textAlign: "center" }}
+        style={{ boxShadow: 'none', textAlign: 'center' }}
       >
-        <Toolbar style={{ textAlign: "center" }}>
+        <Toolbar style={{ textAlign: 'center' }}>
           <Typography variant="h6" align="center" display="inline">
             ESKIMO
           </Typography>
@@ -56,7 +56,7 @@ const PeoplePage = () => {
       <Grid>
         <FormControl className={classes.formcontrol}>
           <InputLabel shrink={false} id="tagLabel">
-            {navState.tag === "" ? "분야" : ""}
+            {navState.tag === '' ? '분야' : ''}
           </InputLabel>
           <Select
             className={classes.select}
@@ -96,7 +96,7 @@ const PeoplePage = () => {
             <MenuItem value="developer">개발자</MenuItem>
             <MenuItem value="designer">디자이너</MenuItem>
             <MenuItem value="planner">기획자</MenuItem>
-            <MenuItem value="other">기타직군</MenuItem>
+            <MenuItem value="etc">기타직군</MenuItem>
           </Select>
         </FormControl> */}
       </Grid>
@@ -104,7 +104,7 @@ const PeoplePage = () => {
       <Grid container>
         {peopleState.map((value, i) => (
           <span
-            style={{ margin: "20px" }}
+            style={{ margin: '20px' }}
             id={value.name + i}
             onClick={() => (window.location = `/people/${value.userId}`)}
           >
@@ -115,14 +115,14 @@ const PeoplePage = () => {
       <Dialog open={loadState.open}>
         <MuiDialogContent
           style={{
-            background: "white",
-            width: "160px",
-            minHeight: "80px",
-            textAlign: "center"
+            background: 'white',
+            width: '160px',
+            minHeight: '80px',
+            textAlign: 'center',
           }}
         >
-          <MuiCircularProgress style={{ width: "20%", height: "20%" }} />
-          <div style={{ marginTop: "12px" }}>{loadState.text}</div>
+          <MuiCircularProgress style={{ width: '20%', height: '20%' }} />
+          <div style={{ marginTop: '12px' }}>{loadState.text}</div>
           <Button
             onClick={() => {
               setLoadState({ ...loadState, open: false });
@@ -134,12 +134,12 @@ const PeoplePage = () => {
       </Dialog>
       <footer
         style={{
-          backgroundColor: "#eeeeee",
-          height: "100px",
-          textAlign: "center"
+          backgroundColor: '#eeeeee',
+          height: '100px',
+          textAlign: 'center',
         }}
       >
-        <Typography variant="h4" align="center" style={{ padding: "10px" }}>
+        <Typography variant="h4" align="center" style={{ padding: '10px' }}>
           ESKIMO
         </Typography>
         <Typography variant="h6" align="center">

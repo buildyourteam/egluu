@@ -6,3 +6,4 @@ export {
   useProjectDetailData,
 } from './useProjectDetail';
 export { usePeopleDetailLoading, usePeopleDetailData } from './usePeopleDetail';
+export { useMakeProjectData, useMakeProjectLoading } from './useMakeProject';

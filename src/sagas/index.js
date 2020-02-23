@@ -1,14 +1,18 @@
 import { all } from 'redux-saga/effects';
 import Root from './Root';
-import ProjectList from './ProjectList';
 import ProjectDetail from './ProjectDetail';
-import PeopelInfoDetail from './Peopel';
-import PeopleInfoList from './PeopleInfoList';
+import PeopleDetail from './PeopleDetail';
+import ProjectList from './ProjectList';
+import PeopleList from './PeopleList';
+import MakeProject from './MakeProejct';
 
 export default function* rootSaga() {
-  yield all([Root()]);
-  yield all([ProjectList()]);
-  yield all([ProjectDetail()]);
-  yield all([PeopelInfoDetail()]);
-  yield all([PeopleInfoList()]);
+  yield all([
+    Root(),
+    ProjectDetail(),
+    PeopleDetail(),
+    ProjectList(),
+    PeopleList(),
+    MakeProject(),
+  ]);
 }
