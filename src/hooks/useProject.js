@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getProjectCardList } from "../reducers/Project";
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProjectCardList } from '../reducers/Project';
 
 export function useProjectLoading() {
   const dispatch = useDispatch();
   const { isLoading, isError } = useSelector(state => state.Project);
   const [loadState, setLoadState] = useState({
     open: false,
-    text: "로딩 중..."
+    text: '로딩 중...',
   }); // 메시지 상태메시지
 
   useEffect(() => {
@@ -29,29 +29,31 @@ export const useProjectData = () => {
   const { projectCard } = useSelector(state => state.Project);
   const [projectState, setProjectState] = useState([
     {
-      projectId: "",
-      imgUrl: "",
-      projectName: "",
-      teamName: "",
+      projectId: '',
+      imgUrl: '',
+      projectName: '',
+      teamName: '',
       currentMember: {
         developer: 0,
         planner: 0,
         etc: 0,
-        designer: 0
+        designer: 0,
       },
       needMember: {
         developer: 0,
         planner: 0,
         etc: 0,
-        designer: 0
+        designer: 0,
       },
-      Dday: 0
-    }
+      projectField: '',
+      endDay: '',
+      dday: 0,
+    },
   ]);
   const [navState, setNavState] = useState({
-    field: "",
-    jobGroup: "",
-    area: ""
+    field: '',
+    jobGroup: '',
+    area: '',
   });
   useEffect(() => {
     dispatch(getProjectCardList());
@@ -69,17 +71,17 @@ export const useProjectData = () => {
         value.field.forEach(value2 => {
           if (value2 === navState.field) Flag = true;
         });
-        if (navState.jobGroup !== "") {
-          if (navState.jobGroup === "developer")
+        if (navState.jobGroup !== '') {
+          if (navState.jobGroup === 'developer')
             if (
               value.needMember.developer - value.currentMember.developer ===
               0
             )
               Flag = false;
-          if (navState.jobGroup === "designer")
+          if (navState.jobGroup === 'designer')
             if (value.needMember.designer - value.currentMember.designer === 0)
               Flag = false;
-          if (navState.jobGroup === "planner")
+          if (navState.jobGroup === 'planner')
             if (value.needMember.planner - value.currentMember.planner === 0)
               Flag = false;
         }

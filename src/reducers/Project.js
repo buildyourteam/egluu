@@ -48,7 +48,7 @@ const projectSlice = createSlice({
           etc: 0,
           designer: 0,
         },
-        Dday: 0,
+        endDay: 0,
       },
     ],
   },
@@ -88,6 +88,12 @@ const projectSlice = createSlice({
       state.isLoading = false;
       state.project = action.payload;
     },
+    setProjectDelete(state, action) {
+      state.isLoading = true;
+    },
+    setProjectDeleteSuccess(state, action) {
+      state.isLoading = false;
+    },
     // proejct make 페이지용
     makeProject(state, action) {
       state.isLoading = true;
@@ -108,6 +114,8 @@ export const {
   getProjectDetailSuccess,
   setProjectDetail,
   setProjectDetailSuccess,
+  setProjectDelete,
+  setProjectDeleteSuccess,
   makeProject,
   makeProjectSuccess,
 } = projectSlice.actions;

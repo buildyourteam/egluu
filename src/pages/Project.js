@@ -120,7 +120,13 @@ const ProjectPage = () => {
             <MenuItem value="경기남부">경기남부</MenuItem>
           </Select>
         </FormControl>
-        <Button>프로젝트 팀 개설하기 ></Button>
+        <Button
+          onClick={() => {
+            window.location = '/makeproject';
+          }}
+        >
+          프로젝트 팀 개설하기 >
+        </Button>
       </Grid>
       <div>{projectState.length}개의 팀이 있습니다.</div>
       <Grid container>

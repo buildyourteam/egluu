@@ -5,6 +5,8 @@ import {
   getProjectDetailSuccess,
   setProjectDetail,
   setProjectDetailSuccess,
+  setProjectDelete,
+  setProjectDeleteSuccess,
 } from '../reducers/Project';
 
 const axios = require('axios');
@@ -48,7 +50,43 @@ function* watchGetProjectDetailLoad() {
 function* setProjectDetailLoad(action) {
   try {
     const data = action.payload;
-    yield put(setProjectDetailSuccess(data));
+    const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
+    const useUrl = url[2];
+    const inputData = {
+      projectName: data.projectName,
+      teamName: data.teamName,
+      endDate: data.endDate,
+      description: data.description,
+      // projectField: data.projectField,
+      needMember: data.needMember,
+      currentMember: data.currentMember,
+    };
+    console.log(inputData);
+    const res = yield call(
+      [axios, 'put'],
+      `${BASEURL}/api/projects/${useUrl}`,
+      inputData,
+    );
+    let projectData;
+    if (res.data.currentMember === null) {
+      projectData = {
+        ...res.data,
+        imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+        currentMember: {
+          developer: 0,
+          planner: 0,
+          etc: 0,
+          designer: 0,
+        },
+      };
+    } else {
+      projectData = {
+        ...res.data,
+        imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+      };
+    }
+    console.log(res);
+    yield put(setProjectDetailSuccess(projectData));
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());
@@ -58,6 +96,26 @@ function* watchSetProjectDetailLoad() {
   yield takeLatest(setProjectDetail, setProjectDetailLoad);
 }
 
+function* setProjectDeleteLoad(action) {
+  try {
+    const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
+    const useUrl = url[2];
+    yield call([axios, 'delete'], `${BASEURL}/api/projects/${useUrl}`);
+    yield put(setProjectDeleteSuccess());
+    window.location.replace('/project');
+  } catch (err) {
+    console.log(err);
+    yield put(getProjectFail());
+  }
+}
+function* watchSetProjectDeleteLoad() {
+  yield takeLatest(setProjectDelete, setProjectDeleteLoad);
+}
+
 export default function* defaultSaga() {
-  yield all([fork(watchGetProjectDetailLoad), fork(watchSetProjectDetailLoad)]);
+  yield all([
+    fork(watchGetProjectDetailLoad),
+    fork(watchSetProjectDetailLoad),
+    fork(watchSetProjectDeleteLoad),
+  ]);
 }
