@@ -9,6 +9,7 @@ const peopleSlice = createSlice({
       open: false,
       text: ""
     },
+    // people 상세페이지 초기 데이터
     people: {
       userId: "",
       imgUrl: "",
@@ -20,6 +21,7 @@ const peopleSlice = createSlice({
       level: 0,
       description: ""
     },
+    // 메인페이지 people card 데이터
     peopleCard: [
       {
         userId: "",
@@ -43,7 +45,7 @@ const peopleSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
     },
-    //메인페이지 people용(인기, 추천, 신규)
+    //메인페이지 people용
     getMainPeopleData(state, action) {
       state.isLoading = true;
     },
@@ -65,6 +67,13 @@ const peopleSlice = createSlice({
     setPeopleDetailSuccess(state, action) {
       state.isLoading = false;
       state.people = action.payload;
+    },
+    // profile make 페이지용
+    makeProfile(state, action) {
+      state.isLoading = true;
+    },
+    makeProfileSuccess(state, action) {
+      state.isLoading = false;
     }
   }
 });
@@ -78,6 +87,8 @@ export const {
   getPeopleDetail,
   getPeopleDetailSuccess,
   setPeopleDetail,
-  setPeopleDetailSuccess
+  setPeopleDetailSuccess,
+  makeProfile,
+  makeProfileSuccess
 } = peopleSlice.actions;
 export default peopleSlice.reducer;

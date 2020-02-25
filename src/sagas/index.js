@@ -1,10 +1,11 @@
-import { all } from 'redux-saga/effects';
-import Root from './Root';
-import ProjectDetail from './ProjectDetail';
-import PeopleDetail from './PeopleDetail';
-import ProjectList from './ProjectList';
-import PeopleList from './PeopleList';
-import MakeProject from './MakeProejct';
+import { all } from "redux-saga/effects";
+import Root from "./Root";
+import ProjectDetail from "./ProjectDetail";
+import PeopleDetail from "./PeopleDetail";
+import ProjectList from "./ProjectList";
+import PeopleList from "./PeopleList";
+import MakeProject from "./MakeProejct";
+import MakeProfile from "./MakeProfile";
 
 export default function* rootSaga() {
   yield all([
@@ -13,6 +14,6 @@ export default function* rootSaga() {
     PeopleDetail(),
     ProjectList(),
     PeopleList(),
-    MakeProject(),
+    MakeProject()
   ]);
 }
