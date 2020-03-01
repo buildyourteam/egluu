@@ -22,7 +22,7 @@ export default function TempButton({
       margin={margin}
       height={height}
     >
-      {ic && <img src={ic} alt=''/>}
+      {ic && <img src={ic} alt="" />}
       {label}
     </Button>
   );

@@ -1,39 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const peopleSlice = createSlice({
-  name: "People",
+  name: 'People',
   initialState: {
     isLoading: false,
     isError: false,
     Default: {
       open: false,
-      text: ""
+      text: '',
     },
     // people 상세페이지 초기 데이터
     people: {
-      userId: "",
-      imgUrl: "",
-      userName: "",
-      role: "",
-      stack: "",
-      contact: "",
-      area: "",
+      userId: '',
+      imgUrl: '',
+      userName: '',
+      role: '',
+      stack: '',
+      contact: '',
+      area: '',
       level: 0,
-      description: ""
+      description: '',
     },
     // 메인페이지 people card 데이터
     peopleCard: [
       {
-        userId: "",
-        imgUrl: "",
-        userName: "",
-        stack: "",
-        level: 0
-      }
-    ]
+        userId: '',
+        imgUrl: '',
+        userName: '',
+        stack: '',
+        level: 0,
+      },
+    ],
   },
   reducers: {
-    //people list용
+    // people list용
     getPeopleData(state, action) {
       state.isLoading = true;
     },
@@ -45,7 +45,7 @@ const peopleSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
     },
-    //메인페이지 people용
+    // 메인페이지 people용
     getMainPeopleData(state, action) {
       state.isLoading = true;
     },
@@ -53,7 +53,7 @@ const peopleSlice = createSlice({
       state.isLoading = false;
       state.peopleCard = action.payload;
     },
-    //people detail 페이지 용
+    // people detail 페이지 용
     getPeopleDetail(state, action) {
       state.isLoading = true;
     },
@@ -74,8 +74,11 @@ const peopleSlice = createSlice({
     },
     makeProfileSuccess(state, action) {
       state.isLoading = false;
-    }
-  }
+    },
+    getFindPeople(state, action) {
+      state.isLoading = true;
+    },
+  },
 });
 
 export const {
@@ -89,6 +92,7 @@ export const {
   setPeopleDetail,
   setPeopleDetailSuccess,
   makeProfile,
-  makeProfileSuccess
+  makeProfileSuccess,
+  getFindPeople,
 } = peopleSlice.actions;
 export default peopleSlice.reducer;

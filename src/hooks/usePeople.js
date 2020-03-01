@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getPeopleData } from "../reducers/People";
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPeopleData, getFindPeople } from '../reducers/People';
 
 export function usePeopleLoading() {
   const dispatch = useDispatch();
   const { isLoading, isError } = useSelector(state => state.People);
   const [loadState, setLoadState] = useState({
     open: false,
-    text: "로딩 중..."
+    text: '로딩 중...',
   }); // 메시지 상태메시지
 
   useEffect(() => {
@@ -18,51 +18,36 @@ export function usePeopleLoading() {
     } else {
       setLoadState({ ...loadState, open: false });
     }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, isError, loadState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, isError]);
   return [{ loadState }, setLoadState, dispatch];
 }
 
 export const usePeopleData = () => {
   const dispatch = useDispatch();
   const { peopleCard } = useSelector(state => state.People);
-  const [peopleState, setPeopleState] = useState([
-    {
-      userId: "",
-      imgUrl: "",
-      userName: "",
-      stack: "",
-      level: 0
-    }
-  ]);
+  const [peopleState, setPeopleState] = useState(peopleCard);
   const [navState, setNavState] = useState({
-    field: "",
-    jobGroup: "",
-    area: ""
+    sort: '',
+    level: '',
+    role: '',
+    area: '',
   });
   useEffect(() => {
-    dispatch(getPeopleData());
+    const data = {
+      page: 0,
+      size: 3,
+      sort: 'user_name',
+      level: 1,
+      role: 'LEADER',
+      area: 'Seoul',
+    };
+    dispatch(getFindPeople(data));
   }, [dispatch]);
 
   useEffect(() => {
     setPeopleState(peopleCard);
   }, [peopleCard]);
-
-  // useEffect(() => {
-  //   let tempData = [];
-  //   if (navState.tag) {
-  //     peopleCard.forEach(value => {
-  //       let Flag = false;
-  //       value.tag.forEach(value2 => {
-  //         if (value2 === navState.tag) Flag = true;
-  //       });
-
-  //       if (Flag) tempData.push(value);
-  //     });
-  //     setPeopleState(tempData);
-  //   }
-  // }, [navState.tag, navState.jobGroup, peopleCard]);
-  console.log(peopleState);
 
   return [{ peopleState, navState }, setPeopleState, setNavState];
 };

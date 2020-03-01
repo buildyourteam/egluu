@@ -45,6 +45,7 @@ export const useMakeProjectData = () => {
     endDate: date,
     description: '',
     memberList: [{ userId: '', status: 0 }],
+    field: '',
   });
 
   return [{ MakeprojectState }, setMakeProjectState];

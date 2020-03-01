@@ -13,44 +13,23 @@ function* makeProjectLoad(action) {
   try {
     const data = action.payload;
     const tempData = {
-      // 이미지 파일을 바로 사용사지 못하고 분리해야하므로 데이터 따로 구성
       projectName: data.projectName,
       teamName: data.teamName,
       needMember: data.needMember,
       endDate: data.endDate,
-      projectField: 'SYSTEM',
+      projectField: data.field,
       description: data.description,
       currentMember: null,
     };
-    /*
-    const headers = {
-      'Content-Type': 'multipart/form-data;charset=UTF-8',
-      Accept: 'application/hal+json',
-    };
-    const blob = yield new Blob([data.imgUrl[0]], {
-      type: data.imgUrl.type,
-    });
-    const formData = yield new FormData();
-    yield formData.append('files', blob);
-
-    */
-    /*
+    // link로 넘어올예정임 수정예정
+    console.log(tempData);
     const res = yield call(
       [axios, 'post'],
-      `${BASEURL}/api/projects/image/1`,
-      { image: formData },
-      {
-        headers,
-      },
-    );
-    */
-    const res = yield call(
-      [axios, 'post'],
-      `${BASEURL}/api/projects`,
+      `https://api.codingnome.dev/projects`,
       tempData,
     );
     yield put(makeProjectSuccess());
-    window.location.replace(`/project/${res.data.projectId}`);
+    window.location.replace(`/projects/${res.data.projectId}`);
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());

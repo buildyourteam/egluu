@@ -24,11 +24,11 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles({
   card: {
-    width: 300,
-    heigth: 500,
+    width: 400,
+    heigth: 400,
   },
   cardAction: {
-    maxWidth: 300,
+    maxWidth: 400,
     heigth: 180,
     padding: 0,
     margin: 0,
@@ -86,6 +86,9 @@ const useStyles = makeStyles({
     width: 180,
     height: 180,
   },
+  rule: {
+    float: 'left',
+  },
 });
 
 const theme = createMuiTheme({
@@ -113,14 +116,15 @@ export function TeamBox(props) {
   const developerPercent =
     (state.currentMember.developer / state.needMember.developer) * 100;
   const plannerPercent =
-    (state.currentMember.planner / state.needMember.deveplannerloper) * 100;
+    (state.currentMember.planner / state.needMember.planner) * 100;
   const etcPercent = (state.currentMember.etc / state.needMember.etc) * 100;
   const designerPercent =
     (state.currentMember.designer / state.needMember.designer) * 100;
 
   const BorderLinearProgress = withStyles({
     root: {
-      height: 10,
+      height: 24,
+      borderRadius: 20,
       backgroundColor: lighten('#ff6c5c', 0.5),
     },
     bar: {
@@ -142,7 +146,7 @@ export function TeamBox(props) {
           {state.projectName}
         </Typography>
         <Grid container spacing={12}>
-          <Grid container item xs={6}>
+          <Grid container item xs={4}>
             <Typography
               className={classes.subtitle}
               color="textSecondary"
@@ -161,68 +165,48 @@ export function TeamBox(props) {
               </Typography>
             </Grid>
           </Grid>
-          <Grid container item xs={6}>
+          <Grid container item xs={8}>
             <Grid container spacing={1}>
-              <Grid container item xs={12} spacing={1}>
-                <>
-                  <Grid item xs={4}>
-                    <Typography className={classes.rule}>개발자</Typography>
+              {[
+                developerPercent,
+                designerPercent,
+                plannerPercent,
+                etcPercent,
+              ].map((value, index) => {
+                return (
+                  <Grid
+                    container
+                    style={{ margin: '0', padding: '2px' }}
+                    item
+                    xs={12}
+                    spacing={1}
+                  >
+                    <Grid
+                      item
+                      xs={4}
+                      style={{ margin: '0', padding: '0px 5px' }}
+                    >
+                      <Typography
+                        className={classes.rule}
+                        style={{ float: 'right' }}
+                      >
+                        {index === 0 && '개발자'}
+                        {index === 1 && '디자이너'}
+                        {index === 2 && '기획자'}
+                        {index === 3 && '기타'}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={8} style={{ margin: '0', padding: '0' }}>
+                      <BorderLinearProgress
+                        className={classes.margin}
+                        variant="determinate"
+                        color="secondary"
+                        value={value}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={8}>
-                    <BorderLinearProgress
-                      className={classes.margin}
-                      variant="determinate"
-                      color="secondary"
-                      value={developerPercent}
-                    />
-                  </Grid>
-                </>
-              </Grid>
-              <Grid container item xs={12} spacing={1}>
-                <>
-                  <Grid item xs={4}>
-                    <Typography className={classes.rule}>디자이너</Typography>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <BorderLinearProgress
-                      className={classes.margin}
-                      variant="determinate"
-                      color="secondary"
-                      value={designerPercent}
-                    />
-                  </Grid>
-                </>
-              </Grid>
-              <Grid container item xs={12} spacing={1}>
-                <>
-                  <Grid item xs={4}>
-                    <Typography className={classes.rule}>기획자</Typography>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <BorderLinearProgress
-                      className={classes.margin}
-                      variant="determinate"
-                      color="secondary"
-                      value={plannerPercent}
-                    />
-                  </Grid>
-                </>
-              </Grid>
-              <Grid container item xs={12} spacing={1}>
-                <>
-                  <Grid item xs={4}>
-                    <Typography className={classes.rule}>기타</Typography>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <BorderLinearProgress
-                      className={classes.margin}
-                      variant="determinate"
-                      color="secondary"
-                      value={etcPercent}
-                    />
-                  </Grid>
-                </>
-              </Grid>
+                );
+              })}
             </Grid>
           </Grid>
         </Grid>

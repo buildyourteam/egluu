@@ -1,10 +1,6 @@
 import React from 'react';
-import { usePeopleLoading, usePeopleData } from '../hooks';
-import { PeopleBox } from '../components';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MuiCircularProgress from '@material-ui/core/CircularProgress';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -14,6 +10,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import { PeopleBox, Layout } from '../components';
+import { usePeopleLoading, usePeopleData } from '../hooks';
+import { getFindPeople } from '../reducers/People';
 
 const useStyles = makeStyles(theme => ({
   appbar: {
@@ -39,79 +38,129 @@ const PeoplePage = () => {
   const handleClickNav = event => {
     setNavState({ ...navState, [event.target.name]: event.target.value });
   };
-  console.log(peopleState);
   return (
     <div>
-      <AppBar
-        position="static"
-        color="inherit"
-        style={{ boxShadow: 'none', textAlign: 'center' }}
-      >
-        <Toolbar style={{ textAlign: 'center' }}>
-          <Typography variant="h6" align="center" display="inline">
-            ESKIMO
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Grid>
-        <FormControl className={classes.formcontrol}>
-          <InputLabel shrink={false} id="tagLabel">
-            {navState.tag === '' ? '분야' : ''}
-          </InputLabel>
-          <Select
-            className={classes.select}
-            labelId="tagLabel"
-            id="tag"
-            name="tag"
-            value={navState.tag}
-            onChange={handleClickNav}
-            autoWidth
-            variant="standard"
-            disableUnderline
-          >
-            <MenuItem value="Python">Python</MenuItem>
-            <MenuItem value="Django">Django</MenuItem>
-            <MenuItem value="JAVA">JAVA</MenuItem>
-            <MenuItem value="React JS">React JS</MenuItem>
-            <MenuItem value="Vue JS">Vue JS</MenuItem>
-            <MenuItem value="Spring boot">Spring boot</MenuItem>
-            <MenuItem value="Ruby on Rails">Ruby on Rails</MenuItem>
-          </Select>
-        </FormControl>
-        {/* <FormControl className={classes.formcontrol}>
-          <InputLabel shrink={false} id="jobGroupLabel">
-            {navState.jobGroup === "" ? "직군" : ""}
-          </InputLabel>
-          <Select
-            className={classes.select}
-            labelId="jobGroupLabel"
-            id="jobGroup"
-            name="jobGroup"
-            value={navState.jobGroup}
-            onChange={handleClickNav}
-            autoWidth
-            variant="standard"
-            disableUnderline
-          >
-            <MenuItem value="developer">개발자</MenuItem>
-            <MenuItem value="designer">디자이너</MenuItem>
-            <MenuItem value="planner">기획자</MenuItem>
-            <MenuItem value="etc">기타직군</MenuItem>
-          </Select>
-        </FormControl> */}
-      </Grid>
-      <div>{peopleState.length}마리의 User가 있습니다.</div>
-      <Grid container>
-        {peopleState.map((value, i) => (
-          <span
-            style={{ margin: '20px' }}
-            id={value.name + i}
-            onClick={() => (window.location = `/people/${value.userId}`)}
-          >
-            <PeopleBox state={value} />
-          </span>
-        ))}
-      </Grid>
+      <Layout hasFooter>
+        <Grid>
+          <FormControl className={classes.formcontrol}>
+            <InputLabel shrink={false} id="tagLabel">
+              {navState.tag === '' ? '분야' : ''}
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelId="tagLabel"
+              id="tag"
+              name="tag"
+              value={navState.tag}
+              onChange={handleClickNav}
+              autoWidth
+              variant="standard"
+              disableUnderline
+            >
+              <MenuItem value="Python">Python</MenuItem>
+              <MenuItem value="Django">Django</MenuItem>
+              <MenuItem value="JAVA">JAVA</MenuItem>
+              <MenuItem value="React JS">React JS</MenuItem>
+              <MenuItem value="Vue JS">Vue JS</MenuItem>
+              <MenuItem value="Spring boot">Spring boot</MenuItem>
+              <MenuItem value="Ruby on Rails">Ruby on Rails</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formcontrol}>
+            <InputLabel shrink={false} id="sort">
+              {navState.sort === '' ? '검색 조건' : ''}
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelId="sort"
+              id="sort"
+              name="sort"
+              value={navState.sort}
+              onChange={handleClickNav}
+              autoWidth
+              variant="standard"
+              disableUnderline
+            >
+              <MenuItem value="user_name">이름</MenuItem>
+              <MenuItem value="level">레벨</MenuItem>
+              <MenuItem value="stack">기술 스택</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formcontrol}>
+            <InputLabel shrink={false} id="level">
+              {navState.level === '' ? '레벨' : ''}
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelId="level"
+              id="level"
+              name="level"
+              value={navState.level}
+              onChange={handleClickNav}
+              autoWidth
+              variant="standard"
+              disableUnderline
+            >
+              <MenuItem value="0">0</MenuItem>
+              <MenuItem value="1">1</MenuItem>
+              <MenuItem value="2">2</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formcontrol}>
+            <InputLabel shrink={false} id="role">
+              {navState.role === '' ? '담당' : ''}
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelId="role"
+              id="role"
+              name="role"
+              value={navState.role}
+              onChange={handleClickNav}
+              autoWidth
+              variant="standard"
+              disableUnderline
+            >
+              <MenuItem value="LEADER">프로젝트장</MenuItem>
+              <MenuItem value="TEAMMATE">팀원</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formcontrol}>
+            <InputLabel shrink={false} id="area">
+              {navState.area === '' ? '지역' : ''}
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelId="area"
+              id="area"
+              name="area"
+              value={navState.area}
+              onChange={handleClickNav}
+              autoWidth
+              variant="standard"
+              disableUnderline
+            >
+              <MenuItem value="LEADER">프로젝트장</MenuItem>
+              <MenuItem value="TEAMMATE">팀원</MenuItem>
+            </Select>
+          </FormControl>
+          <Button onClick={() => dispatch(getFindPeople(navState))}>
+            검색
+          </Button>
+        </Grid>
+        <div>{peopleState.length}마리의 User가 있습니다.</div>
+        <Grid container>
+          {peopleState.map((value, i) => (
+            <span
+              style={{ margin: '20px' }}
+              id={value.name + i}
+              onClick={() => (window.location = `/profile/${value.userId}`)}
+            >
+              <PeopleBox state={value} />
+            </span>
+          ))}
+        </Grid>
+      </Layout>
       <Dialog open={loadState.open}>
         <MuiDialogContent
           style={{
@@ -132,20 +181,6 @@ const PeoplePage = () => {
           </Button>
         </MuiDialogContent>
       </Dialog>
-      <footer
-        style={{
-          backgroundColor: '#eeeeee',
-          height: '100px',
-          textAlign: 'center',
-        }}
-      >
-        <Typography variant="h4" align="center" style={{ padding: '10px' }}>
-          ESKIMO
-        </Typography>
-        <Typography variant="h6" align="center">
-          문의 : manzi@kakao.com
-        </Typography>
-      </footer>
     </div>
   );
 };

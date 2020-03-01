@@ -9,6 +9,26 @@ const projectSlice = createSlice({
       open: false,
       text: '',
     },
+    deadLineProjectList: [
+      {
+        imgUrl: '',
+        projectName: '',
+        teamName: '',
+        currentMember: {
+          developer: 0,
+          planner: 0,
+          etc: 0,
+          designer: 0,
+        },
+        needMember: {
+          developer: 0,
+          planner: 0,
+          etc: 0,
+          designer: 0,
+        },
+        endDay: 0,
+      },
+    ],
     // project 상세페이지 초기 데이터
     project: {
       imgUrl: '',
@@ -71,7 +91,8 @@ const projectSlice = createSlice({
     },
     getMainDataSuccess(state, action) {
       state.isLoading = false;
-      state.projectCard = action.payload;
+      state.projectCard = action.payload.projectCard;
+      state.deadLineProjectList = action.payload.deadLineProjectList;
     },
     // project detail 페이지 용
     getProjectDetail(state, action) {
