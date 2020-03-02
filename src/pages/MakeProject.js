@@ -13,9 +13,13 @@ import {
 import { format } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { ko } from 'date-fns/locale';
-import { useMakeProjectData, useMakeProjectLoading } from '../hooks';
-import { ImgInput } from '../components';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import { makeProject } from '../reducers/Project';
+import { ImgInput } from '../components';
+import { useMakeProjectData, useMakeProjectLoading } from '../hooks';
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -38,10 +42,12 @@ const MakeProject = () => {
   };
 
   const handleInputMember = e => {
+    const data = parseInt(e.target.value);
     setMakeProjectState({
       ...MakeprojectState,
       needMember: {
-        [e.target.name]: e.target.value,
+        ...MakeprojectState.needMember,
+        [e.target.name]: data,
       },
     });
   };
@@ -122,6 +128,32 @@ const MakeProject = () => {
             ampm
           />
         </MuiPickersUtilsProvider>
+        <div>
+          <FormControl style={{ width: '20vw' }}>
+            <InputLabel shrink={false} id="fieldLabel">
+              {MakeprojectState.field === '' ? '분야' : ''}
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelId="fieldLabel"
+              id="field"
+              name="field"
+              value={MakeprojectState.field}
+              onChange={handleInput}
+              autoWidth
+              variant="standard"
+              disableUnderline
+            >
+              <MenuItem value="APP">앱 서비스</MenuItem>
+              <MenuItem value="WEB">웹 서비스</MenuItem>
+              <MenuItem value="AI">AI 서비스</MenuItem>
+              <MenuItem value="BLOCKCHAIN">블록체인</MenuItem>
+              <MenuItem value="HW">HW 개발</MenuItem>
+              <MenuItem value="SYSTEM">시스템 개발</MenuItem>
+              <MenuItem value="ETC">기타 개발</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
         <div>
           개발자 :
           <TextField

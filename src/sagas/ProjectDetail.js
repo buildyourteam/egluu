@@ -15,9 +15,9 @@ const BASEURL = 'https://api.codingnome.dev';
 // ProjectDetail 페이지에서 project Get
 function* getProjectDetailLoad() {
   try {
-    const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
+    const url = window.location.pathname; // .split('/'); // 현 주소값 쪼갬
     const useUrl = url[2];
-    const res = yield call([axios, 'get'], `${BASEURL}/api/projects/${useUrl}`);
+    const res = yield call([axios, 'get'], `${BASEURL}/${url}`);
     let data;
     if (res.data.currentMember === null) {
       data = {
@@ -50,7 +50,7 @@ function* watchGetProjectDetailLoad() {
 function* setProjectDetailLoad(action) {
   try {
     const data = action.payload;
-    const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
+    const url = window.location.pathname; // .split('/'); // 현 주소값 쪼갬
     const useUrl = url[2];
     const inputData = {
       projectName: data.projectName,
@@ -62,11 +62,7 @@ function* setProjectDetailLoad(action) {
       currentMember: data.currentMember,
     };
     console.log(inputData);
-    const res = yield call(
-      [axios, 'put'],
-      `${BASEURL}/api/projects/${useUrl}`,
-      inputData,
-    );
+    const res = yield call([axios, 'put'], `${BASEURL}/${url}`, inputData);
     let projectData;
     if (res.data.currentMember === null) {
       projectData = {
@@ -100,7 +96,7 @@ function* setProjectDeleteLoad(action) {
   try {
     const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
     const useUrl = url[2];
-    yield call([axios, 'delete'], `${BASEURL}/api/projects/${useUrl}`);
+    yield call([axios, 'delete'], `${BASEURL}/projects/${useUrl}`);
     yield put(setProjectDeleteSuccess());
     window.location.replace('/project');
   } catch (err) {

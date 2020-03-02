@@ -13,8 +13,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import { TeamBox } from '../components';
+import TextField from '@material-ui/core/TextField';
+import { TeamBox, Layout } from '../components';
 import { useProjectLoading, useProjectData } from '../hooks';
+import { getProjectCardList } from '../reducers/Project';
 
 const useStyles = makeStyles(theme => ({
   appbar: {
@@ -42,104 +44,111 @@ const ProjectPage = () => {
   };
   return (
     <div>
-      <AppBar
-        position="static"
-        color="inherit"
-        style={{ boxShadow: 'none', textAlign: 'center' }}
-      >
-        <Toolbar style={{ textAlign: 'center' }}>
-          <Typography variant="h6" align="center" display="inline">
-            ESKIMO
+      <Layout hasFooter>
+        <Grid>
+          <div>
+            <FormControl className={classes.formcontrol}>
+              <InputLabel shrink={false} id="fieldLabel">
+                {navState.field === '' ? '분야' : ''}
+              </InputLabel>
+              <Select
+                className={classes.select}
+                labelId="fieldLabel"
+                id="field"
+                name="field"
+                value={navState.field}
+                onChange={handleClickNav}
+                autoWidth
+                variant="standard"
+                disableUnderline
+              >
+                <MenuItem value="APP">앱 서비스</MenuItem>
+                <MenuItem value="WEB">웹 서비스</MenuItem>
+                <MenuItem value="AI">AI 서비스</MenuItem>
+                <MenuItem value="BLOCKCHAIN">블록체인</MenuItem>
+                <MenuItem value="HW">HW 개발</MenuItem>
+                <MenuItem value="SYSTEM">시스템 개발</MenuItem>
+                <MenuItem value="ETC">기타 개발</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formcontrol}>
+              <InputLabel shrink={false} id="jobGroupLabel">
+                {navState.occupation === '' ? '직군' : ''}
+              </InputLabel>
+              <Select
+                className={classes.select}
+                labelId="jobGroupLabel"
+                id="occupation"
+                name="occupation"
+                value={navState.occupation}
+                onChange={handleClickNav}
+                autoWidth
+                variant="standard"
+                disableUnderline
+              >
+                <MenuItem value="developer">개발자</MenuItem>
+                <MenuItem value="designer">디자이너</MenuItem>
+                <MenuItem value="planner">기획자</MenuItem>
+                <MenuItem value="etc">기타직군</MenuItem>
+              </Select>
+            </FormControl>
+            {/*
+          <FormControl className={classes.formcontrol}>
+            <InputLabel shrink={false} id="areaLabel">
+              {navState.area === '' ? '지역' : ''}
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelId="areaLabel"
+              id="area"
+              name="area"
+              value={navState.area}
+              onChange={handleClickNav}
+              autoWidth
+              variant="standard"
+              disableUnderline
+            >
+              <MenuItem value="SEOUL">서울</MenuItem>
+              <MenuItem value="INCHEON">인천</MenuItem>
+              <MenuItem value="NGYEONGI">경기북부</MenuItem>
+              <MenuItem value="SGYEONGI">경기남부</MenuItem>
+            </Select>
+          </FormControl>
+          */}
+            <Button onClick={() => dispatch(getProjectCardList(navState))}>
+              검색
+            </Button>
+          </div>
+          <Button
+            onClick={() => {
+              window.location = '/makeproject';
+            }}
+          >
+            프로젝트 팀 개설하기 >
+          </Button>
+        </Grid>
+        <div>{projectState.length}개의 팀이 있습니다.</div>
+        {projectState.length > 0 && (
+          <Grid container>
+            {projectState.map((value, i) => (
+              <span
+                style={{ margin: '20px', cursor: 'pointer' }}
+                id={value.title + i}
+                onClick={() =>
+                  (window.location = `/projects/${value.projectId}`)
+                }
+              >
+                <TeamBox state={value} />
+              </span>
+            ))}
+          </Grid>
+        )}
+        {projectState.length === 0 && (
+          <Typography variant="subtitle1" align="center" color="error">
+            찾는 항목이 존재하지 않습니다.
           </Typography>
-        </Toolbar>
-      </AppBar>
-      <Grid>
-        <FormControl className={classes.formcontrol}>
-          <InputLabel shrink={false} id="fieldLabel">
-            {navState.field === '' ? '분야' : ''}
-          </InputLabel>
-          <Select
-            className={classes.select}
-            labelId="fieldLabel"
-            id="field"
-            name="field"
-            value={navState.field}
-            onChange={handleClickNav}
-            autoWidth
-            variant="standard"
-            disableUnderline
-          >
-            <MenuItem value="앱 서비스">앱 서비스</MenuItem>
-            <MenuItem value="웹 서비스">웹 서비스</MenuItem>
-            <MenuItem value="AI 서비스">AI 서비스</MenuItem>
-            <MenuItem value="블록체인">블록체인</MenuItem>
-            <MenuItem value="HW 개발">HW 개발</MenuItem>
-            <MenuItem value="시스템 개발">시스템 개발</MenuItem>
-            <MenuItem value="기타 개발">기타 개발</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl className={classes.formcontrol}>
-          <InputLabel shrink={false} id="jobGroupLabel">
-            {navState.jobGroup === '' ? '직군' : ''}
-          </InputLabel>
-          <Select
-            className={classes.select}
-            labelId="jobGroupLabel"
-            id="jobGroup"
-            name="jobGroup"
-            value={navState.jobGroup}
-            onChange={handleClickNav}
-            autoWidth
-            variant="standard"
-            disableUnderline
-          >
-            <MenuItem value="developer">개발자</MenuItem>
-            <MenuItem value="designer">디자이너</MenuItem>
-            <MenuItem value="planner">기획자</MenuItem>
-            <MenuItem value="etc">기타직군</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl className={classes.formcontrol}>
-          <InputLabel shrink={false} id="areaLabel">
-            {navState.area === '' ? '지역' : ''}
-          </InputLabel>
-          <Select
-            className={classes.select}
-            labelId="areaLabel"
-            id="area"
-            name="area"
-            value={navState.area}
-            onChange={handleClickNav}
-            autoWidth
-            variant="standard"
-            disableUnderline
-          >
-            <MenuItem value="서울">서울</MenuItem>
-            <MenuItem value="인천">인천</MenuItem>
-            <MenuItem value="경기북부">경기북부</MenuItem>
-            <MenuItem value="경기남부">경기남부</MenuItem>
-          </Select>
-        </FormControl>
-        <Button
-          onClick={() => {
-            window.location = '/makeproject';
-          }}
-        >
-          프로젝트 팀 개설하기 >
-        </Button>
-      </Grid>
-      <div>{projectState.length}개의 팀이 있습니다.</div>
-      <Grid container>
-        {projectState.map((value, i) => (
-          <span
-            style={{ margin: '20px' }}
-            id={value.title + i}
-            onClick={() => (window.location = `/project/${value.projectId}`)}
-          >
-            <TeamBox state={value} />
-          </span>
-        ))}
-      </Grid>
+        )}
+      </Layout>
       <Dialog open={loadState.open}>
         <MuiDialogContent
           style={{

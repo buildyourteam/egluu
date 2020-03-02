@@ -6,6 +6,7 @@ import {
   setPeopleDetail,
   setPeopleDetailSuccess,
 } from '../reducers/People';
+import { getLink, getLinkSuccess, getLinkFail } from '../reducers/Link';
 
 const axios = require('axios');
 
@@ -13,14 +14,18 @@ const BASEURL = 'https://api.codingnome.dev';
 // PeopleDetail 페이지에서 project Get
 function* getPeopleDetailLoad(action) {
   try {
-    const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
+    const url = window.location.pathname; // .split('/'); // 현 주소값 쪼갬
     const useUrl = url[2];
-    const res = yield call(
+    const res = yield call([axios, 'get'], `${BASEURL}/index/${url}`);
+    const resPeople = yield call(
       [axios, 'get'],
-      `${BASEURL}/api/projects?page=0&size=10&sort=projectName%2CDESC&occupation=developer&field=WEB`,
+      `${res.data._links.profileDetail.href}`,
     );
-    console.log(res);
-    yield put(getPeopleDetailSuccess(res.data));
+    const tempPeople = {
+      ...resPeople.data,
+      imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+    };
+    yield put(getPeopleDetailSuccess(tempPeople));
   } catch (err) {
     console.log(err);
     yield put(getPeopleFail());
@@ -34,12 +39,19 @@ function* watchGetPeopleDetailLoad() {
 function* setPeopleDetailLoad(action) {
   try {
     const data = action.payload;
-    const res = yield call(
-      [axios, 'get'],
-      `${BASEURL}/api/projects?page=0&size=10&sort=projectName%2CDESC&occupation=developer&field=WEB`,
-    );
-    console.log(res);
+    const url = window.location.pathname; // .split('/'); // 현 주소값 쪼갬
+    const peopleData = {
+      userName: data.userName,
+      role: data.role,
+      stack: data.stack,
+      contact: data.contact,
+      area: data.area,
+      level: data.level,
+      description: data.description,
+    };
+    const res = yield call([axios, 'put'], `${BASEURL}${url}`, peopleData);
     yield put(setPeopleDetailSuccess(data));
+    yield put(getLinkSuccess(res.data._links));
   } catch (err) {
     console.log(err);
     yield put(getPeopleFail());
