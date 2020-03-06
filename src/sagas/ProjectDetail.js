@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
+import { all, fork, takeLatest, call, put } from "redux-saga/effects";
 import {
   getProjectFail,
   getProjectDetail,
@@ -6,34 +6,43 @@ import {
   setProjectDetail,
   setProjectDetailSuccess,
   setProjectDelete,
-  setProjectDeleteSuccess,
-} from '../reducers/Project';
+  setProjectDeleteSuccess
+} from "../reducers/Project";
 
-const axios = require('axios');
+const axios = require("axios");
 
-const BASEURL = 'https://api.codingnome.dev';
+const BASEURL = "https://api.codingnome.dev";
 // ProjectDetail 페이지에서 project Get
 function* getProjectDetailLoad() {
   try {
-    const url = window.location.pathname; // .split('/'); // 현 주소값 쪼갬
+    const url = window.location.pathname.split("/"); // .split('/'); // 현 주소값 쪼갬
     const useUrl = url[2];
-    const res = yield call([axios, 'get'], `${BASEURL}/${url}`);
+    const res = yield call(
+      [axios, "get"],
+      `${BASEURL}/index/projects/${useUrl}`
+    );
+    //console.log(res);
+    const resProjectDetail = yield call(
+      [axios, "get"],
+      `${res.data._links.projectDetail.href}`
+    );
+    //console.log(resProjectDetail);
     let data;
-    if (res.data.currentMember === null) {
+    if (resProjectDetail.data.currentMember === null) {
       data = {
-        ...res.data,
-        imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+        ...resProjectDetail.data,
+        imgUrl: "https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg",
         currentMember: {
           developer: 0,
           planner: 0,
           etc: 0,
-          designer: 0,
-        },
+          designer: 0
+        }
       };
     } else {
       data = {
-        ...res.data,
-        imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+        ...resProjectDetail.data,
+        imgUrl: "https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg"
       };
     }
     yield put(getProjectDetailSuccess(data));
@@ -59,26 +68,26 @@ function* setProjectDetailLoad(action) {
       description: data.description,
       // projectField: data.projectField,
       needMember: data.needMember,
-      currentMember: data.currentMember,
+      currentMember: data.currentMember
     };
     console.log(inputData);
-    const res = yield call([axios, 'put'], `${BASEURL}/${url}`, inputData);
+    const res = yield call([axios, "put"], `${BASEURL}/${url}`, inputData);
     let projectData;
     if (res.data.currentMember === null) {
       projectData = {
         ...res.data,
-        imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+        imgUrl: "https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg",
         currentMember: {
           developer: 0,
           planner: 0,
           etc: 0,
-          designer: 0,
-        },
+          designer: 0
+        }
       };
     } else {
       projectData = {
         ...res.data,
-        imgUrl: 'https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg',
+        imgUrl: "https://i.ytimg.com/vi/qrhE3pWEjJg/maxresdefault.jpg"
       };
     }
     console.log(res);
@@ -94,11 +103,11 @@ function* watchSetProjectDetailLoad() {
 
 function* setProjectDeleteLoad(action) {
   try {
-    const url = window.location.pathname.split('/'); // 현 주소값 쪼갬
+    const url = window.location.pathname.split("/"); // 현 주소값 쪼갬
     const useUrl = url[2];
-    yield call([axios, 'delete'], `${BASEURL}/projects/${useUrl}`);
+    yield call([axios, "delete"], `${BASEURL}/projects/${useUrl}`);
     yield put(setProjectDeleteSuccess());
-    window.location.replace('/project');
+    window.location.replace("/project");
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());
@@ -112,6 +121,6 @@ export default function* defaultSaga() {
   yield all([
     fork(watchGetProjectDetailLoad),
     fork(watchSetProjectDetailLoad),
-    fork(watchSetProjectDeleteLoad),
+    fork(watchSetProjectDeleteLoad)
   ]);
 }

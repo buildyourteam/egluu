@@ -1,41 +1,42 @@
-import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
+import { all, fork, takeLatest, call, put } from "redux-saga/effects";
 import {
   getProjectFail,
   getMainData,
-  getMainDataSuccess,
-} from '../reducers/Project';
+  getMainDataSuccess
+} from "../reducers/Project";
 import {
   getMainPeopleData,
   getMainPeopleDataSuccess,
-  getPeopleFail,
-} from '../reducers/People';
-import { getLink, getLinkSuccess, getLinkFail } from '../reducers/Link';
+  getPeopleFail
+} from "../reducers/People";
+import { getLink, getLinkSuccess, getLinkFail } from "../reducers/Link";
 
-const axios = require('axios');
+const axios = require("axios");
 
-const BASEURL = 'https://api.codingnome.dev';
+const BASEURL = "https://api.codingnome.dev";
 // BasicPage에서 projectCard (인기, 추천, 신규)
 function* getProjectListLoad(action) {
   try {
     const data = action.payload;
-    const res = yield call([axios, 'get'], `${BASEURL}/index`);
+    const res = yield call([axios, "get"], `${BASEURL}/index`);
 
+    console.log(res);
     const resProjectList = yield call(
-      [axios, 'get'],
-      `${res.data._links.projectList.href}`,
+      [axios, "get"],
+      `${res.data._links.projectList.href}`
     );
     const resPeopleList = yield call(
-      [axios, 'get'],
-      `${res.data._links.peopleList.href}`,
+      [axios, "get"],
+      `${res.data._links.peopleList.href}`
     );
     const resProjectDeadLine = yield call(
-      [axios, 'get'],
-      `${res.data._links.projectListDeadline.href}`,
+      [axios, "get"],
+      `${res.data._links.projectListDeadline.href}`
     );
 
     const project = {
       projectCard: resProjectList.data._embedded.projectList,
-      deadLineProjectList: resProjectDeadLine.data._embedded.projectList,
+      deadLineProjectList: resProjectDeadLine.data._embedded.projectList
     };
     const people = resPeopleList.data._embedded.peopleList;
     yield put(getMainDataSuccess(project));
