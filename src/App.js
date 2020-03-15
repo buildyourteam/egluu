@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
   NotFound,
   RootPage,
@@ -9,7 +9,9 @@ import {
   PeoplePageDetail,
   MakeProject,
   MakeProfile,
-} from './pages';
+  LoginPage,
+  RegisterPage
+} from "./pages";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route exact path="/people" component={PeoplePage} />
         <Route exact path="/makeproject" component={MakeProject} />
         <Route exact path="/makeprofile" component={MakeProfile} />
+        <Route exact path="/auth/login" component={LoginPage} />
+        <Route exact path="/auth/register" component={RegisterPage} />
 
         <Route path="*" component={NotFound} />
       </Switch>

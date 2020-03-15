@@ -14,23 +14,20 @@ function* makeProjectLoad(action) {
     // makeproject는 로그인 토큰을 전달해야 가능
     // 하위 코드는 이를 위한 임시 로그인 테스트 코드
 
-    // const header = {
-    //   "Content-Type": "application/json;charset=UTF-8"
-    // };
-    // const tmpLogin = {
-    //   userId: "eskiiimotest",
-    //   password: "password"
-    // };
-    // const resLogin = yield call(
-    //   [axios, "post"],
-    //   `https://api.codingnome.dev/auth/signin`,
-    //   tmpLogin
-    //   {
-    //     headers: header
-    //   }
-    // );
-    // console.log(resLogin);
-
+    const header = {
+      "Content-Type": "application/json;charset=UTF-8"
+    };
+    const tmpLogin = {
+      userId: "eskiiimotest",
+      password: "password"
+    };
+    const resLogin = yield call(
+      [axios, "post"],
+      `https://api.codingnome.dev/auth/signin`,
+      tmpLogin,
+      header
+    );
+    console.log(resLogin.headers);
     const data = action.payload;
     const tempData = {
       projectName: data.projectName,
@@ -45,14 +42,14 @@ function* makeProjectLoad(action) {
       memberList: null
     };
     // link로 넘어올예정임 수정예정
-    console.log(tempData);
-    const res = yield call(
-      [axios, "post"],
-      `https://api.codingnome.dev/projects`,
-      tempData
-    );
+    //console.log(tempData);
+    // const res = yield call(
+    //   [axios, "post"],
+    //   `https://api.codingnome.dev/projects`,
+    //   tempData
+    // );
     yield put(makeProjectSuccess());
-    window.location.replace(`/projects/${res.data.projectId}`);
+    //window.location.replace(`/projects/${res.data.projectId}`);
   } catch (err) {
     console.log(err);
     yield put(getProjectFail());

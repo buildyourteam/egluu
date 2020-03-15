@@ -6,6 +6,7 @@ import ProjectList from "./ProjectList";
 import PeopleList from "./PeopleList";
 import MakeProject from "./MakeProejct";
 import MakeProfile from "./MakeProfile";
+import Login from "./Login";
 
 export default function* rootSaga() {
   yield all([
@@ -14,6 +15,7 @@ export default function* rootSaga() {
     PeopleDetail(),
     ProjectList(),
     PeopleList(),
-    MakeProject()
+    MakeProject(),
+    Login()
   ]);
 }

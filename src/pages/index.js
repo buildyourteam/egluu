@@ -6,3 +6,5 @@ export { default as ProjectPageDetail } from "./ProjectDetail";
 export { default as PeoplePageDetail } from "./PeopleDetail";
 export { default as MakeProject } from "./MakeProject";
 export { default as MakeProfile } from "./MakeProfile";
+export { default as LoginPage } from "./auth/Login";
+export { default as RegisterPage } from "./auth/Register";
