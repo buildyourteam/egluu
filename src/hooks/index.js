@@ -9,3 +9,4 @@ export { usePeopleDetailLoading, usePeopleDetailData } from "./usePeopleDetail";
 export { useMakeProjectData, useMakeProjectLoading } from "./useMakeProject";
 export { useMakeProfileData, useMakeProfileLoading } from "./useMakeProfile";
 export { useLoginData, useLoginLoading } from "./useLogin";
+export { useRegisterData, useRegisterLoading } from "./useRegister";

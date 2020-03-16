@@ -1,55 +1,55 @@
-import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
+import { all, fork, takeLatest, call, put } from "redux-saga/effects";
 import {
   getProjectFail,
   getMainData,
-  getMainDataSuccess,
-} from '../reducers/Project';
+  getMainDataSuccess
+} from "../reducers/Project";
 import {
   getMainPeopleData,
   getMainPeopleDataSuccess,
-  getPeopleFail,
-} from '../reducers/People';
-import { getLink, getLinkSuccess, getLinkFail } from '../reducers/Link';
+  getPeopleFail
+} from "../reducers/People";
+import { getLink, getLinkSuccess, getLinkFail } from "../reducers/Link";
 
-const axios = require('axios');
+const axios = require("axios");
 
-const BASEURL = 'https://api.codingnome.dev';
-// BasicPage에서 projectCard (인기, 추천, 신규)
+const BASEURL = "https://api.codingnome.dev";
+
 function* getProjectListLoad(action) {
   try {
     const data = action.payload;
-    const res = yield call([axios, 'get'], `${BASEURL}/index`);
+    const res = yield call([axios, "get"], `${BASEURL}/index`);
 
-    console.log(res);
-    const resPeopleList = yield call(
-      [axios, 'get'],
-      `${res.data._links.peopleList.href}`,
-    );
+    //RootPage에서 projectCard
     const resProjectList = yield call(
-      [axios, 'get'],
-      `${res.data._links.projectList.href}`,
+      [axios, "get"],
+      `${res.data._links.projectList.href}`
     );
-
+    //RootPage에서 마감이 임박한 프로젝트
     const resProjectDeadLine = yield call(
-      [axios, 'get'],
-      `${res.data._links.projectListDeadline.href}`,
+      [axios, "get"],
+      `${res.data._links.projectListDeadline.href}`
     );
-    console.log(resProjectList);
-    console.log(resProjectDeadLine);
-    if (resProjectDeadLine.data.page.number !== 0) {
+    if (resProjectDeadLine.data.page.totalElements !== 0) {
       const project = {
         projectCard: resProjectList.data._embedded.projectList,
-        deadLineProjectList: resProjectDeadLine.data._embedded.projectList,
+        deadLineProjectList: resProjectDeadLine.data._embedded.projectList
       };
       yield put(getMainDataSuccess(project));
     } else {
       const project = {
         projectCard: [],
-        deadLineProjectList: [],
+        deadLineProjectList: []
       };
       yield put(getMainDataSuccess(project));
     }
-    if (resPeopleList.data.page.number !== 0) {
+
+    //RootPage에서 peopleCard
+    const resPeopleList = yield call(
+      [axios, "get"],
+      `${res.data._links.peopleList.href}`
+    );
+    if (resPeopleList.data.page.totalElements !== 0) {
       const people = resPeopleList.data._embedded.peopleList;
       yield put(getMainPeopleDataSuccess(people));
     } else {
@@ -62,33 +62,9 @@ function* getProjectListLoad(action) {
   }
 }
 
-// BasicPage에서 peopleCard
-function* getPeopleListLoad(action) {
-  try {
-    /*
-    const data = action.payload;
-    const peopleRes = yield call(
-      [axios, 'get'],
-      `${BASEURL}/api/people?page=${data.pageNum}&size=3&sort=user_name%2CDESC&level=1&role=LEADER&area=Seoul`,
-    );
-    const firstRes = yield call(
-      [axios, 'get'],
-      `${peopleRes.data._links.first.href}`,
-    );
-    console.log(firstRes);
-    const peopleData = firstRes.data._embedded.peopleList;
-    yield put(getMainPeopleDataSuccess(peopleData));
-    */
-  } catch (err) {
-    console.log(err);
-    yield put(getPeopleFail());
-  }
-}
-
 // BasicPage에서 projectCard와 peopleCard 가져오기
 function* watchGetMainPageLoad() {
   yield takeLatest(getMainData, getProjectListLoad);
-  yield takeLatest(getMainPeopleData, getPeopleListLoad);
 }
 
 export default function* rootSaga() {

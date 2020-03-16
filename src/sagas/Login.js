@@ -32,7 +32,7 @@ function* loginLoad(action) {
     window.sessionStorage.setItem("id", data.id);
     window.sessionStorage.setItem("accessToken", token);
 
-    //window.location.replace(`/`);
+    window.location.replace(`/`);
   } catch (err) {
     console.log(err);
     console.log("login fail");

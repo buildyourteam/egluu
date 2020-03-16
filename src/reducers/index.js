@@ -5,6 +5,7 @@ import Project from "./Project";
 import People from "./People";
 import Link from "./Link";
 import Login from "./Login";
+import Register from "./Register";
 
 const PersistConfigProject = {
   key: "Project",
@@ -30,9 +31,16 @@ const PersistConfigLogin = {
   whitelist: ["login"] // only navigation will be persisted
 };
 
+const PersistConfigRegister = {
+  key: "Register",
+  storage,
+  whitelist: ["register"] // only navigation will be persisted
+};
+
 export default combineReducers({
   Project: persistReducer(PersistConfigProject, Project),
   People: persistReducer(PersistConfigPeople, People),
   Link: persistReducer(PersistConfigLink, Link),
-  Login: persistReducer(PersistConfigLogin, Login)
+  Login: persistReducer(PersistConfigLogin, Login),
+  Register: persistReducer(PersistConfigRegister, Register)
 });
