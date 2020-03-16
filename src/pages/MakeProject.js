@@ -1,30 +1,30 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import ReactMarkdown from 'react-markdown/with-html';
-import TextField from '@material-ui/core/TextField';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import ReactMarkdown from "react-markdown/with-html";
+import TextField from "@material-ui/core/TextField";
 import {
   DateTimePicker as MuiDateTimePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
-import { format } from 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import { ko } from 'date-fns/locale';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import { makeProject } from '../reducers/Project';
-import { ImgInput } from '../components';
-import { useMakeProjectData, useMakeProjectLoading } from '../hooks';
+  MuiPickersUtilsProvider
+} from "@material-ui/pickers";
+import { format } from "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import { ko } from "date-fns/locale";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import { makeProject } from "../reducers/Project";
+import { ImgInput } from "../components";
+import { useMakeProjectData, useMakeProjectLoading } from "../hooks";
 
 const useStyles = makeStyles(theme => ({
   text: {
-    color: '#ffffff',
-  },
+    color: "#ffffff"
+  }
 }));
 
 const MakeProject = () => {
@@ -37,7 +37,7 @@ const MakeProject = () => {
     e.persist();
     setMakeProjectState({
       ...MakeprojectState,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
@@ -47,24 +47,24 @@ const MakeProject = () => {
       ...MakeprojectState,
       needMember: {
         ...MakeprojectState.needMember,
-        [e.target.name]: data,
-      },
+        [e.target.name]: data
+      }
     });
   };
 
   const handleAddEndDate = date => {
     if (Date.parse(date) < Date.parse(new Date())) {
-      alert('오늘 이전일로 설정 불가');
+      alert("오늘 이전일로 설정 불가");
     } else {
       setMakeProjectState({
         ...MakeprojectState,
-        endDate: date,
+        endDate: date
       });
     }
   };
 
   const handleSave = async () => {
-    console.log('저장하기');
+    console.log("저장하기");
     await dispatch(makeProject(MakeprojectState));
   };
 
@@ -73,9 +73,9 @@ const MakeProject = () => {
       <AppBar
         position="static"
         color="inherit"
-        style={{ boxShadow: 'none', textAlign: 'center' }}
+        style={{ boxShadow: "none", textAlign: "center" }}
       >
-        <Toolbar style={{ textAlign: 'center' }}>
+        <Toolbar style={{ textAlign: "center" }}>
           <Typography variant="h6" align="center" display="inline">
             ESKIMO
           </Typography>
@@ -101,18 +101,6 @@ const MakeProject = () => {
           fullWidth
           label="팀 이름"
         />
-        <TextField
-          name="description"
-          value={MakeprojectState.description}
-          onChange={handleInput}
-          fullWidth
-          label="프로젝트 설명"
-          multiline
-        />
-        <ReactMarkdown
-          source={MakeprojectState.description}
-          escapeHtml={false}
-        />
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
           <MuiDateTimePicker
             name="endDate"
@@ -128,10 +116,22 @@ const MakeProject = () => {
             ampm
           />
         </MuiPickersUtilsProvider>
+        <TextField
+          name="description"
+          value={MakeprojectState.description}
+          onChange={handleInput}
+          fullWidth
+          label="프로젝트 설명"
+          multiline
+        />
+        <ReactMarkdown
+          source={MakeprojectState.description}
+          escapeHtml={false}
+        />
         <div>
-          <FormControl style={{ width: '20vw' }}>
+          <FormControl style={{ width: "20vw" }}>
             <InputLabel shrink={false} id="fieldLabel">
-              {MakeprojectState.field === '' ? '분야' : ''}
+              {MakeprojectState.field === "" ? "분야" : ""}
             </InputLabel>
             <Select
               className={classes.select}
@@ -193,12 +193,12 @@ const MakeProject = () => {
       </div>
       <footer
         style={{
-          backgroundColor: '#eeeeee',
-          height: '100px',
-          textAlign: 'center',
+          backgroundColor: "#eeeeee",
+          height: "100px",
+          textAlign: "center"
         }}
       >
-        <Typography variant="h4" align="center" style={{ padding: '10px' }}>
+        <Typography variant="h4" align="center" style={{ padding: "10px" }}>
           ESKIMO
         </Typography>
         <Typography variant="h6" align="center">
