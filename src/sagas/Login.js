@@ -22,6 +22,7 @@ function* loginLoad(action) {
       loginData,
       header
     );
+    console.log(resLogin);
     //console.log(resLogin.headers.authtoken);
     const token = resLogin.headers.authtoken;
     yield put(loginSuccess(token));

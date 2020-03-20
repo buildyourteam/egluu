@@ -1,22 +1,31 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import MuiCircularProgress from '@material-ui/core/CircularProgress';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import Dialog from '@material-ui/core/Dialog';
-import ReactMarkdown from 'react-markdown/with-html';
-import TextField from '@material-ui/core/TextField';
-import { usePeopleDetailLoading, usePeopleDetailData } from '../hooks';
-import { ImgInput } from '../components';
-import { setPeopleDetail } from '../reducers/People';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import MuiCircularProgress from "@material-ui/core/CircularProgress";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import Dialog from "@material-ui/core/Dialog";
+import ReactMarkdown from "react-markdown/with-html";
+import TextField from "@material-ui/core/TextField";
+import { usePeopleDetailLoading, usePeopleDetailData } from "../hooks";
+import { setPeopleDetail } from "../reducers/People";
+import Grid from "@material-ui/core/Grid";
+import { ImgInput, Layout, TeamBox } from "../components";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import { green } from "@material-ui/core/colors";
+import baseImg from "./unnamed.jpg";
 
 const useStyles = makeStyles(theme => ({
   text: {
-    color: '#000000',
+    color: "#000000"
   },
+  userId: {
+    opacity: 0.5
+  }
 }));
 
 const PeoplePageDetail = () => {
@@ -25,17 +34,17 @@ const PeoplePageDetail = () => {
   const [
     { peopleDetailState, open },
     setPeopleDetailState,
-    setOpen,
+    setOpen
   ] = usePeopleDetailData();
-  console.log(peopleDetailState);
 
   const handleInput = e => {
     e.persist();
     setPeopleDetailState({
       ...peopleDetailState,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
+  const id = window.sessionStorage.getItem("id");
 
   // const handleInputMember = e => {
   //   setPeopleDetailState({
@@ -52,189 +61,226 @@ const PeoplePageDetail = () => {
   };
 
   return (
-    <div>
-      <AppBar
-        position="static"
-        color="inherit"
-        style={{ boxShadow: 'none', textAlign: 'center' }}
-      >
-        <Toolbar style={{ textAlign: 'center' }}>
-          <Typography variant="h6" align="center" display="inline">
-            ESKIMO
-          </Typography>
-          <Button onClick={() => setOpen({ ...open, change: !open.change })}>
-            수정하기
-          </Button>
-          <div>
+    <Layout hasFooter>
+      <div>
+        <AppBar
+          position="static"
+          color="inherit"
+          style={{ boxShadow: "none", textAlign: "center" }}
+        >
+          <Toolbar style={{ textAlign: "center" }}>
+            {/* <div>
             <img src="fds" alt="" />
-          </div>
-        </Toolbar>
-      </AppBar>
-      {open.change ? (
-        <div>
-          <ImgInput state={peopleDetailState} setState={setPeopleDetailState} />
-          <TextField
-            name="userName"
-            value={peopleDetailState.userName}
-            onChange={handleInput}
-            fullWidth
-            label="이름"
-          />
-          <TextField
-            name="area"
-            value={peopleDetailState.area}
-            onChange={handleInput}
-            fullWidth
-            label="활동 범위"
-          />
-          <TextField
-            name="contact"
-            value={peopleDetailState.contact}
-            onChange={handleInput}
-            fullWidth
-            label="연락처"
-            multiline
-          />
-          <ReactMarkdown
-            source={peopleDetailState.peopleDescription}
-            escapeHtml={false}
-          />
-          {/* <div>
-            개발자 :
-            <TextField
-              name="peopleDescription"
-              type="number"
-              value={peopleDetailState.needMember.developer}
-              onChange={handleInputMember}
-            />
-          </div>
-          <div>
-            기획자 :
-            <TextField
-              name="peopleDescription"
-              type="number"
-              value={peopleDetailState.needMember.planner}
-              onChange={handleInputMember}
-            />
-          </div>
-          <div>
-            디자이너 :
-            <TextField
-              name="peopleDescription"
-              type="number"
-              value={peopleDetailState.needMember.designer}
-              onChange={handleInputMember}
-            />
-          </div>
-          <div>
-            기타 :
-            <TextField
-              name="peopleDescription"
-              type="number"
-              value={peopleDetailState.needMember.etc}
-              onChange={handleInputMember}
-            />
           </div> */}
-          <Button onClick={handleSave}>저장하기</Button>
-        </div>
-      ) : (
-        <div>
-          <div style={{ backgroundColor: '#000000', position: 'relative' }}>
-            <div>
-              {typeof peopleDetailState.imgUrl !== 'string' ? (
-                <img
-                  src={peopleDetailState.imgUrl.url}
-                  alt="이미지 에러"
-                  align="center"
-                  height="30%"
-                  width="100%"
-                  style={{ display: 'block', opacity: '0.5', hover: 1 }}
-                />
+          </Toolbar>
+        </AppBar>
+        <Grid container spacing={5}>
+          <Grid item xs={4}>
+            <Card>
+              {open.change ? (
+                <div>
+                  <ImgInput
+                    state={peopleDetailState}
+                    setState={setPeopleDetailState}
+                  />
+                  {/* userName */}
+                  <TextField
+                    name="userName"
+                    value={peopleDetailState.userName}
+                    onChange={handleInput}
+                    fullWidth
+                    label="userName"
+                  />
+                  {/* role */}
+                  <TextField
+                    name="role"
+                    value={peopleDetailState.role}
+                    onChange={handleInput}
+                    fullWidth
+                    label="role"
+                  />
+                  {/* stacks */}
+                  {/* <TextField
+                    name="stacks"
+                    value={peopleDetailState.stacks}
+                    onChange={handleInput}
+                    fullWidth
+                    label="stacks"
+                  /> */}
+                  {/* contact */}
+                  <TextField
+                    name="contact"
+                    value={peopleDetailState.contact}
+                    onChange={handleInput}
+                    fullWidth
+                    label="contact"
+                    multiline
+                  />
+                  {/* area */}
+                  <TextField
+                    name="area"
+                    value={peopleDetailState.area}
+                    onChange={handleInput}
+                    fullWidth
+                    label="area"
+                  />
+                  {/* description */}
+                  <TextField
+                    name="description"
+                    value={peopleDetailState.description}
+                    onChange={handleInput}
+                    fullWidth
+                    label="description"
+                    multiline
+                  />
+                  <ReactMarkdown
+                    source={peopleDetailState.description}
+                    escapeHtml={false}
+                  />
+
+                  <Button onClick={handleSave}>저장하기</Button>
+                </div>
               ) : (
                 <div>
-                  <img
-                    src={peopleDetailState.imgUrl}
-                    alt="이미지 에러"
-                    align="center"
-                    height="30%"
-                    width="100%"
-                    style={{ display: 'block', opacity: '0.5', hover: 1 }}
-                  />
+                  <div
+                    style={{ backgroundColor: "#000000", position: "relative" }}
+                  >
+                    <div>
+                      {typeof peopleDetailState.imgUrl !== "string" ? (
+                        <img
+                          src=""
+                          //src={peopleDetailState.imgUrl.url}
+                          alt="이미지 에러"
+                          align="center"
+                          height="30%"
+                          width="100%"
+                          style={{ display: "block", hover: 1 }}
+                          onError="this.src='./unnamed.jpg'"
+                        />
+                      ) : (
+                        <div>
+                          <img
+                            //src="https://lh3.googleusercontent.com/proxy/cBZU_F1ulNXIOwd2hj1Tu_d8lCiKtM5IS4eDbf3Bf9M5yqzez0BgRVdULPgifDMMBzmOAo5SstJYbsP52OlBcADaGbKkJbcqtQrc3bjsMJ3lZNRLUs_iEA"
+                            //src={baseImg}
+                            src={peopleDetailState.imgUrl}
+                            alt="이미지 에러"
+                            align="center"
+                            height="30%"
+                            width="100%"
+                            //onError={(this.src = baseImg)}
+                            style={{
+                              display: "block",
+
+                              hover: 1
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    style={{ margin: "5%", position: "relative", top: "0vh" }}
+                  >
+                    {/* userName */}
+                    <Typography variant="h4" className={classes.text}>
+                      {peopleDetailState.userName}
+                    </Typography>
+                    {/* userId */}
+                    <Typography variant="h5" className={classes.userId}>
+                      {id}
+                    </Typography>
+                    <br />
+                    {/* role */}
+                    <Typography variant="h6" className={classes.text}>
+                      {peopleDetailState.role}
+                    </Typography>
+                    {/* stacks */}
+                    <Typography variant="h6" className={classes.text}>
+                      #ReactJs #Javascript
+                    </Typography>
+                    {/* area */}
+                    <Typography variant="h6" className={classes.text}>
+                      area : {peopleDetailState.area}
+                    </Typography>
+                    {/* level */}
+                    <Typography variant="h6" className={classes.text}>
+                      Lev.{peopleDetailState.level}
+                    </Typography>
+                    {/* contact */}
+                    <Typography variant="h6">
+                      contact : {peopleDetailState.contact}
+                    </Typography>
+                    {/* description */}
+                    <Typography variant="h6">개인정보 입니다.</Typography>
+                    <ReactMarkdown
+                      source={peopleDetailState.description}
+                      escapeHtml={false}
+                    />
+                    {/* <Typography
+                      className={classes.stack}
+                      variant="body2"
+                      component="p"
+                      color="textPrimary"
+                    >
+                      {peopleDetailState.technicalStack.map((value, i) => (
+                <span>#{value} </span>
+              ))}
+                    </Typography> */}
+                  </div>
+
+                  <div
+                    style={{ margin: "5%", position: "relative", top: "0vh" }}
+                  ></div>
+
+                  <Dialog open={loadState.open}>
+                    <MuiDialogContent
+                      style={{
+                        background: "white",
+                        width: "160px",
+                        minHeight: "80px",
+                        textAlign: "center"
+                      }}
+                    >
+                      <MuiCircularProgress
+                        style={{ width: "20%", height: "20%" }}
+                      />
+                      <div style={{ marginTop: "12px" }}>{loadState.text}</div>
+                      <Button
+                        onClick={() => {
+                          setLoadState({ ...loadState, open: false });
+                        }}
+                      >
+                        닫기
+                      </Button>
+                    </MuiDialogContent>
+                  </Dialog>
+                  <Button
+                    onClick={() => setOpen({ ...open, change: !open.change })}
+                  >
+                    수정하기
+                  </Button>
                 </div>
               )}
-            </div>
-          </div>
-          <div style={{ margin: '5%', position: 'relative', top: '0vh' }}>
-            <Typography variant="h1" className={classes.text}>
-              {peopleDetailState.userName}
-            </Typography>
-            <Typography variant="h3" className={classes.text}>
-              Lev.{peopleDetailState.level}
-            </Typography>
-          </div>
-          <div style={{ margin: '5%', position: 'relative', top: '0vh' }}>
-            <Typography variant="h3">개인정보</Typography>
-            {/* <ReactMarkdown
-              source={peopleDetailState.contact}
-              escapeHtml={false}
-            /> */}
-            <Typography variant="h6">
-              레벨 : {peopleDetailState.level}
-            </Typography>
-            <Typography variant="h6">
-              연락처 : {peopleDetailState.contact}
-            </Typography>
-            <Typography
-              className={classes.stack}
-              variant="body2"
-              component="p"
-              color="textPrimary"
-            >
-              {/* {peopleDetailState.technicalStack.map((value, i) => (
-                <span>#{value} </span>
-              ))} */}
-            </Typography>
-          </div>
-          <Typography variant="h6">
-            팀원 현황 ... 데이터 추가후 추가예정
-          </Typography>
-          <Dialog open={loadState.open}>
-            <MuiDialogContent
-              style={{
-                background: 'white',
-                width: '160px',
-                minHeight: '80px',
-                textAlign: 'center',
-              }}
-            >
-              <MuiCircularProgress style={{ width: '20%', height: '20%' }} />
-              <div style={{ marginTop: '12px' }}>{loadState.text}</div>
-              <Button
-                onClick={() => {
-                  setLoadState({ ...loadState, open: false });
-                }}
+            </Card>
+            <br />
+          </Grid>
+
+          {peopleDetailState.projects.map((value, i) => (
+            <Grid xs={8} sm={4}>
+              <span
+                style={{ margin: "20px", cursor: "pointer" }}
+                id={value.title + i}
+                onClick={() =>
+                  (window.location = `/projects/${value.projectId}`)
+                }
               >
-                닫기
-              </Button>
-            </MuiDialogContent>
-          </Dialog>
-        </div>
-      )}
-      <footer
-        style={{
-          backgroundColor: '#eeeeee',
-          height: '100px',
-          textAlign: 'center',
-        }}
-      >
-        <Typography variant="h4" align="center" style={{ padding: '10px' }}>
-          ESKIMO
-        </Typography>
-        <Typography variant="h6" align="center">
-          문의 : manzi@kakao.com
-        </Typography>
-      </footer>
-    </div>
+                <TeamBox state={value} />
+              </span>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+    </Layout>
   );
 };
 

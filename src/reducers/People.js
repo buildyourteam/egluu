@@ -1,36 +1,57 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const peopleSlice = createSlice({
-  name: 'People',
+  name: "People",
   initialState: {
     isLoading: false,
     isError: false,
     Default: {
       open: false,
-      text: '',
+      text: ""
     },
     // people 상세페이지 초기 데이터
     people: {
-      userId: '',
-      imgUrl: '',
-      userName: '',
-      role: '',
-      stack: '',
-      contact: '',
-      area: '',
+      imgUrl: "",
+      userId: "",
+      userName: "",
+      role: "",
+      stacks: "",
+      contact: "",
+      area: "",
       level: 0,
-      description: '',
+      description: "",
+      isImgChange: false,
+      projects: [
+        {
+          imgUrl: "",
+          projectName: "",
+          teamName: "",
+          currentMember: {
+            developer: 0,
+            planner: 0,
+            etc: 0,
+            designer: 0
+          },
+          needMember: {
+            developer: 0,
+            planner: 0,
+            etc: 0,
+            designer: 0
+          },
+          endDay: 0
+        }
+      ]
     },
     // 메인페이지 people card 데이터
     peopleCard: [
       {
-        userId: '',
-        imgUrl: '',
-        userName: '',
-        stack: '',
-        level: 0,
-      },
-    ],
+        userId: "",
+        imgUrl: "",
+        userName: "",
+        stack: "",
+        level: 0
+      }
+    ]
   },
   reducers: {
     // people list용
@@ -65,8 +86,16 @@ const peopleSlice = createSlice({
       state.isLoading = true;
     },
     setPeopleDetailSuccess(state, action) {
+      const data = state.people.map(value => {
+        if (action.payload.userId === value.userId) {
+          return action.payload;
+        } else {
+          return value;
+        }
+      });
+      state.people = data;
       state.isLoading = false;
-      state.people = action.payload;
+      //state.people = action.payload;
     },
     // profile make 페이지용
     makeProfile(state, action) {
@@ -77,8 +106,8 @@ const peopleSlice = createSlice({
     },
     getFindPeople(state, action) {
       state.isLoading = true;
-    },
-  },
+    }
+  }
 });
 
 export const {
@@ -93,6 +122,6 @@ export const {
   setPeopleDetailSuccess,
   makeProfile,
   makeProfileSuccess,
-  getFindPeople,
+  getFindPeople
 } = peopleSlice.actions;
 export default peopleSlice.reducer;

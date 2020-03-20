@@ -18,7 +18,7 @@ function* getProjectCardListLoad(action) {
       `${res.data._links.projectList.href}`
     );
     // console.log(res);
-    // console.log(resProjectList);
+    console.log(resProjectList);
     try {
       const projectData = resProjectList.data._embedded.projectList.map(
         value => {

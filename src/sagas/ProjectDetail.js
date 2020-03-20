@@ -105,7 +105,14 @@ function* setProjectDeleteLoad(action) {
   try {
     const url = window.location.pathname.split("/"); // 현 주소값 쪼갬
     const useUrl = url[2];
-    yield call([axios, "delete"], `${BASEURL}/projects/${useUrl}`);
+    //세션 스토리지에서 토큰을 가져오기
+    const token = window.sessionStorage.getItem("accessToken");
+
+    yield call([axios, "delete"], `${BASEURL}/projects/${useUrl}`, {
+      headers: {
+        authToken: token
+      }
+    });
     yield put(setProjectDeleteSuccess());
     window.location.replace("/project");
   } catch (err) {
