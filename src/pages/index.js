@@ -8,3 +8,4 @@ export { default as MakeProject } from './MakeProject';
 export { default as MakeProfile } from './MakeProfile';
 export { default as LoginPage } from './auth/Login';
 export { default as RegisterPage } from './auth/Register';
+export { default as ProjectApply } from './ProjectApply';
