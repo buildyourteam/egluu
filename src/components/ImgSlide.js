@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useCallback } from 'react';
-import Swiper from 'react-id-swiper';
-import 'swiper/css/swiper.css';
-import PropTypes from 'prop-types';
-import { useDropzone } from 'react-dropzone';
+import React, { useEffect, useRef, useCallback } from "react";
+import Swiper from "react-id-swiper";
+import "swiper/css/swiper.css";
+import PropTypes from "prop-types";
+import { useDropzone } from "react-dropzone";
 
 const thumbnail =
-  'https://i.pinimg.com/originals/72/1a/8b/721a8bd73983160aa979575c9d65a085.jpg';
+  "https://i.pinimg.com/originals/72/1a/8b/721a8bd73983160aa979575c9d65a085.jpg";
 
 function useFallbackImageInSSR(fallbackSrc) {
   const ref = useRef(null);
@@ -16,7 +16,7 @@ function useFallbackImageInSSR(fallbackSrc) {
     e => {
       e.target.src = fallbackSrc;
     },
-    [fallbackSrc],
+    [fallbackSrc]
   );
 
   /**
@@ -35,7 +35,7 @@ function useFallbackImageInSSR(fallbackSrc) {
 
   return {
     ref,
-    onError,
+    onError
   };
 }
 
@@ -45,17 +45,17 @@ export function ImgSlide(props) {
 
   const params = {
     pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true,
+      el: ".swiper-pagination",
+      type: "bullets",
+      clickable: true
     },
     observer: true,
     spaceBetween: 30,
     lazy: {
-      loadPrevNext: true,
+      loadPrevNext: true
     },
-    margin: '10px',
-    height: '700px',
+    margin: "10px",
+    height: "700px"
   };
 
   return (
@@ -78,32 +78,32 @@ export function ImgSlide(props) {
 
 export function ImgInput({ state, setState }) {
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: "image/*",
     onDrop: acceptedFiles => {
       const imgFile = acceptedFiles.map(file =>
         Object.assign(file, {
-          url: URL.createObjectURL(file),
-        }),
+          url: URL.createObjectURL(file)
+        })
       );
-      setState({ ...state, imgUrl: imgFile[0] });
-    },
+      setState({ ...state, imgUrl: imgFile[0], isImgChange: true });
+    }
   });
 
   const params = {
     pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true,
+      el: ".swiper-pagination",
+      type: "bullets",
+      clickable: true
     },
     observer: true,
-    spaceBetween: 30,
+    spaceBetween: 30
   };
 
   return (
     <div>
-      <div {...getRootProps({ className: 'dropzone' })}>
+      <div {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
-        {state.imgUrl === '' ? (
+        {state.imgUrl === "" ? (
           <img
             src={thumbnail}
             alt="이미지 에러"
@@ -113,7 +113,7 @@ export function ImgInput({ state, setState }) {
           />
         ) : (
           <div>
-            {typeof state.imgUrl !== 'string' ? (
+            {typeof state.imgUrl !== "string" ? (
               <img
                 src={state.imgUrl.url}
                 alt="이미지 에러"

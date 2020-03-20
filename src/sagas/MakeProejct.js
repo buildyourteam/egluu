@@ -27,18 +27,38 @@ function* makeProjectLoad(action) {
       memberList: null
     };
 
+    //세션 스토리지에서 토큰을 가져오기
     const token = window.sessionStorage.getItem("accessToken");
-    const headers = {
-      authToken: token
-    };
 
+    // 데이터 업로드
     const res = yield call(
       [axios, "post"],
       `https://api.codingnome.dev/projects`,
       tempData,
-      { headers: headers }
+      {
+        headers: {
+          authToken: token
+        }
+      }
+    );
+
+    // image 업로드
+    let image = new FormData();
+    image.append("image", data.imgUrl);
+    const imgRes = yield call(
+      [axios, "post"],
+      `https://api.codingnome.dev/projects/image/5`,
+      image,
+      {
+        headers: {
+          "Content-type": "multipart/form-data",
+          authToken: token
+        }
+      }
     );
     yield put(makeProjectSuccess());
+
+    //성공 후 해당 프로젝트 디테일 페이지로 이동
     window.location.replace(`${res.data._links.createdProject.href}`);
   } catch (err) {
     console.log(err);
