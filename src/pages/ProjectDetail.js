@@ -40,13 +40,18 @@ const ProjectPageDetail = () => {
   const token = useLoginCheck();
   const project2 = useSelector(state => state.Project.project);
   const [applyList, setApplyList] = React.useState();
+  const [listDetail, setListDetail] = React.useState();
+
   const [{ loadState }, setLoadState, dispatch] = useProjectDetailLoading();
   const [
     { projectDetailState, open },
     setProjectDetailState,
     setOpen,
   ] = useProjectDetailData();
-  const [list, setList] = React.useState(false);
+  const [list, setList] = React.useState({
+    list: false,
+    detail: false,
+  });
   // 같은 setstate 여러번 쓰면 마지막꺼만 반영되므로
   const handleInput = e => {
     e.persist();
@@ -85,8 +90,38 @@ const ProjectPageDetail = () => {
       headers: { authToken: token },
     });
     console.log(res);
-    setApplyList(res.data._embedded.projectApplicantDtoList);
-    setList(true);
+    setApplyList(res.data);
+    setList(value => {
+      return { ...value, list: true };
+    });
+    setLoadState({ open: false, test: 'loading....' });
+  };
+
+  const handleClickDetail = async () => {
+    setLoadState({ open: true, test: 'loading....' });
+    const res = axios.get(applyList._links.profile.href, {
+      headers: { authToken: token },
+    });
+    setListDetail(res.data);
+    setList(value => {
+      return { ...value, detail: true };
+    });
+    setLoadState({ open: false, test: 'loading....' });
+  };
+
+  const handleClickOK = async (e, value) => {
+    setLoadState({ open: true, test: 'loading....' });
+    await axios.put(`${listDetail._links.acceptApply.href}`, {
+      headers: { authToken: token },
+    });
+    setLoadState({ open: false, test: 'loading....' });
+  };
+
+  const handleClickNO = async (e, value) => {
+    setLoadState({ open: true, test: 'loading....' });
+    await axios.put(`${listDetail._links.acceptApply.href}`, {
+      headers: { authToken: token },
+    });
     setLoadState({ open: false, test: 'loading....' });
   };
 
@@ -112,15 +147,29 @@ const ProjectPageDetail = () => {
         </Link>
 
         <Button onClick={handleClickList}>리스트 조회하기</Button>
-        {list && (
+        {list.list && (
           <div>
-            {applyList.map((value, index) => {
+            {applyList._embedded.projectApplicantDtoList.map((value, index) => {
               return (
-                <ul>
-                  <li>이름 : {value.userName}</li>
-                  <li>상태 : {value.status}</li>
-                  <li>역할 : {value.role}</li>
-                </ul>
+                <div>
+                  <ul>
+                    <li>이름 : {value.userName}</li>
+                    <li>상태 : {value.status}</li>
+                    <li>역할 : {value.role}</li>
+                    <Button onClick={e => handleClickDetail(e, value)}>
+                      상세보기
+                    </Button>
+                    <Button onClick={e => handleClickOK(e, value)}>거절</Button>
+                    <Button onClick={e => handleClickNO(e, value)}>승인</Button>
+                  </ul>
+                  {list.detail && (
+                    <div>
+                      <li>질문 : {listDetail.userName}</li>
+                      <li>응답 : {listDetail.status}</li>
+                      <li>자기소개 : {listDetail.selfDescription}</li>
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
