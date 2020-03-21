@@ -32,7 +32,7 @@ export const useLoginData = () => {
 
   return [{ loginState }, setLoginState];
 };
-
+// 로그인 리다이렉트 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 export const useLoginCheck = () => {
   const location = useLocation();
   const token = window.sessionStorage.getItem('accessToken');

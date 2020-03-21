@@ -16,10 +16,17 @@ import {
 import { format } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { ko } from 'date-fns/locale';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { setProjectDetail, setProjectDelete } from '../reducers/Project';
 import { ImgInput, Layout } from '../components';
-import { useProjectDetailLoading, useProjectDetailData } from '../hooks';
+import {
+  useProjectDetailLoading,
+  useProjectDetailData,
+  useLoginCheck,
+} from '../hooks';
+
+const axios = require('axios');
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -30,13 +37,16 @@ const useStyles = makeStyles(theme => ({
 const ProjectPageDetail = () => {
   const classes = useStyles();
   const url = useLocation();
+  const token = useLoginCheck();
+  const project2 = useSelector(state => state.Project.project);
+  const [applyList, setApplyList] = React.useState();
   const [{ loadState }, setLoadState, dispatch] = useProjectDetailLoading();
   const [
     { projectDetailState, open },
     setProjectDetailState,
     setOpen,
   ] = useProjectDetailData();
-
+  const [list, setList] = React.useState(false);
   // 같은 setstate 여러번 쓰면 마지막꺼만 반영되므로
   const handleInput = e => {
     e.persist();
@@ -69,11 +79,21 @@ const ProjectPageDetail = () => {
     }
   };
 
+  const handleClickList = async () => {
+    setLoadState({ open: true, test: 'loading....' });
+    const res = await axios.get(`${project2._links.apply.href}`, {
+      headers: { authToken: token },
+    });
+    console.log(res);
+    setApplyList(res.data._embedded.projectApplicantDtoList);
+    setList(true);
+    setLoadState({ open: false, test: 'loading....' });
+  };
+
   const handleSave = async () => {
     setOpen({ ...open, change: !open.change });
     await dispatch(setProjectDetail(projectDetailState));
   };
-  console.log(url);
   return (
     <div>
       <Layout hasFooter>
@@ -87,13 +107,24 @@ const ProjectPageDetail = () => {
         >
           삭제
         </Button>
-        <Button
-          onClick={() => {
-            window.location.href = `${url.pathname}/apply`;
-          }}
-        >
-          참가신청
-        </Button>
+        <Link to={`${url.pathname}/apply`}>
+          <Button>참가신청</Button>
+        </Link>
+
+        <Button onClick={handleClickList}>리스트 조회하기</Button>
+        {list && (
+          <div>
+            {applyList.map((value, index) => {
+              return (
+                <ul>
+                  <li>이름 : {value.userName}</li>
+                  <li>상태 : {value.status}</li>
+                  <li>역할 : {value.role}</li>
+                </ul>
+              );
+            })}
+          </div>
+        )}
         {open.change ? (
           <div>
             <ImgInput

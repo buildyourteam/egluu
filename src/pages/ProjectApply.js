@@ -17,9 +17,20 @@ import { format } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { ko } from 'date-fns/locale';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation, Link } from 'react-router-dom';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import { setProjectDetail, setProjectDelete } from '../reducers/Project';
 import { ImgInput, Layout } from '../components';
-import { useProjectDetailLoading, useProjectDetailData } from '../hooks';
+import {
+  useProjectDetailLoading,
+  useProjectDetailData,
+  useLoginCheck,
+} from '../hooks';
+
+const axios = require('axios');
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -30,12 +41,15 @@ const useStyles = makeStyles(theme => ({
 const ProjectApply = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const { project } = useSelector(state => state.Project);
+  const project2 = useSelector(state => state.Project.project);
   const project = { question: ['1번질문', '2번질문'] };
+  const token = useLoginCheck();
+  const location = useLocation().pathname;
+  const url = location.split('/');
   const [inputState, setInputState] = React.useState({
     userName: null,
     status: null,
-    question: null,
+    questions: null,
     answers: project.question.map(value => {
       return '';
     }),
@@ -55,7 +69,7 @@ const ProjectApply = props => {
     setInputState(value => {
       return {
         ...value,
-        answer: data,
+        answers: data,
       };
     });
   };
@@ -65,12 +79,19 @@ const ProjectApply = props => {
     setInputState(value => {
       return {
         ...value,
-        [e.target.name]: [e.target.value],
+        [e.target.name]: e.target.value,
       };
     });
   };
 
   const handleSave = async () => {
+    axios.post(
+      `${project2._links.apply.href}`,
+      { ...inputState },
+      {
+        headers: { authToken: token },
+      },
+    );
     // setOpen({ ...open, change: !open.change });
     // await dispatch(setProjectDetail(projectDetailState));
   };
@@ -87,7 +108,7 @@ const ProjectApply = props => {
                 </Typography>
                 <TextField
                   key={value}
-                  name="question"
+                  name="answers"
                   value={inputState[index]}
                   onChange={e => handleInputAnswer(e, index)}
                   fullWidth
@@ -96,13 +117,27 @@ const ProjectApply = props => {
               </div>
             );
           })}
-          <TextField
-            name="role"
-            value={inputState.role}
-            onChange={handleInputString}
-            fullWidth
-            label="지원할 역할"
-          />
+          <FormControl>
+            <InputLabel shrink={false} id="jobGroupLabel">
+              {inputState.occupation === '' ? '직군' : ''}
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelId="jobGroupLabel"
+              id="role"
+              name="role"
+              value={inputState.occupation}
+              onChange={handleInputString}
+              autoWidth
+              variant="standard"
+              disableUnderline
+            >
+              <MenuItem value="DEVELOPER">개발자</MenuItem>
+              <MenuItem value="DESIGNER">디자이너</MenuItem>
+              <MenuItem value="PLANNER">기획자</MenuItem>
+              <MenuItem value="ETC">기타직군</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             name="selfDescription"
             value={inputState.selfDescription}
@@ -110,7 +145,11 @@ const ProjectApply = props => {
             fullWidth
             label="자기소개"
           />
-          <Button onClick={handleSave}>지원하기</Button>
+          {console.log(url[1])}
+          {console.log(url[2])}
+          <Link to={`/${url[1]}/${url[2]}`}>
+            <Button onClick={handleSave}>지원하기</Button>
+          </Link>
         </div>
       </Layout>
     </div>
