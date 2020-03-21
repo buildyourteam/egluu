@@ -1,47 +1,64 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MuiCircularProgress from "@material-ui/core/CircularProgress";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import Dialog from "@material-ui/core/Dialog";
-import ReactMarkdown from "react-markdown/with-html";
-import TextField from "@material-ui/core/TextField";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import MuiCircularProgress from '@material-ui/core/CircularProgress';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@material-ui/core/Dialog';
+import ReactMarkdown from 'react-markdown/with-html';
+import TextField from '@material-ui/core/TextField';
 import {
   DateTimePicker as MuiDateTimePicker,
-  MuiPickersUtilsProvider
-} from "@material-ui/pickers";
-import { format } from "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import { ko } from "date-fns/locale";
-import { setProjectDetail, setProjectDelete } from "../reducers/Project";
-import { ImgInput, Layout } from "../components";
-import { useProjectDetailLoading, useProjectDetailData } from "../hooks";
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import { format } from 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import { ko } from 'date-fns/locale';
+import { useLocation, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setProjectDetail, setProjectDelete } from '../reducers/Project';
+import { ImgInput, Layout } from '../components';
+import {
+  useProjectDetailLoading,
+  useProjectDetailData,
+  useLoginCheck,
+} from '../hooks';
+
+const axios = require('axios');
 
 const useStyles = makeStyles(theme => ({
   text: {
-    color: "#ffffff"
-  }
+    color: '#ffffff',
+  },
 }));
 
 const ProjectPageDetail = () => {
   const classes = useStyles();
+  const url = useLocation();
+  const token = useLoginCheck();
+  const project2 = useSelector(state => state.Project.project);
+  const [applyList, setApplyList] = React.useState();
+  const [listDetail, setListDetail] = React.useState();
+
   const [{ loadState }, setLoadState, dispatch] = useProjectDetailLoading();
   const [
     { projectDetailState, open },
     setProjectDetailState,
-    setOpen
+    setOpen,
   ] = useProjectDetailData();
-
-  //같은 setstate 여러번 쓰면 마지막꺼만 반영되므로
+  const [list, setList] = React.useState({
+    list: false,
+    detail: false,
+  });
+  // 같은 setstate 여러번 쓰면 마지막꺼만 반영되므로
   const handleInput = e => {
     e.persist();
     setProjectDetailState(value => {
       return {
         ...value,
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,
       };
     });
   };
@@ -51,27 +68,67 @@ const ProjectPageDetail = () => {
       ...projectDetailState,
       needMember: {
         ...projectDetailState.needMember,
-        [e.target.name]: e.target.value
-      }
+        [e.target.name]: e.target.value,
+      },
     });
   };
 
   const handleAddEndDate = date => {
     if (Date.parse(date) < Date.parse(new Date())) {
-      alert("오늘 이전일로 설정 불가");
+      alert('오늘 이전일로 설정 불가');
     } else {
       setProjectDetailState({
         ...projectDetailState,
-        endDate: date
+        endDate: date,
       });
     }
+  };
+
+  const handleClickList = async () => {
+    setLoadState({ open: true, test: 'loading....' });
+    const res = await axios.get(`${project2._links.apply.href}`, {
+      headers: { authToken: token },
+    });
+    console.log(res);
+    setApplyList(res.data);
+    setList(value => {
+      return { ...value, list: true };
+    });
+    setLoadState({ open: false, test: 'loading....' });
+  };
+
+  const handleClickDetail = async () => {
+    setLoadState({ open: true, test: 'loading....' });
+    const res = axios.get(applyList._links.profile.href, {
+      headers: { authToken: token },
+    });
+    setListDetail(res.data);
+    setList(value => {
+      return { ...value, detail: true };
+    });
+    setLoadState({ open: false, test: 'loading....' });
+  };
+
+  const handleClickOK = async (e, value) => {
+    setLoadState({ open: true, test: 'loading....' });
+    await axios.put(`${listDetail._links.acceptApply.href}`, {
+      headers: { authToken: token },
+    });
+    setLoadState({ open: false, test: 'loading....' });
+  };
+
+  const handleClickNO = async (e, value) => {
+    setLoadState({ open: true, test: 'loading....' });
+    await axios.put(`${listDetail._links.acceptApply.href}`, {
+      headers: { authToken: token },
+    });
+    setLoadState({ open: false, test: 'loading....' });
   };
 
   const handleSave = async () => {
     setOpen({ ...open, change: !open.change });
     await dispatch(setProjectDetail(projectDetailState));
   };
-
   return (
     <div>
       <Layout hasFooter>
@@ -85,13 +142,38 @@ const ProjectPageDetail = () => {
         >
           삭제
         </Button>
-        <Button
-          onClick={() => {
-            dispatch(setProjectDelete());
-          }}
-        >
-          참가신청
-        </Button>
+        <Link to={`${url.pathname}/apply`}>
+          <Button>참가신청</Button>
+        </Link>
+
+        <Button onClick={handleClickList}>리스트 조회하기</Button>
+        {list.list && (
+          <div>
+            {applyList._embedded.projectApplicantDtoList.map((value, index) => {
+              return (
+                <div>
+                  <ul>
+                    <li>이름 : {value.userName}</li>
+                    <li>상태 : {value.status}</li>
+                    <li>역할 : {value.role}</li>
+                    <Button onClick={e => handleClickDetail(e, value)}>
+                      상세보기
+                    </Button>
+                    <Button onClick={e => handleClickOK(e, value)}>거절</Button>
+                    <Button onClick={e => handleClickNO(e, value)}>승인</Button>
+                  </ul>
+                  {list.detail && (
+                    <div>
+                      <li>질문 : {listDetail.userName}</li>
+                      <li>응답 : {listDetail.status}</li>
+                      <li>자기소개 : {listDetail.selfDescription}</li>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
         {open.change ? (
           <div>
             <ImgInput
@@ -179,16 +261,16 @@ const ProjectPageDetail = () => {
           </div>
         ) : (
           <div>
-            <div style={{ backgroundColor: "#000000", position: "relative" }}>
+            <div style={{ backgroundColor: '#000000', position: 'relative' }}>
               <span>
-                {typeof projectDetailState.imgUrl !== "string" ? (
+                {typeof projectDetailState.imgUrl !== 'string' ? (
                   <img
                     src={projectDetailState.imgUrl.url}
                     alt="이미지 에러"
                     align="center"
                     height="30%"
                     width="100%"
-                    style={{ display: "inline", opacity: "0.5", hover: 1 }}
+                    style={{ display: 'inline', opacity: '0.5', hover: 1 }}
                   />
                 ) : (
                   <span>
@@ -198,16 +280,16 @@ const ProjectPageDetail = () => {
                       align="center"
                       height="30%"
                       width="100%"
-                      style={{ display: "inline", opacity: "0.5", hover: 1 }}
+                      style={{ display: 'inline', opacity: '0.5', hover: 1 }}
                     />
                   </span>
                 )}
               </span>
               <span
                 style={{
-                  margin: "5%",
-                  position: "inline",
-                  overflow: "hidden"
+                  margin: '5%',
+                  position: 'inline',
+                  overflow: 'hidden',
                 }}
               >
                 <Typography variant="h1" className={classes.text}>
@@ -219,29 +301,29 @@ const ProjectPageDetail = () => {
               </span>
             </div>
 
-            <div style={{ margin: "5%", position: "relative" }}>
+            <div style={{ margin: '5%', position: 'relative' }}>
               <ReactMarkdown
                 source={projectDetailState.description}
                 escapeHtml={false}
               />
               <Typography variant="h3">필요 인력</Typography>
               <Typography variant="h6">
-                개발 :{" "}
+                개발 :{' '}
                 {projectDetailState.needMember.developer -
                   projectDetailState.currentMember.developer}
               </Typography>
               <Typography variant="h6">
-                기획 :{" "}
+                기획 :{' '}
                 {projectDetailState.needMember.planner -
                   projectDetailState.currentMember.planner}
               </Typography>
               <Typography variant="h6">
-                디자이너 :{" "}
+                디자이너 :{' '}
                 {projectDetailState.needMember.designer -
                   projectDetailState.currentMember.designer}
               </Typography>
               <Typography variant="h6">
-                기타 :{" "}
+                기타 :{' '}
                 {projectDetailState.needMember.etc -
                   projectDetailState.currentMember.etc}
               </Typography>
@@ -267,14 +349,14 @@ const ProjectPageDetail = () => {
             <Dialog open={loadState.open}>
               <MuiDialogContent
                 style={{
-                  background: "white",
-                  width: "160px",
-                  minHeight: "80px",
-                  textAlign: "center"
+                  background: 'white',
+                  width: '160px',
+                  minHeight: '80px',
+                  textAlign: 'center',
                 }}
               >
-                <MuiCircularProgress style={{ width: "20%", height: "20%" }} />
-                <div style={{ marginTop: "12px" }}>{loadState.text}</div>
+                <MuiCircularProgress style={{ width: '20%', height: '20%' }} />
+                <div style={{ marginTop: '12px' }}>{loadState.text}</div>
                 <Button
                   onClick={() => {
                     setLoadState({ ...loadState, open: false });

@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import {
   NotFound,
   RootPage,
@@ -10,14 +10,20 @@ import {
   MakeProject,
   MakeProfile,
   LoginPage,
-  RegisterPage
-} from "./pages";
+  RegisterPage,
+  ProjectApply,
+} from './pages';
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={RootPage} />
+        <Route
+          exact
+          path="/projects/:projectId/apply"
+          component={ProjectApply}
+        />
         <Route path="/projects/:projectId" component={ProjectPageDetail} />
         <Route path="/profile/:userId" component={PeoplePageDetail} />
         <Route exact path="/project" component={ProjectPage} />
