@@ -84,45 +84,46 @@ const ProjectPageDetail = () => {
     }
   };
 
-  const handleClickList = async () => {
-    setLoadState({ open: true, test: 'loading....' });
+  const handleClickPeopleList = async () => {
+    setLoadState({ open: true, text: 'loading....' });
     const res = await axios.get(`${project2._links.apply.href}`, {
       headers: { authToken: token },
     });
-    console.log(res);
     setApplyList(res.data);
+    console.log(res.data);
     setList(value => {
       return { ...value, list: true };
     });
-    setLoadState({ open: false, test: 'loading....' });
+    setLoadState({ open: false, text: 'loading....' });
   };
 
-  const handleClickDetail = async () => {
-    setLoadState({ open: true, test: 'loading....' });
-    const res = axios.get(applyList._links.profile.href, {
+  const handleClickDetail = async (e, data) => {
+    setLoadState({ open: true, text: 'loading....' });
+    const res = await axios.get(data._links.self.href, {
       headers: { authToken: token },
     });
-    setListDetail(res.data);
+    setListDetail({ ...res.data, userId: data.userId });
     setList(value => {
       return { ...value, detail: true };
     });
-    setLoadState({ open: false, test: 'loading....' });
+    setLoadState({ open: false, text: 'loading....' });
   };
 
   const handleClickOK = async (e, value) => {
-    setLoadState({ open: true, test: 'loading....' });
-    await axios.put(`${listDetail._links.acceptApply.href}`, {
+    setLoadState({ open: true, text: 'loading....' });
+    console.log(value);
+    await axios.put(`${value._links.acceptApply.href}`, {
       headers: { authToken: token },
     });
-    setLoadState({ open: false, test: 'loading....' });
+    setLoadState({ open: false, text: 'loading....' });
   };
 
   const handleClickNO = async (e, value) => {
-    setLoadState({ open: true, test: 'loading....' });
-    await axios.put(`${listDetail._links.acceptApply.href}`, {
+    setLoadState({ open: true, text: 'loading....' });
+    await axios.delete(`${value._links.rejectApply.href}`, {
       headers: { authToken: token },
     });
-    setLoadState({ open: false, test: 'loading....' });
+    setLoadState({ open: false, text: 'loading....' });
   };
 
   const handleSave = async () => {
@@ -142,11 +143,10 @@ const ProjectPageDetail = () => {
         >
           삭제
         </Button>
-        <Link to={`${url.pathname}/apply`}>
+        <Link to={`${url.pathname}/apply`} style={{ textDecoration: 'none' }}>
           <Button>참가신청</Button>
         </Link>
-
-        <Button onClick={handleClickList}>리스트 조회하기</Button>
+        <Button onClick={handleClickPeopleList}>리스트 조회하기</Button>
         {list.list && (
           <div>
             {applyList._embedded.projectApplicantDtoList.map((value, index) => {
@@ -159,14 +159,28 @@ const ProjectPageDetail = () => {
                     <Button onClick={e => handleClickDetail(e, value)}>
                       상세보기
                     </Button>
-                    <Button onClick={e => handleClickOK(e, value)}>거절</Button>
-                    <Button onClick={e => handleClickNO(e, value)}>승인</Button>
                   </ul>
-                  {list.detail && (
+                  {console.log(listDetail)}
+                  {console.log(value)}
+
+                  {list.detail && listDetail.userId === value.userId && (
                     <div>
-                      <li>질문 : {listDetail.userName}</li>
-                      <li>응답 : {listDetail.status}</li>
+                      <li>질문 : {listDetail.question}</li>
+                      {listDetail.answers.map((value2, index2) => {
+                        return (
+                          <li>
+                            답변 {index2} : {value2}
+                          </li>
+                        );
+                      })}
+                      <li>상태 : {listDetail.status}</li>
                       <li>자기소개 : {listDetail.selfDescription}</li>
+                      <Button onClick={e => handleClickNO(e, listDetail)}>
+                        거절
+                      </Button>
+                      <Button onClick={e => handleClickOK(e, listDetail)}>
+                        승인
+                      </Button>
                     </div>
                   )}
                 </div>

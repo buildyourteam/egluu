@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 export function useLoginLoading() {
   const dispatch = useDispatch();
@@ -36,10 +36,11 @@ export const useLoginData = () => {
 export const useLoginCheck = () => {
   const location = useLocation();
   const token = window.sessionStorage.getItem('accessToken');
+  const history = useHistory();
 
   useEffect(() => {
     if (token === null) {
-      window.location.replace('/auth/login');
+      history.replace('/auth/login');
       sessionStorage.setItem('redirectUrl', location.pathname);
     }
   }, []);

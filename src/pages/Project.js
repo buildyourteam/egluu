@@ -14,6 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
+import { Link } from 'react-router-dom';
 import { TeamBox, Layout } from '../components';
 import { useProjectLoading, useProjectData } from '../hooks';
 import { getProjectCardList } from '../reducers/Project';
@@ -119,27 +120,25 @@ const ProjectPage = () => {
               검색
             </Button>
           </div>
-          <Button
-            onClick={() => {
-              window.location = '/makeproject';
-            }}
-          >
-            프로젝트 팀 개설하기 >
-          </Button>
+          <Link to="/makeproject" style={{ textDecoration: 'none' }}>
+            <Button>프로젝트 팀 개설하기 ></Button>
+          </Link>
         </Grid>
         <div>{projectState.length}개의 팀이 있습니다.</div>
         {projectState.length > 0 && (
           <Grid container>
             {projectState.map((value, i) => (
-              <span
-                style={{ margin: '20px', cursor: 'pointer' }}
-                id={value.title + i}
-                onClick={() =>
-                  (window.location = `/projects/${value.projectId}`)
-                }
+              <Link
+                to={`/projects/${value.projectId}`}
+                style={{ textDecoration: 'none' }}
               >
-                <TeamBox state={value} />
-              </span>
+                <span
+                  style={{ margin: '20px', cursor: 'pointer' }}
+                  id={value.title + i}
+                >
+                  <TeamBox state={value} />
+                </span>
+              </Link>
             ))}
           </Grid>
         )}

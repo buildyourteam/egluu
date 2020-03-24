@@ -1,31 +1,32 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MuiCircularProgress from "@material-ui/core/CircularProgress";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import Dialog from "@material-ui/core/Dialog";
-import ReactMarkdown from "react-markdown/with-html";
-import TextField from "@material-ui/core/TextField";
-import { usePeopleDetailLoading, usePeopleDetailData } from "../hooks";
-import { setPeopleDetail } from "../reducers/People";
-import Grid from "@material-ui/core/Grid";
-import { ImgInput, Layout, TeamBox } from "../components";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import { green } from "@material-ui/core/colors";
-import baseImg from "./unnamed.jpg";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import MuiCircularProgress from '@material-ui/core/CircularProgress';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@material-ui/core/Dialog';
+import ReactMarkdown from 'react-markdown/with-html';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import { green } from '@material-ui/core/colors';
+import { Link } from 'react-router-dom';
+import { ImgInput, Layout, TeamBox } from '../components';
+import { setPeopleDetail } from '../reducers/People';
+import { usePeopleDetailLoading, usePeopleDetailData } from '../hooks';
+import baseImg from './unnamed.jpg';
 
 const useStyles = makeStyles(theme => ({
   text: {
-    color: "#000000"
+    color: '#000000',
   },
   userId: {
-    opacity: 0.5
-  }
+    opacity: 0.5,
+  },
 }));
 
 const PeoplePageDetail = () => {
@@ -34,17 +35,17 @@ const PeoplePageDetail = () => {
   const [
     { peopleDetailState, open },
     setPeopleDetailState,
-    setOpen
+    setOpen,
   ] = usePeopleDetailData();
 
   const handleInput = e => {
     e.persist();
     setPeopleDetailState({
       ...peopleDetailState,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
-  const id = window.sessionStorage.getItem("id");
+  const id = window.sessionStorage.getItem('id');
 
   // const handleInputMember = e => {
   //   setPeopleDetailState({
@@ -66,9 +67,9 @@ const PeoplePageDetail = () => {
         <AppBar
           position="static"
           color="inherit"
-          style={{ boxShadow: "none", textAlign: "center" }}
+          style={{ boxShadow: 'none', textAlign: 'center' }}
         >
-          <Toolbar style={{ textAlign: "center" }}>
+          <Toolbar style={{ textAlign: 'center' }}>
             {/* <div>
             <img src="fds" alt="" />
           </div> */}
@@ -143,35 +144,35 @@ const PeoplePageDetail = () => {
               ) : (
                 <div>
                   <div
-                    style={{ backgroundColor: "#000000", position: "relative" }}
+                    style={{ backgroundColor: '#000000', position: 'relative' }}
                   >
                     <div>
-                      {typeof peopleDetailState.imgUrl !== "string" ? (
+                      {typeof peopleDetailState.imgUrl !== 'string' ? (
                         <img
                           src=""
-                          //src={peopleDetailState.imgUrl.url}
+                          // src={peopleDetailState.imgUrl.url}
                           alt="이미지 에러"
                           align="center"
                           height="30%"
                           width="100%"
-                          style={{ display: "block", hover: 1 }}
+                          style={{ display: 'block', hover: 1 }}
                           onError="this.src='./unnamed.jpg'"
                         />
                       ) : (
                         <div>
                           <img
-                            //src="https://lh3.googleusercontent.com/proxy/cBZU_F1ulNXIOwd2hj1Tu_d8lCiKtM5IS4eDbf3Bf9M5yqzez0BgRVdULPgifDMMBzmOAo5SstJYbsP52OlBcADaGbKkJbcqtQrc3bjsMJ3lZNRLUs_iEA"
-                            //src={baseImg}
+                            // src="https://lh3.googleusercontent.com/proxy/cBZU_F1ulNXIOwd2hj1Tu_d8lCiKtM5IS4eDbf3Bf9M5yqzez0BgRVdULPgifDMMBzmOAo5SstJYbsP52OlBcADaGbKkJbcqtQrc3bjsMJ3lZNRLUs_iEA"
+                            // src={baseImg}
                             src={peopleDetailState.imgUrl}
                             alt="이미지 에러"
                             align="center"
                             height="30%"
                             width="100%"
-                            //onError={(this.src = baseImg)}
+                            // onError={(this.src = baseImg)}
                             style={{
-                              display: "block",
+                              display: 'block',
 
-                              hover: 1
+                              hover: 1,
                             }}
                           />
                         </div>
@@ -179,7 +180,7 @@ const PeoplePageDetail = () => {
                     </div>
                   </div>
                   <div
-                    style={{ margin: "5%", position: "relative", top: "0vh" }}
+                    style={{ margin: '5%', position: 'relative', top: '0vh' }}
                   >
                     {/* userName */}
                     <Typography variant="h4" className={classes.text}>
@@ -229,22 +230,22 @@ const PeoplePageDetail = () => {
                   </div>
 
                   <div
-                    style={{ margin: "5%", position: "relative", top: "0vh" }}
-                  ></div>
+                    style={{ margin: '5%', position: 'relative', top: '0vh' }}
+                  />
 
                   <Dialog open={loadState.open}>
                     <MuiDialogContent
                       style={{
-                        background: "white",
-                        width: "160px",
-                        minHeight: "80px",
-                        textAlign: "center"
+                        background: 'white',
+                        width: '160px',
+                        minHeight: '80px',
+                        textAlign: 'center',
                       }}
                     >
                       <MuiCircularProgress
-                        style={{ width: "20%", height: "20%" }}
+                        style={{ width: '20%', height: '20%' }}
                       />
-                      <div style={{ marginTop: "12px" }}>{loadState.text}</div>
+                      <div style={{ marginTop: '12px' }}>{loadState.text}</div>
                       <Button
                         onClick={() => {
                           setLoadState({ ...loadState, open: false });
@@ -266,17 +267,19 @@ const PeoplePageDetail = () => {
           </Grid>
 
           {peopleDetailState.projects.map((value, i) => (
-            <Grid xs={8} sm={4}>
-              <span
-                style={{ margin: "20px", cursor: "pointer" }}
-                id={value.title + i}
-                onClick={() =>
-                  (window.location = `/projects/${value.projectId}`)
-                }
-              >
-                <TeamBox state={value} />
-              </span>
-            </Grid>
+            <Link
+              to={`/projects/${value.projectId}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <Grid xs={8} sm={4}>
+                <span
+                  style={{ margin: '20px', cursor: 'pointer' }}
+                  id={value.title + i}
+                >
+                  <TeamBox state={value} />
+                </span>
+              </Grid>
+            </Link>
           ))}
         </Grid>
       </div>

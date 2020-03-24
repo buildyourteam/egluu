@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import { Link } from 'react-router-dom';
 import { PeopleBox, Layout } from '../components';
 import { usePeopleLoading, usePeopleData } from '../hooks';
 import { getFindPeople } from '../reducers/People';
@@ -151,13 +152,14 @@ const PeoplePage = () => {
         <div>{peopleState.length}마리의 User가 있습니다.</div>
         <Grid container>
           {peopleState.map((value, i) => (
-            <span
-              style={{ margin: '20px' }}
-              id={value.name + i}
-              onClick={() => (window.location = `/profile/${value.userId}`)}
+            <Link
+              to={`/profile/${value.userId}`}
+              style={{ textDecoration: 'none' }}
             >
-              <PeopleBox state={value} />
-            </span>
+              <span style={{ margin: '20px' }} id={value.name + i}>
+                <PeopleBox state={value} />
+              </span>
+            </Link>
           ))}
         </Grid>
       </Layout>

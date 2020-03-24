@@ -1,25 +1,27 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import { Layout } from "../../components";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import { green } from "@material-ui/core/colors";
-import TextField from "@material-ui/core/TextField";
-import { login } from "../../reducers/Login";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import { green } from '@material-ui/core/colors';
+import TextField from '@material-ui/core/TextField';
+import { Link, withRouter, useHistory } from 'react-router-dom';
+import { Layout } from '../../components';
+import { login } from '../../reducers/Login';
 
-import { useLoginData, useLoginLoading } from "../../hooks";
+import { useLoginData, useLoginLoading } from '../../hooks';
 
 const useStyles = makeStyles(theme => ({
   panel: {
-    margin: "0px",
-    color: green
-  }
+    margin: '0px',
+    color: green,
+  },
 }));
 
 const LoginPage = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [{ loadState }, setLoadState, dispatch] = useLoginLoading();
   const [{ loginState }, setLoginState] = useLoginData();
 
@@ -27,13 +29,15 @@ const LoginPage = () => {
     e.persist();
     setLoginState({
       ...loginState,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSave = async () => {
-    console.log("저장하기");
+    console.log('저장하기');
     await dispatch(login(loginState));
+    history.replace('/');
+    // history.();
   };
 
   return (
@@ -73,4 +77,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withRouter(LoginPage);
