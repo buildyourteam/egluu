@@ -35,7 +35,10 @@ export const useLoginData = () => {
 // 로그인 리다이렉트 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 export const useLoginCheck = () => {
   const location = useLocation();
-  const token = window.sessionStorage.getItem('accessToken');
+  const token =
+    window.sessionStorage.getItem('accessToken') === null
+      ? ''
+      : window.sessionStorage.getItem('accessToken');
   const history = useHistory();
 
   useEffect(() => {

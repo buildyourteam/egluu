@@ -14,11 +14,23 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { green } from '@material-ui/core/colors';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import { ImgInput, Layout, TeamBox } from '../components';
 import { setPeopleDetail } from '../reducers/People';
-import { usePeopleDetailLoading, usePeopleDetailData } from '../hooks';
+import {
+  usePeopleDetailLoading,
+  usePeopleDetailData,
+  useLoginCheck,
+} from '../hooks';
 import baseImg from './unnamed.jpg';
+
+const BASEURL = 'https://api.codingnome.dev';
+
+const axios = require('axios');
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -31,7 +43,14 @@ const useStyles = makeStyles(theme => ({
 
 const PeoplePageDetail = () => {
   const classes = useStyles();
+  const { token } = useLoginCheck();
   const [{ loadState }, setLoadState, dispatch] = usePeopleDetailLoading();
+  const [recurit, setRecurit] = React.useState({
+    flag: false,
+    projectId: '',
+    selfDescription: '',
+    role: '',
+  });
   const [
     { peopleDetailState, open },
     setPeopleDetailState,
@@ -59,6 +78,42 @@ const PeoplePageDetail = () => {
   const handleSave = async () => {
     setOpen({ ...open, change: !open.change });
     await dispatch(setPeopleDetail(peopleDetailState));
+  };
+
+  const handleClickRecurit = () => {
+    setRecurit(value => {
+      return { ...value, flag: true };
+    });
+  };
+
+  const handleRecuritString = e => {
+    console.log(e.target.value);
+    e.persist();
+    setRecurit(value => {
+      return {
+        ...value,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const handleClickRecuritCheck = async e => {
+    const { projectId } = recurit;
+    // const { userId } = peopleDetailState;
+
+    console.log(peopleDetailState);
+    await axios.post(
+      `${BASEURL}/profile/${id}/recruit/${projectId}`,
+      {
+        userName: peopleDetailState.userName,
+        selfDescription: recurit.selfDescription,
+        role: recurit.role,
+        status: null,
+        projectId: recurit.projectId,
+        projectName: null,
+      },
+      { headers: { authToken: token } },
+    );
   };
 
   return (
@@ -260,6 +315,48 @@ const PeoplePageDetail = () => {
                   >
                     수정하기
                   </Button>
+                  <Button onClick={handleClickRecurit}>영입 제안하기</Button>
+                  {recurit.flag && (
+                    <div>
+                      <TextField
+                        name="projectId"
+                        value={recurit.projectId}
+                        onChange={handleRecuritString}
+                        fullWidth
+                        tpye="number"
+                        label="프로젝트 아이디"
+                      />
+                      <FormControl>
+                        <InputLabel shrink={false} id="jobGroupLabel">
+                          {recurit.occupation === '' ? '직군' : ''}
+                        </InputLabel>
+                        <Select
+                          className={classes.select}
+                          labelId="jobGroupLabel"
+                          id="role"
+                          name="role"
+                          value={recurit.occupation}
+                          onChange={handleRecuritString}
+                          autoWidth
+                          variant="standard"
+                          disableUnderline
+                        >
+                          <MenuItem value="DEVELOPER">개발자</MenuItem>
+                          <MenuItem value="DESIGNER">디자이너</MenuItem>
+                          <MenuItem value="PLANNER">기획자</MenuItem>
+                          <MenuItem value="ETC">기타직군</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <TextField
+                        name="selfDescription"
+                        value={recurit.selfDescription}
+                        onChange={handleRecuritString}
+                        fullWidth
+                        label="자기소개"
+                      />
+                      <Button onClick={handleClickRecuritCheck}>확인</Button>
+                    </div>
+                  )}
                 </div>
               )}
             </Card>

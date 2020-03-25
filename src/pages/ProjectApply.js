@@ -145,8 +145,6 @@ const ProjectApply = props => {
             fullWidth
             label="자기소개"
           />
-          {console.log(url[1])}
-          {console.log(url[2])}
           <Link to={`/${url[1]}/${url[2]}`}>
             <Button onClick={handleSave}>지원하기</Button>
           </Link>
