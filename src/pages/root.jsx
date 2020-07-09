@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Card,
   CardImg,
@@ -10,83 +10,98 @@ import {
   Col,
   Progress
 } from "reactstrap";
-import { useTemporaryApi, useGetTemporary, usePostTemporary, useRequest, useMove } from '../hook';
-import { Button, Layout, Jumbotron, SubtitleHeader, ProjectBox } from '../components';
+import {
+  useTemporaryApi,
+  useGetTemporary,
+  usePostTemporary,
+  useRequest,
+  useMove
+} from "../hook";
+import {
+  Button,
+  Layout,
+  Jumbotron,
+  SubtitleHeader,
+  ProjectBox,
+  PeopleBox
+} from "../components";
 
+export default function Root() {
+  const [temporary, apiAction] = useTemporaryApi();
+  const [
+    {
+      data: getData,
+      fulfilled: getFulfilled,
+      pending: getPending,
+      rejected: getRejected,
+      error: getError
+    },
+    { run: getApi }
+  ] = useRequest(apiAction.getApi);
+  const [
+    {
+      data: postData,
+      fulfilled: postFulfilled,
+      pending: postPending,
+      rejected: postRejected,
+      error: postError
+    },
+    { run: postApi }
+  ] = useRequest(apiAction.postApi);
+  const [tempState, changeState] = useGetTemporary(
+    getData,
+    getFulfilled,
+    getRejected,
+    getError,
+    getApi
+  );
+  usePostTemporary(postData, postFulfilled, postRejected, postError, postApi);
+  useMove(postFulfilled, "./");
 
+  const clickPost = () => {
+    apiAction.postApi(tempState);
+  };
 
-export default function Root(){
-    const [temporary, apiAction] = useTemporaryApi();
-    const [
-        {
-          data: getData,
-          fulfilled: getFulfilled,
-          pending: getPending,
-          rejected: getRejected,
-          error: getError,
-        },
-        { run: getApi },
-      ] = useRequest(apiAction.getApi);
-      const [
-        {
-          data: postData,
-          fulfilled: postFulfilled,
-          pending: postPending,
-          rejected: postRejected,
-          error: postError,
-        },
-        { run: postApi },
-      ] = useRequest(apiAction.postApi);
-      const [tempState, changeState] = useGetTemporary(getData, getFulfilled, getRejected, getError, getApi);
-      usePostTemporary(postData, postFulfilled, postRejected, postError, postApi); 
-      useMove(postFulfilled, './');
-
-      const clickPost = () => {
-        apiAction.postApi(tempState)
-      }
-
-      return (
-        <Layout>
-          <Jumbotron />
-          <SubtitleHeader>마감임박 프로젝트</SubtitleHeader>
-          <Row xs="12">
-          {staticProjectData.map(value => {return (
+  return (
+    <Layout>
+      <Jumbotron />
+      <SubtitleHeader>마감임박 프로젝트 </SubtitleHeader>
+      <Row xs="12">
+        {staticProjectData.map(value => {
+          return (
             <Col xs="3">
-            <ProjectBox data={value}/>          
+              <ProjectBox data={value} />
             </Col>
-          )})}
-          </Row>     
-            root page
-            {(getPending || postPending) ? (
-                <div>
-                    로딩중...
-                    </div>
-            ) : (
-                <div>
-                    <Button onClick={changeState.clickPlusButton}>숫자 늘리기</Button>
-                    <Button onClick={clickPost}>data post</Button>
-                    <div>
-                        state값 : {tempState}
-                        <br />
-                        redux값 : {postData}
-                    </div>
-                </div>
-            )} 
-        </Layout>
-    )
+          );
+        })}
+      </Row>
+      <SubtitleHeader> 프로젝트를 찾는 사람들 </SubtitleHeader>
+      <Row xs="12">
+        {staticPeopleData.map(value => {
+          return (
+            <Col xs="2">
+              <PeopleBox data={value} />
+            </Col>
+          );
+        })}
+      </Row>
+      root page
+      {getPending || postPending ? (
+        <div>로딩중...</div>
+      ) : (
+        <div>
+          <Button onClick={changeState.clickPlusButton}>숫자 늘리기</Button>
+          <Button onClick={clickPost}>data post</Button>
+          <div>
+            state값 : {tempState}
+            <br />
+            redux값 : {postData}
+          </div>
+        </div>
+      )}
+    </Layout>
+  );
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 const staticProjectData = [
   {
@@ -182,4 +197,95 @@ const staticProjectData = [
     leaderId: null
   }
 ];
-
+const staticPeopleData = [
+  {
+    userId: "testUser1",
+    userName: "User1",
+    stacks: ["SPRINGBOOT", "ReactJS"],
+    area: "Seoul",
+    level: 1,
+    _links: {
+      self: {
+        href: "/profile/testUser1"
+      },
+      profileImage: {
+        href: "https://api.eskiiimo.com/profile/image/testUser1"
+      }
+    }
+  },
+  {
+    userId: "testUser4",
+    userName: "User4",
+    stacks: ["SPRINGBOOT"],
+    area: "Seoul",
+    level: 1,
+    _links: {
+      self: {
+        href: "/profile/testUser4"
+      },
+      profileImage: {
+        href: "https://api.eskiiimo.com/profile/image/testUser4"
+      }
+    }
+  },
+  {
+    userId: "testUser7",
+    userName: "User7",
+    stacks: ["SPRINGBOOT"],
+    area: "Seoul",
+    level: 6,
+    _links: {
+      self: {
+        href: "/profile/testUser7"
+      },
+      profileImage: {
+        href: "https://api.eskiiimo.com/profile/image/testUser7"
+      }
+    }
+  },
+  {
+    userId: "testUser7",
+    userName: "User7",
+    stacks: ["SPRINGBOOT"],
+    area: "Seoul",
+    level: 1,
+    _links: {
+      self: {
+        href: "/profile/testUser7"
+      },
+      profileImage: {
+        href: "https://api.eskiiimo.com/profile/image/testUser7"
+      }
+    }
+  },
+  {
+    userId: "testUser7",
+    userName: "User7",
+    stacks: ["SPRINGBOOT"],
+    area: "Seoul",
+    level: 1,
+    _links: {
+      self: {
+        href: "/profile/testUser7"
+      },
+      profileImage: {
+        href: "https://api.eskiiimo.com/profile/image/testUser7"
+      }
+    }
+  },
+  {
+    userId: "testUser7",
+    userName: "User7",
+    stacks: ["SPRINGBOOT"],
+    area: "Seoul",
+    level: 1,
+    _links: {
+      self: {
+        href: "/profile/testUser7"
+      },
+      profileImage: {
+        href: "https://api.eskiiimo.com/profile/image/testUser7"
+      }
+    }
+  }
+];
