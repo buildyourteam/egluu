@@ -25,7 +25,7 @@ import {
   ProjectBox,
   PeopleBox
 } from "../components";
-
+import "./main.css";
 export default function Root() {
   const [temporary, apiAction] = useTemporaryApi();
   const [

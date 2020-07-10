@@ -25,7 +25,7 @@ export default function PeopleBox(props) {
           <div>
             <Row xs="12">
               <Col xs="9">
-                <CardTitle>{data.userName}</CardTitle>
+                {/* <CardTitle>{data.userName}</CardTitle> */}
                 <CardSubtitle>{data.userId}</CardSubtitle>
               </Col>
               <Col xs="3">

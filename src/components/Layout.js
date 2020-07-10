@@ -44,26 +44,26 @@ export default function Layout({ children }) {
     }
   };
   return (
-    <div style={{margin:"0 20vw 0 20vw"}}>
-      <Navbar color="" light expand="md" >
+    <div style={{ margin: "0 20vw 0 20vw" }}>
+      <Navbar color="" light expand="md">
         <NavbarBrand tag={Link} to="/">
-          Posture Correcting Web App
-          <img src={logo} alt="menubar" id="menu-img" width="100" />
+          Egluu
+          {/* <img src={logo} alt="menubar" id="menu-img" width="100" /> */}
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink tag={Link} to="/forwardNeck">
-                내 자세 진단하기
+              <NavLink tag={Link} to="/projects">
+                프로젝트 목록보기
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/videoList">
-                동영상 카테고리
+              <NavLink tag={Link} to="/people">
+                사용자 목록보기
               </NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
+            {/* <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Options
               </DropdownToggle>
@@ -73,7 +73,7 @@ export default function Layout({ children }) {
                 <DropdownItem divider />
                 <DropdownItem>Reset</DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </Nav>
           <NavbarText>Simple Text</NavbarText>
         </Collapse>

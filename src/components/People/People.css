@@ -1,3 +1,19 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
 .card-body {
-  padding-left: 0rem;
+  padding: 10px 10px 10px 10px;
+}
+
+#PeopleBoxCard .col-3 {
+  /* background-color: black; */
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+#PeopleBoxCard .card-text {
+  font-size: 10px;
+}
+
+.level {
+  padding: 1px 5px 1px 5px;
 }
