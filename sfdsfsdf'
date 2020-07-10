@@ -1,0 +1,268 @@
+[33mcommit 9e9f46a1e78459c603f7507c8456d9ae81f1d3e2[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/15-메인페이지[m[33m, [m[1;31morigin/feature/15-메인페이지[m[33m)[m
+Author: inho2736 <limcara@nate.com>
+Date:   Thu Jul 9 17:51:26 2020 +0900
+
+    refactor:peopleBox component
+
+[33mcommit 05ed1b52f3468b711f8300d345c301892645a600[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Thu Jul 9 00:04:20 2020 +0900
+
+    15-메인페이지
+    레이아웃, 점보트론, 프로젝트박스
+
+[33mcommit c5264a019d501393504228ab9d52b4dc023050c2[m[33m ([m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Wed Jul 8 22:26:30 2020 +0900
+
+    기본
+
+[33mcommit 056354f5d9dbe62c054cf90396764e8350d6566e[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Wed Jul 8 17:45:26 2020 +0900
+
+    프로젝트 초기화
+
+[33mcommit 031365b47f209062498a9d0c75d3d19f8323915c[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Wed Mar 25 15:14:26 2020 +0900
+
+    프로젝트 영입하기 구현
+
+[33mcommit 00e74f15384a9dde2c76df89d8dee25ca754ce1e[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Wed Mar 25 08:37:53 2020 +0900
+
+    url 이동 방식 변경
+    삭제 상세보기 추가 수정
+
+[33mcommit 4b6d6343a6b7e23f370efc7819a84c05ab098830[m
+Merge: 2e455045 c48f455e
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sat Mar 21 19:22:11 2020 +0900
+
+    Merge branch 'feature/projectAppling' into develop
+
+[33mcommit c48f455ec45342827c2c44ace96216470ed473fc[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sat Mar 21 18:34:34 2020 +0900
+
+    지원자 승인 거절 완료
+
+[33mcommit 2284e8be23193e4794b916570305d885bc63a3b6[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sat Mar 21 18:20:22 2020 +0900
+
+    리스트 조회 완료
+
+[33mcommit 8e3c1675423c4c759578fba825a53dd92920d9d3[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Fri Mar 20 18:01:26 2020 +0900
+
+    프로젝트 지원하기 ui
+
+[33mcommit 2e455045dd4f158cc03d97e16ebadec7f9f120f6[m
+Merge: a537be93 01573ae1
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Fri Mar 20 17:07:08 2020 +0900
+
+    Merge branch 'develop' of https://github.com/osydoo/Portfolio_Frontend into develop
+
+[33mcommit a537be939fd06f43a49b7873b1c708ebc82eece0[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Fri Mar 20 17:06:34 2020 +0900
+
+    useLoginCheck
+
+[33mcommit 01573ae19a0a3bf78aff93411c5f628433e460a5[m[33m ([m[1;31morigin/feature/image[m[33m)[m
+Author: inho2736 <limcara@nate.com>
+Date:   Fri Mar 20 16:44:41 2020 +0900
+
+    profile 페이지 수정
+
+[33mcommit 31d9688b1f00eaf127e570426509e7b5a1ef496d[m
+Author: inho2736 <limcara@nate.com>
+Date:   Tue Mar 17 00:24:28 2020 +0900
+
+    makeProject 오류 수정
+
+[33mcommit 6dea6dd78f322f01b75b4e608547773f7a6d53d7[m
+Author: inho2736 <limcara@nate.com>
+Date:   Mon Mar 16 15:41:50 2020 +0900
+
+    회원가입 구현 및 루트페이지 수정
+
+[33mcommit b01967c53f2275bfcbf24c3d69e2af6b7c8ccb8b[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sun Mar 15 18:11:36 2020 +0900
+
+    프로젝트 리스트 불러오기 api에 맞게 수정
+    프로젝트나 사람이 하나도 없을 시 [] 입력
+
+[33mcommit 7dbd2bda401164062c2950a7f2ee718fc1b1d769[m[33m ([m[1;31morigin/feature/login[m[33m)[m
+Author: inho2736 <limcara@nate.com>
+Date:   Sun Mar 15 15:48:35 2020 +0900
+
+    login
+
+[33mcommit 0b0fa2e8833f0819177dbc71a46f762a695afdd3[m
+Author: inho2736 <limcara@nate.com>
+Date:   Fri Mar 6 16:45:14 2020 +0900
+
+    index 수정
+
+[33mcommit 94b244c5b313b8801cc1a2f3a1162ca4117be370[m
+Merge: b3099c9c d2c6045a
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Mon Mar 2 15:18:05 2020 +0900
+
+    Merge branch 'feature/apiattach' into develop
+
+[33mcommit d2c6045a729d0cbf9df166a547f9cbe9f909ff43[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sun Mar 1 22:52:31 2020 +0900
+
+    수정
+
+[33mcommit b3099c9cdcd1d424bd7fe584cb83aeedb0fa2d32[m
+Author: inho2736 <limcara@nate.com>
+Date:   Tue Feb 25 09:09:04 2020 +0900
+
+    make profile페이지(추후 api동작 여부 확인요망)
+
+[33mcommit 825be52412d4569f0162d2da03fda211a281bea1[m
+Merge: 99765684 65965267
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Mon Feb 24 01:49:37 2020 +0900
+
+    병합 완료 및 프로젝트 팀 개설하기 버튼에 연결
+
+[33mcommit 659652674cc8c0e677d42c7d2ebbc9cfd7036dba[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Mon Feb 24 01:40:25 2020 +0900
+
+    프로젝트 삭제, 수정
+
+[33mcommit 99765684eb69fa9dd98ca4b67e8aeb1fbb3c2af0[m[33m ([m[1;31morigin/feature/updatePeoplePage[m[33m)[m
+Author: inho2736 <limcara@nate.com>
+Date:   Mon Feb 24 01:31:21 2020 +0900
+
+    people 변수조정, 루트페이지 api연결, 오류해결
+
+[33mcommit e3428090d0a89bd21967f5e2d35834acf939326a[m
+Author: inho2736 <limcara@nate.com>
+Date:   Mon Feb 24 00:56:49 2020 +0900
+
+    Maximum update depth exceeded. 오류
+
+[33mcommit d1adf6a05f1d759a36166d19028e5ea7169042eb[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Mon Feb 24 00:56:44 2020 +0900
+
+    프로젝트 수정하기 수정중...
+
+[33mcommit 0fb9735a4c88e0fdc1865cc0db7480c51a0a5815[m
+Merge: 25a0859d 893dc5c8
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sun Feb 23 15:55:24 2020 +0900
+
+    refactoring
+    수정 해줘야할 사항
+    date 형식 ute에서 date로 변경
+    
+    수정된 사항
+    사가 분리
+    프로젝트 만들기 페이지, 사가, 훅 추가
+    
+    추가된 사항
+    sudo git commit -m refactoring
+
+[33mcommit 893dc5c8e881686f532427a5d66810440fae0e17[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sun Feb 23 15:53:04 2020 +0900
+
+    프로젝트 만들기, 프로젝트 디테일 불러오기, 프로젝트 리스트 불러오기 api적용완료
+
+[33mcommit da45e43a41259167c3d286fab13ef1afe3fc1d82[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sun Feb 23 11:22:06 2020 +0900
+
+    수정중
+
+[33mcommit 9b4282367a88c46ac71213f4c58719ac995400f9[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sat Feb 22 13:49:23 2020 +0900
+
+    수정중
+    get, push붙여야함
+
+[33mcommit 25a0859d12432f7c606deb3e6419ed7cb9102aa2[m
+Merge: 69010b60 c608811c
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Thu Feb 20 17:35:54 2020 +0900
+
+    수정중
+
+[33mcommit 69010b601670843aad9d748bd08456a980359959[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Thu Feb 20 17:31:20 2020 +0900
+
+    불러오기 하나 구현
+
+[33mcommit c608811c1426d6b957f72a8252b65d9a4b7a6768[m
+Author: inho2736 <limcara@nate.com>
+Date:   Mon Feb 3 17:59:43 2020 +0900
+
+    people페이지, peopleDetail페이지 구현
+
+[33mcommit e74e123f837c98f027ab5a5c94ecec25f6b75d21[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Mon Feb 3 14:24:56 2020 +0900
+
+    수정완료
+    useProject 88번째줄에 잘못된점 수정
+
+[33mcommit 6fe2c623f3d4e9f98177532912ba0c77f087ac42[m
+Author: inho2736 <limcara@nate.com>
+Date:   Mon Feb 3 12:21:40 2020 +0900
+
+    project, people 페이지 오류
+
+[33mcommit 4c748bff5ce8ab740a0b2a48853fab05108a19d6[m
+Merge: 1aa7b01a bbaf24a5
+Author: inho2736 <limcara@nate.com>
+Date:   Sun Feb 2 17:09:02 2020 +0900
+
+    Merge branch 'develop' of https://github.com/osydoo/Portfolio_Frontend into develop
+
+[33mcommit bbaf24a5a13d66551e20e4d41707a14a8c5394f6[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sun Feb 2 17:08:31 2020 +0900
+
+    잘못 삭제한 데이터 수정
+    tempList살림, setdefault삭제
+
+[33mcommit 1aa7b01ac9d0fac43e8c79be639fba8117b26a21[m
+Merge: 1f057428 abc5796d
+Author: inho2736 <limcara@nate.com>
+Date:   Sun Feb 2 16:32:07 2020 +0900
+
+    Merge branch 'develop' of https://github.com/osydoo/Portfolio_Frontend into develop
+
+[33mcommit abc5796d6d17ab7c27c5dd702430265b9ccdb8db[m
+Merge: de04cf12 2a0102f7
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sun Feb 2 16:30:50 2020 +0900
+
+    Merge branch 'feature/ProjectDetailChange' into develop
+
+[33mcommit 2a0102f79b329e2a4010dae3e283aaf528f71474[m
+Author: 윤동우 <osydooo@gmail.com>
+Date:   Sun Feb 2 16:27:37 2020 +0900
+
+    프로젝트 페이지 수정 완료
+
+[33mcommit 1f0574283930ddc0a35b923498ac50823a6ec07e[m
+Merge: 01e7dd9f de04cf12
+Author: inho2736 <limcara@nate.com>
+Date:   Sun Feb 2 15

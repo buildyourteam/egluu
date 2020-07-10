@@ -89,16 +89,11 @@ export default function Root() {
       {getPending || postPending ? (
         <div>로딩중...</div>
       ) : (
-        <div>
-          <Button onClick={changeState.clickPlusButton}>숫자 늘리기</Button>
-          <Button onClick={clickPost}>data post</Button>
           <div>
-            state값 : {tempState}
-            <br />
-            redux값 : {postData}
+            <Button onClick={changeState.clickPlusButton}>숫자 늘리기</Button>
+            <Button onClick={clickPost}>data post</Button>
           </div>
-        </div>
-      )}
+        )}
     </Layout>
   );
 }

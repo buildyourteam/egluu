@@ -6,12 +6,11 @@ const axios = require("axios");
 export function useTemporaryApi() {
   const { temporary } = useSelector((state) => state.temproray);
   const getApi = async () => {
-    const res = await axios.get(`http://127.0.0.1:3001/getData`);
+    const res = await axios.get(`https://apis.tracker.delivery/carriers`);
     return res.data;
   };
   const postApi = async (data) => {
-    const res = await axios.post(`http://127.0.0.1:3001/postData`, {data: data});
-    return res.data;
+    await axios.post(`http://127.0.0.1:9000/postdata`, { data: data });
   };
 
   return [temporary, { getApi, postApi }];
@@ -28,12 +27,12 @@ export function useGetTemporary(data, fulfilled, rejected, error, getApi) {
     getApi();
   }, []);
 
-  useEffect(()=>{
-    if(rejected){
-        if(error){
-            alert(error);
-            console.log(error)
-        }
+  useEffect(() => {
+    if (rejected) {
+      if (error) {
+        alert(error);
+        console.log(error)
+      }
     }
   }, [rejected]);
 
@@ -47,22 +46,22 @@ export function useGetTemporary(data, fulfilled, rejected, error, getApi) {
 }
 
 export function usePostTemporary(data, fulfilled, rejected, error, posApi) {
-    const dispatch = useDispatch();
-  
-    useEffect(() => {
-      console.log(fulfilled)
-      if (fulfilled){
-        alert('전송 성공!');
-        dispatch(setTemporary(data));
-      } 
-    }, [fulfilled]);
-  
-    useEffect(()=>{
-        if(rejected){
-            if(error){
-                alert(error.response);
-                console.log(error)
-            }
-        }
-      }, [rejected])
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(fulfilled)
+    if (fulfilled) {
+      alert('전송 성공!');
+      dispatch(setTemporary(data));
+    }
+  }, [fulfilled]);
+
+  useEffect(() => {
+    if (rejected) {
+      if (error) {
+        alert(error.response);
+        console.log(error)
+      }
+    }
+  }, [rejected])
 }
