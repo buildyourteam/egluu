@@ -1,17 +1,16 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Root } from './pages';
 
 function App() {
   return (
     <div>
-      <header>
-        <p>
-          Header
-        </p>
-      </header>
-        <div>
-          <Root />
-        </div>
+    <Router>
+      <Switch>
+        <Route path="/" component={Root} />
+
+      </Switch>
+    </Router>
     </div>
   );
 }

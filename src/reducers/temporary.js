@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const temporaryRedux = createSlice({
-  name: 'temporary',
+  name: 'project',
   initialState: {
     temporary: 0,
   },
