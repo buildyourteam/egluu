@@ -1,4 +1,8 @@
 #ProjectBoxCard {
-    width: 13vw;
-    height: auto;
+  width: 13vw;
+  height: auto;
+}
+
+#ProjectBoxCard .card-title {
+  font-size: 20px;
 }
