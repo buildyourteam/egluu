@@ -44,8 +44,8 @@ export default function Layout({ children }) {
     }
   };
   return (
-    <div style={{ margin: "0 20vw 0 20vw" }}>
-      <Navbar color="" light expand="md">
+    <>
+      <Navbar color="" light expand="md" style={{ margin: "0 20vw 0 20vw" }}>
         <NavbarBrand tag={Link} to="/">
           Egluu
           {/* <img src={logo} alt="menubar" id="menu-img" width="100" /> */}
@@ -63,49 +63,23 @@ export default function Layout({ children }) {
                 사용자 목록보기
               </NavLink>
             </NavItem>
-            {/* <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>Option 1</DropdownItem>
-                <DropdownItem>Option 2</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Reset</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown> */}
           </Nav>
           <NavbarText>Simple Text</NavbarText>
         </Collapse>
       </Navbar>
 
-      {/* <button type="button" id="open-button" onClick={handleClickMenu}>
-        <img src={menu_bar} alt="menubar" id="menu-img" />
-      </button>
-      <div id="link-div">
-        <Link to={{ pathname: "/" }} id="link">
-          <div id="naver_logo">
-            <strong>다람쥐 컴퍼니</strong>
-          </div>
-         
-        </Link>
-      </div>
-      <ul id="menu-bar">
-        <li>
-          <Link to={{ pathname: "/" }}>직원 리스트</Link>
-        </li>
-        <li>
-          <Link to={{ pathname: "/create" }}>신규 등록하기</Link>
-        </li>
-      </ul> */}
-      <body>{children}</body>
+      <main>
+        <div style={{ margin: "0 20vw 0 20vw" }}>{children}</div>
+      </main>
       <footer>
-        <p>Copyright © Igo Corp. All Rights Reserved.</p>
-        <p> Team I go </p>
-        <p>
-          Address : 서울특별시 동작구 상도동 상도로 369 숭실대학교 정보과학관
-        </p>
+        <div style={{ margin: "0 20vw 0 20vw" }}>
+          <p>Copyright © Igo Corp. All Rights Reserved.</p>
+          <p> Team I go </p>
+          <p>
+            Address : 서울특별시 동작구 상도동 상도로 369 숭실대학교 정보과학관
+          </p>
+        </div>
       </footer>
-    </div>
+    </>
   );
 }
