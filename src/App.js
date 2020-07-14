@@ -1,17 +1,15 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Root } from './pages';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Root, ProjectList } from "./pages";
 
 function App() {
   return (
-    <div>
     <Router>
       <Switch>
-        <Route path="/" component={Root} />
-
+        <Route exact path="/" component={Root} />
+        <Route path="/projects" component={ProjectList} />
       </Switch>
     </Router>
-    </div>
   );
 }
 
