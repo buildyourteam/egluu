@@ -20,8 +20,10 @@ const ProfileInfo = () => {
   return (
     <div>
       <Alert color="secondary">hi~ I'm developer</Alert>
-      {/* img reseize 하는 방법 추가해야함 */}
-      <img src={profile} width="195" height="195"></img>
+
+      {/* width="100%" 으로 비율유지 
+object-fit="contain" 으로 1/4칸에 딱 맞게 조정 */}
+      <img src={profile} width="100%" object-fit="contain"></img>
       <h3>inho2736</h3>
       <h6>Lev. 24 Developer</h6>
       <p>#ReactJs #Javascript</p>

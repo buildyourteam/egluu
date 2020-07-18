@@ -9,7 +9,10 @@ const useProfileInfo = (data, fulfilled, pending, rejected, error, getApi) => {
 
   useEffect(() => {
     // if (fulfilled) setProjectList(data);
-    if (fulfilled) setProfileData(staticProfile); // 임시데이터
+    if (fulfilled) {
+      setProfileData(staticProfile); // 임시데이터
+      console.log(staticProfile);
+    }
   }, [fulfilled]);
 
   useEffect(() => {

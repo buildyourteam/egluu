@@ -38,17 +38,32 @@ const Profile = () => {
     getProfileDataError,
     getProfileDataApi
   );
+
   const [activeTab, setActiveTab] = useState("1");
 
-  const toggle = tab => {
+  const tabToggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
+  };
+
+  const [infoModifying, setInfoModifying] = useState(false);
+  const infoModifyToggle = () => {
+    setInfoModifying(!infoModifying);
   };
   return (
     <Layout>
       <br />
       <Row xs="4">
         <Col>
-          {getProfileDataPending ? <div>로딩중...</div> : <ProfileInfoModify />}
+          {/* {getProfileDataPending ? <div>로딩중...</div> : <ProfileInfoModify />} */}
+
+          {infoModifying ? (
+            <ProfileInfoModify data={profileData} />
+          ) : (
+            <>
+              <ProfileInfo />
+              <Button onClick={infoModifyToggle}>Modify</Button>
+            </>
+          )}
         </Col>
         <Col xs="9">
           <div>
@@ -57,7 +72,7 @@ const Profile = () => {
                 <NavLink
                   className={classnames({ active: activeTab === "1" })}
                   onClick={() => {
-                    toggle("1");
+                    tabToggle("1");
                   }}
                 >
                   Completed Projects
@@ -67,7 +82,7 @@ const Profile = () => {
                 <NavLink
                   className={classnames({ active: activeTab === "2" })}
                   onClick={() => {
-                    toggle("2");
+                    tabToggle("2");
                   }}
                 >
                   Running Projects
@@ -77,7 +92,7 @@ const Profile = () => {
                 <NavLink
                   className={classnames({ active: activeTab === "3" })}
                   onClick={() => {
-                    toggle("3");
+                    tabToggle("3");
                   }}
                 >
                   Planned Projects

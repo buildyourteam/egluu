@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 
-const ProfileInfoModify = () => {
+const ProfileInfoModify = ({ data }) => {
   // 바꿔야 할 것들
-  // 이름, 역할, 스택, 연락처, 지역, 소개, //
   // 이미지
   //
-  // 기본값 원래 값으로 채우기
-  //    페이지 state 만들기 //
-  //    그 state에 로딩 연결하기//
+  // props로 state값 전달//
+  // 기본값 원래 값으로 채우기//
+
+  // 로딩 관련 변수이름 정리
   //
-  // 클릭시 수정으로,
+  // 로딩을 각 컴포넌트 안에 넣기
   // 수정완료시 api요청 후 원래 페이지로
+
+  const [modifyState, setModifyState] = useState({
+    userName: data.userName,
+    role: data.role,
+    stacks: data.stacks,
+    contact: data.contact,
+    area: data.area,
+    introduction: data.introduction
+  });
+
+  const handleChange = e => {
+    setModifyState({
+      ...modifyState,
+      [e.target.name]: e.target.value
+    });
+    console.log(modifyState);
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
   };
@@ -22,9 +40,10 @@ const ProfileInfoModify = () => {
           <Label for="exampleEmail">Name</Label>
           <Input
             type="name"
-            name="name"
-            //id="exampleEmail"
+            name="userName"
             placeholder="name"
+            value={modifyState.userName}
+            onChange={handleChange}
           />
         </FormGroup>
 
@@ -33,7 +52,8 @@ const ProfileInfoModify = () => {
           <Input
             type="select"
             name="role"
-            //   id="exampleSelect"
+            value={modifyState.role}
+            onChange={handleChange}
           >
             <option>Developer</option>
             <option>Designer</option>
@@ -46,9 +66,11 @@ const ProfileInfoModify = () => {
           <Label for="exampleEmail">Stack</Label>
           <Input
             type="stack"
-            name="stack"
+            name="stacks"
             //id="exampleEmail"
             placeholder="stack"
+            value={modifyState.stack}
+            onChange={handleChange}
           />
         </FormGroup>
 
@@ -56,25 +78,35 @@ const ProfileInfoModify = () => {
           <Label for="exampleEmail">Email Contact</Label>
           <Input
             type="email"
-            name="email"
+            name="contact"
             id="exampleEmail"
             placeholder="with a placeholder"
+            value={modifyState.contact}
+            onChange={handleChange}
           />
         </FormGroup>
 
         <FormGroup>
-          <Label for="exampleEmail">Region</Label>
+          <Label for="exampleEmail">Area</Label>
           <Input
-            type="region"
-            name="region"
+            type="area"
+            name="area"
             //id="exampleEmail"
-            placeholder="region"
+            placeholder="area"
+            value={modifyState.area}
+            onChange={handleChange}
           />
         </FormGroup>
 
         <FormGroup>
-          <Label for="exampleText">Description</Label>
-          <Input type="textarea" name="description" id="description" />
+          <Label for="exampleText">Introduction</Label>
+          <Input
+            type="textarea"
+            name="introduction"
+            id="introduction"
+            value={modifyState.introduction}
+            onChange={handleChange}
+          />
         </FormGroup>
 
         <Button onClick={handleSubmit}>Submit</Button>
