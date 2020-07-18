@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Layout } from "../components";
+import { Layout, ProfileInfo, ProfileInfoModify } from "../components";
+import { useTemporaryApi, useRequest } from "../hook";
 import {
   Row,
   Col,
@@ -15,9 +16,28 @@ import {
   CardText
 } from "reactstrap";
 import classnames from "classnames";
-import profile from "../components/icon/baseImg.png";
-
+import useProfileInfo from "../hook/profile/useProfileInfo";
 const Profile = () => {
+  const [temporary, apiAction] = useTemporaryApi();
+  const [
+    {
+      data: resProfileData,
+      fulfilled: getProfileDataFulfilled,
+      pending: getProfileDataPending,
+      rejected: getProfileDataRejected,
+      error: getProfileDataError
+    },
+    { run: getProfileDataApi }
+  ] = useRequest(apiAction.getProfileData);
+
+  const [profileData] = useProfileInfo(
+    resProfileData,
+    getProfileDataFulfilled,
+    getProfileDataPending,
+    getProfileDataRejected,
+    getProfileDataError,
+    getProfileDataApi
+  );
   const [activeTab, setActiveTab] = useState("1");
 
   const toggle = tab => {
@@ -28,18 +48,9 @@ const Profile = () => {
       <br />
       <Row xs="4">
         <Col>
-          <div>
-            <Alert color="secondary">hi~ I'm developer</Alert>
-            {/* img reseize 하는 방법 추가해야함 */}
-            <img src={profile} width="195" height="195"></img>
-            <h3>Inho</h3>
-            <p>inho2736</p>
-            <h6>Lev. 24 Developer</h6>
-            <p>#ReactJs #Javascript</p>
-          </div>
+          {getProfileDataPending ? <div>로딩중...</div> : <ProfileInfoModify />}
         </Col>
         <Col xs="9">
-          {" "}
           <div>
             <Nav tabs>
               <NavItem>
