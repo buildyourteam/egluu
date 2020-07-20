@@ -5,3 +5,4 @@ export { default as SubtitleHeader } from "./Bar/subtitlebar";
 export { default as ProjectBox } from "./Project/ProjectBox";
 export { default as PeopleBox } from "./People/PeopleBox";
 export { default as Level } from "./People/Level";
+export { IOSSwitch, AntSwitch } from "./Switch";
