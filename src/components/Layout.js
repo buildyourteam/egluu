@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import menu_bar from "./icon/menubar_hamburger.png";
 import close_bar from "./icon/menubar_close.png";
-import logo from "./icon/igo.JPG";
+import { useMove } from "../hook";
+import { useSelector, useDispatch } from "react-redux";
+import { useLogoutAuth } from "../hook/auth/useLogin";
+import { setToken } from "../reducers/login";
 
 import {
   Collapse,
@@ -12,37 +15,34 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  NavbarText,
+  Button
 } from "reactstrap";
 
 import "./component.css";
 
 export default function Layout({ children }) {
+  const dispatch = useDispatch();
+
+  const userId = useSelector(state => state.login.userId);
+  const isToken = useSelector(state => state.login.isToken);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const handleClickMenu = () => {
-    const x =
-      document.getElementById("menu-img") ||
-      document.getElementById("close-img");
-    const y =
-      document.getElementById("open-button") ||
-      document.getElementById("close-button");
-    if (x.src === menu_bar) {
-      x.src = close_bar;
-      x.id = "close-img";
-      y.id = "close-button";
-    } else {
-      x.src = menu_bar;
-      x.id = "menu-img";
-      y.id = "open-button";
-    }
+  const handleClick = () => {
+    window.sessionStorage.removeItem("id");
+    window.sessionStorage.removeItem("accessToken");
+
+    const reduxData = {
+      isToken: false,
+      userId: null
+    };
+
+    dispatch(setToken(reduxData));
   };
+
   return (
     <>
       <Navbar color="" light expand="md" style={{ margin: "0 20vw 0 20vw" }}>
@@ -63,8 +63,32 @@ export default function Layout({ children }) {
                 사용자 목록보기
               </NavLink>
             </NavItem>
+            {isToken ? (
+              <>
+                <NavItem>
+                  <NavLink tag={Link} to="/people">
+                    {userId} 님 환영해~
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <Button onClick={handleClick}>로그아웃</Button>
+                </NavItem>
+              </>
+            ) : (
+              <>
+                <NavItem>
+                  <NavLink tag={Link} to="/login">
+                    Login
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/register">
+                    Register
+                  </NavLink>
+                </NavItem>
+              </>
+            )}
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
         </Collapse>
       </Navbar>
 
