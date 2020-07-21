@@ -17,11 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import "./Login.css";
 const Login = () => {
-  const isToken = useSelector(state => state.login.isToken)
-  const [state, setState] = useState({
-    userId: "",
-    password: ""
-  });
+  const isToken = useSelector(state => state.login.isToken);
 
   const { postLogin } = useLoginApi();
 
@@ -36,7 +32,7 @@ const Login = () => {
     { run: postLoginApi }
   ] = useRequest(postLogin);
 
-  useLoginEffect(
+  const [state, setState] = useLoginEffect(
     resLogin,
     LoginFulfilled,
     LoginPending,
@@ -44,7 +40,7 @@ const Login = () => {
     LoginError
   );
 
-  useMove((isToken && LoginFulfilled), '');
+  useMove(isToken && LoginFulfilled, "");
 
   const handleChange = e => {
     setState({
@@ -56,10 +52,6 @@ const Login = () => {
   const handleSubmit = e => {
     e.preventDefault();
     postLoginApi(state);
-    setState({
-      userId: "",
-      password: ""
-    });
   };
   return (
     <Layout>

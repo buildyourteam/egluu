@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import menu_bar from "./icon/menubar_hamburger.png";
 import close_bar from "./icon/menubar_close.png";
+import { useSelector } from "react-redux";
+
 import logo from "./icon/igo.JPG";
 
 import {
@@ -22,6 +24,25 @@ import {
 import "./component.css";
 
 export default function Layout({ children }) {
+  // const userId = useSelector(state => state.login.userId);
+  // const isToken = useSelector(state => state.login.isToken);
+
+  useEffect(() => {
+    console.log("is useEffect work?");
+    const isToken = null;
+    const userId = null;
+    const isToken2 = isNull(isToken).then(console.log(isToken2));
+    console.log(isToken);
+    if (isToken !== null) {
+      console.log("is it work?");
+      window.sessionStorage.getItem("userId", userId);
+    }
+  }, []);
+
+  const isNull = isToken => {
+    window.sessionStorage.getItem("accessToken", isToken);
+    return isToken;
+  };
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -64,7 +85,25 @@ export default function Layout({ children }) {
               </NavLink>
             </NavItem>
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
+          {/* {isToken !== null ? (
+            <>
+              <NavbarText tag={Link} to="">
+                {userId} 님 환영해~
+              </NavbarText>
+              <NavbarText tag={Link} to="/register">
+                로그아웃
+              </NavbarText>
+            </>
+          ) : (
+            <>
+              <NavbarText tag={Link} to="/login">
+                Login
+              </NavbarText>
+              <NavbarText tag={Link} to="/register">
+                Register
+              </NavbarText>
+            </>
+          )} */}
         </Collapse>
       </Navbar>
 
