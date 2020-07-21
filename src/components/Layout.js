@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import menu_bar from "./icon/menubar_hamburger.png";
 import close_bar from "./icon/menubar_close.png";
-import logo from "./icon/igo.JPG";
+import { useMove } from "../hook";
+import { useSelector, useDispatch } from "react-redux";
+import { useLogoutAuth } from "../hook/auth/useLogin";
+import { setToken } from "../reducers/login";
 
 import {
   Collapse,
@@ -12,40 +15,37 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  NavbarText,
+  Button
 } from "reactstrap";
 
 import "./component.css";
 
 export default function Layout({ children }) {
+  const dispatch = useDispatch();
+
+  const userId = useSelector(state => state.login.userId);
+  const isToken = useSelector(state => state.login.isToken);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const handleClickMenu = () => {
-    const x =
-      document.getElementById("menu-img") ||
-      document.getElementById("close-img");
-    const y =
-      document.getElementById("open-button") ||
-      document.getElementById("close-button");
-    if (x.src === menu_bar) {
-      x.src = close_bar;
-      x.id = "close-img";
-      y.id = "close-button";
-    } else {
-      x.src = menu_bar;
-      x.id = "menu-img";
-      y.id = "open-button";
-    }
+  const handleClick = () => {
+    window.sessionStorage.removeItem("id");
+    window.sessionStorage.removeItem("accessToken");
+
+    const reduxData = {
+      isToken: false,
+      userId: null
+    };
+
+    dispatch(setToken(reduxData));
   };
+
   return (
-    <div style={{ margin: "0 20vw 0 20vw" }}>
-      <Navbar color="" light expand="md">
+    <>
+      <Navbar color="" light expand="md" style={{ margin: "0 20vw 0 20vw" }}>
         <NavbarBrand tag={Link} to="/">
           Egluu
           {/* <img src={logo} alt="menubar" id="menu-img" width="100" /> */}
@@ -63,49 +63,47 @@ export default function Layout({ children }) {
                 사용자 목록보기
               </NavLink>
             </NavItem>
-            {/* <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>Option 1</DropdownItem>
-                <DropdownItem>Option 2</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Reset</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown> */}
+            {isToken ? (
+              <>
+                <NavItem>
+                  <NavLink tag={Link} to="/people">
+                    {userId} 님 환영해~
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <Button onClick={handleClick}>로그아웃</Button>
+                </NavItem>
+              </>
+            ) : (
+              <>
+                <NavItem>
+                  <NavLink tag={Link} to="/login">
+                    Login
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/register">
+                    Register
+                  </NavLink>
+                </NavItem>
+              </>
+            )}
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
         </Collapse>
       </Navbar>
 
-      {/* <button type="button" id="open-button" onClick={handleClickMenu}>
-        <img src={menu_bar} alt="menubar" id="menu-img" />
-      </button>
-      <div id="link-div">
-        <Link to={{ pathname: "/" }} id="link">
-          <div id="naver_logo">
-            <strong>다람쥐 컴퍼니</strong>
-          </div>
-         
-        </Link>
-      </div>
-      <ul id="menu-bar">
-        <li>
-          <Link to={{ pathname: "/" }}>직원 리스트</Link>
-        </li>
-        <li>
-          <Link to={{ pathname: "/create" }}>신규 등록하기</Link>
-        </li>
-      </ul> */}
-      <body>{children}</body>
+      <main>
+        <div style={{ margin: "0 20vw 0 20vw" }}>{children}</div>
+      </main>
       <footer>
-        <p>Copyright © Igo Corp. All Rights Reserved.</p>
-        <p> Team I go </p>
-        <p>
-          Address : 서울특별시 동작구 상도동 상도로 369 숭실대학교 정보과학관
-        </p>
+        <div style={{ margin: "0 20vw 0 20vw" }}>
+          <p>Copyright © Igo Corp. All Rights Reserved.</p>
+          <p> Team I go </p>
+          <p>
+            Address : 서울특별시 동작구 상도동 상도로 369 숭실대학교 정보과학관
+          </p>
+        </div>
       </footer>
-    </div>
+    </>
   );
 }
