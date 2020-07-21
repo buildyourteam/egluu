@@ -12,9 +12,12 @@ import {
 import { Layout } from "../../components";
 import { useLoginApi } from "../../hook/api/authApi";
 import { useLoginEffect } from "../../hook/auth/useLogin";
-import { useRequest } from "../../hook";
+import { useRequest, useMove } from "../../hook";
+import { useSelector, useDispatch } from "react-redux";
+
 import "./Login.css";
 const Login = () => {
+  const isToken = useSelector(state => state.login.isToken)
   const [state, setState] = useState({
     userId: "",
     password: ""
@@ -40,6 +43,8 @@ const Login = () => {
     LoginRejected,
     LoginError
   );
+
+  useMove((isToken && LoginFulfilled), '');
 
   const handleChange = e => {
     setState({
