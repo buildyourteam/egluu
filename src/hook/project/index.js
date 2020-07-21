@@ -1,1 +1,2 @@
 export { useProjectListState, useProjectSaveEffect } from './useProjectList';
+export { useProjectDetailState, useProjectDetailEffect, useProjectApplyEffect, useProjectRecruitEffect } from './useProjectDetail';

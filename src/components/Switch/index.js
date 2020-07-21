@@ -1,0 +1,1 @@
+export { IOSSwitch, AntSwitch } from './switch';
