@@ -1,8 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Root, ProjectList, Register, Login } from "./pages";
+import { useLoginAuth } from './hook/auth/useLogin';
 
 function App() {
+  useLoginAuth();
   return (
     <Router>
       <Switch>

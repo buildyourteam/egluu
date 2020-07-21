@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setToken } from "../../reducers/login";
+import { setToken, setTokenFlag } from "../../reducers/login";
 
 export function useLoginEffect(data, fulfilled, pending, rejected, error) {
   const [state, setState] = useState({
@@ -45,4 +45,15 @@ export function useLoginEffect(data, fulfilled, pending, rejected, error) {
   }, [rejected]);
 
   return [state, setState];
+}
+
+export function useLoginAuth() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const test = window.sessionStorage.getItem("accessToken");
+    console.log(test);
+    if (test !== null) {
+      dispatch(setTokenFlag(true));
+    }
+  }, [])
 }

@@ -10,9 +10,12 @@ const loginRedux = createSlice({
     setToken(state, action) {
       state.isToken = action.payload.isToken;
       state.userId = action.payload.userId;
+    },
+    setTokenFlag(state, action) {
+      state.isToken = action.payload
     }
   }
 });
 
-export const { setToken } = loginRedux.actions;
+export const { setToken, setTokenFlag } = loginRedux.actions;
 export default loginRedux.reducer;

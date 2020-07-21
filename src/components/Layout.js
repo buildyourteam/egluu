@@ -27,22 +27,22 @@ export default function Layout({ children }) {
   // const userId = useSelector(state => state.login.userId);
   // const isToken = useSelector(state => state.login.isToken);
 
-  useEffect(() => {
-    console.log("is useEffect work?");
-    const isToken = null;
-    const userId = null;
-    const isToken2 = isNull(isToken).then(console.log(isToken2));
-    console.log(isToken);
-    if (isToken !== null) {
-      console.log("is it work?");
-      window.sessionStorage.getItem("userId", userId);
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log("is useEffect work?");
+  //   const isToken = null;
+  //   const userId = null;
+  //   const isToken2 = isNull(isToken).then(console.log(isToken2));
+  //   console.log(isToken);
+  //   if (isToken !== null) {
+  //     console.log("is it work?");
+  //     window.sessionStorage.getItem("userId", userId);
+  //   }
+  // }, []);
 
-  const isNull = isToken => {
-    window.sessionStorage.getItem("accessToken", isToken);
-    return isToken;
-  };
+  // const isNull = isToken => {
+  //   window.sessionStorage.getItem("accessToken", isToken);
+  //   return isToken;
+  // };
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
