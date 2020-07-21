@@ -50,10 +50,15 @@ export function useLoginEffect(data, fulfilled, pending, rejected, error) {
 export function useLoginAuth() {
   const dispatch = useDispatch();
   useEffect(() => {
-    const test = window.sessionStorage.getItem("accessToken");
-    console.log(test);
+    let test = null;
+    test = window.sessionStorage.getItem("accessToken");
+    const id = window.sessionStorage.getItem("id");
     if (test !== null) {
-      dispatch(setTokenFlag(true));
+      const reduxData = {
+        isToken: true,
+        userId: id
+      };
+      dispatch(setToken(reduxData));
     }
   }, [])
 }

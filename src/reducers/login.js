@@ -11,11 +11,8 @@ const loginRedux = createSlice({
       state.isToken = action.payload.isToken;
       state.userId = action.payload.userId;
     },
-    setTokenFlag(state, action) {
-      state.isToken = action.payload
-    }
   }
 });
 
-export const { setToken, setTokenFlag } = loginRedux.actions;
+export const { setToken } = loginRedux.actions;
 export default loginRedux.reducer;
