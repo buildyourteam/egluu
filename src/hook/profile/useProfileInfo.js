@@ -5,18 +5,33 @@ import { setTemporary } from "../../reducers/temporary";
 const axios = require("axios");
 
 const useProfileInfo = (data, fulfilled, pending, rejected, error, getApi) => {
-  const [profileData, setProfileData] = useState(staticProfile);
+  const [profileData, setProfileData] = useState({
+    userName: "",
+    role: "",
+    stacks: [""],
+    contact: "",
+    area: "",
+    grade: 0,
+    introduction: ""
+  });
 
   useEffect(() => {
-    // if (fulfilled) setProjectList(data);
     if (fulfilled) {
-      setProfileData(staticProfile); // 임시데이터
-      console.log(staticProfile);
+      setProfileData({
+        userName: data.userName,
+        role: data.role,
+        stacks: data.stacks,
+        contact: data.contact,
+        area: data.area,
+        grade: data.grade,
+        introduction: data.introduction
+      });
+      console.log(data);
     }
   }, [fulfilled]);
 
   useEffect(() => {
-    getApi();
+    getApi("inho");
   }, []);
 
   useEffect(() => {

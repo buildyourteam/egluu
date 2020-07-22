@@ -1,18 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
-
+import { useDropzone } from "react-dropzone";
+import ImageModify from "./ImageModify";
 const ProfileInfoModify = ({ data }) => {
-  // 바꿔야 할 것들
-  // 이미지
-  //
-  // props로 state값 전달//
-  // 기본값 원래 값으로 채우기//
-
-  // 로딩 관련 변수이름 정리
-  //
-  // 로딩을 각 컴포넌트 안에 넣기
-  // 수정완료시 api요청 후 원래 페이지로
-
   const [modifyState, setModifyState] = useState({
     userName: data.userName,
     role: data.role,
@@ -35,6 +25,7 @@ const ProfileInfoModify = ({ data }) => {
   };
   return (
     <div>
+      {/* <ImageModify /> */}
       <Form>
         <FormGroup>
           <Label for="exampleEmail">Name</Label>
@@ -55,10 +46,10 @@ const ProfileInfoModify = ({ data }) => {
             value={modifyState.role}
             onChange={handleChange}
           >
-            <option>Developer</option>
-            <option>Designer</option>
-            <option>Director</option>
-            <option>.etc</option>
+            <option>DEVELOPER</option>
+            <option>DESIGNER</option>
+            <option>DIRECTOR</option>
+            <option>ETC</option>
           </Input>
         </FormGroup>
 
@@ -69,7 +60,7 @@ const ProfileInfoModify = ({ data }) => {
             name="stacks"
             //id="exampleEmail"
             placeholder="stack"
-            value={modifyState.stack}
+            value={modifyState.stacks}
             onChange={handleChange}
           />
         </FormGroup>
@@ -77,10 +68,10 @@ const ProfileInfoModify = ({ data }) => {
         <FormGroup>
           <Label for="exampleEmail">Email Contact</Label>
           <Input
-            type="email"
+            type="contact"
             name="contact"
-            id="exampleEmail"
-            placeholder="with a placeholder"
+            //id="exampleEmail"
+            placeholder="contact"
             value={modifyState.contact}
             onChange={handleChange}
           />

@@ -1,42 +1,40 @@
 import React, { useState } from "react";
 import { Layout, ProfileInfo, ProfileInfoModify } from "../components";
-import { useTemporaryApi, useRequest } from "../hook";
+import { useProfileInfoApi } from "../hook/api/profileApi";
+import { useRequest } from "../hook";
 import {
   Row,
   Col,
-  Alert,
   TabContent,
   TabPane,
   Nav,
   NavItem,
   NavLink,
-  Card,
-  Button,
-  CardTitle,
-  CardText
+  Button
 } from "reactstrap";
 import classnames from "classnames";
 import useProfileInfo from "../hook/profile/useProfileInfo";
 const Profile = () => {
-  const [temporary, apiAction] = useTemporaryApi();
+  const { getProfileInfo, postProfileInfo } = useProfileInfoApi();
+
   const [
     {
-      data: resProfileData,
-      fulfilled: getProfileDataFulfilled,
-      pending: getProfileDataPending,
-      rejected: getProfileDataRejected,
-      error: getProfileDataError
+      data: resProfileInfo,
+      fulfilled: getProfileInfoFulfilled,
+      pending: getProfileInfoPending,
+      rejected: getProfileInfoRejected,
+      error: getProfileInfoError
     },
-    { run: getProfileDataApi }
-  ] = useRequest(apiAction.getProfileData);
+    { run: getProfileInfoApi }
+  ] = useRequest(getProfileInfo);
 
   const [profileData] = useProfileInfo(
-    resProfileData,
-    getProfileDataFulfilled,
-    getProfileDataPending,
-    getProfileDataRejected,
-    getProfileDataError,
-    getProfileDataApi
+    resProfileInfo,
+    getProfileInfoFulfilled,
+    getProfileInfoPending,
+    getProfileInfoRejected,
+    getProfileInfoError,
+    getProfileInfoApi
   );
 
   const [activeTab, setActiveTab] = useState("1");
@@ -54,13 +52,13 @@ const Profile = () => {
       <br />
       <Row xs="4">
         <Col>
-          {/* {getProfileDataPending ? <div>로딩중...</div> : <ProfileInfoModify />} */}
-
           {infoModifying ? (
             <ProfileInfoModify data={profileData} />
+          ) : getProfileInfoPending ? (
+            <div>로딩중...</div>
           ) : (
             <>
-              <ProfileInfo />
+              <ProfileInfo data={profileData} />
               <Button onClick={infoModifyToggle}>Modify</Button>
             </>
           )}
