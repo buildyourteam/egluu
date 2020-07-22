@@ -15,11 +15,13 @@ import {
 import classnames from "classnames";
 import useProfileInfo from "../hook/profile/useProfileInfo";
 const Profile = () => {
+  // info 정보 get, post 하는 api
   const { getProfileInfo, postProfileInfo } = useProfileInfoApi();
 
+  // info get의 상태변수와 데이터 및 액션디스패쳐
   const [
     {
-      data: resProfileInfo,
+      data: resGetProfileInfo,
       fulfilled: getProfileInfoFulfilled,
       pending: getProfileInfoPending,
       rejected: getProfileInfoRejected,
@@ -28,32 +30,59 @@ const Profile = () => {
     { run: getProfileInfoApi }
   ] = useRequest(getProfileInfo);
 
+  // info post 상태변수와 데이터 및 액션 디스패쳐
+  const [
+    {
+      data: resPostProfileInfo,
+      fulfilled: postProfileInfoFulfilled,
+      pending: postProfileInfoPending,
+      rejected: postProfileInfoRejected,
+      error: postProfileInfoError
+    },
+    { run: postProfileInfoApi }
+  ] = useRequest(postProfileInfo);
+
+  // modify창 열고 닫고
+  const [infoModifying, setInfoModifying] = useState(false);
+
+  // modify창 열고 닫을 토글
+  const infoModifyToggle = () => {
+    setInfoModifying(!infoModifying);
+  };
+
+  // 상태변화에 대한 sideEffect에 쓰일 args
   const [profileData] = useProfileInfo(
-    resProfileInfo,
+    resGetProfileInfo,
     getProfileInfoFulfilled,
-    getProfileInfoPending,
     getProfileInfoRejected,
     getProfileInfoError,
-    getProfileInfoApi
+    getProfileInfoApi,
+
+    resPostProfileInfo,
+    postProfileInfoFulfilled,
+    postProfileInfoRejected,
+    postProfileInfoError,
+
+    // postProfileInfoFulfilled 시 modify창을 닫기위함
+    infoModifyToggle,
+    infoModifying
   );
 
+  // 우측 탭 상태변수
   const [activeTab, setActiveTab] = useState("1");
 
+  // 탭 토글
   const tabToggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const [infoModifying, setInfoModifying] = useState(false);
-  const infoModifyToggle = () => {
-    setInfoModifying(!infoModifying);
-  };
   return (
     <Layout>
       <br />
       <Row xs="4">
         <Col>
           {infoModifying ? (
-            <ProfileInfoModify data={profileData} />
+            <ProfileInfoModify data={profileData} api={postProfileInfoApi} />
           ) : getProfileInfoPending ? (
             <div>로딩중...</div>
           ) : (

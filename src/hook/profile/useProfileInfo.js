@@ -1,10 +1,21 @@
-import React from "react";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setTemporary } from "../../reducers/temporary";
-const axios = require("axios");
 
-const useProfileInfo = (data, fulfilled, pending, rejected, error, getApi) => {
+const useProfileInfo = (
+  getdata,
+  getfulfilled,
+  getrejected,
+  geterror,
+  getApi,
+
+  postdata,
+  postfulfilled,
+  postrejected,
+  posterror,
+
+  toggle,
+  infoModifying
+) => {
+  // info 데이터 state
   const [profileData, setProfileData] = useState({
     userName: "",
     role: "",
@@ -15,57 +26,51 @@ const useProfileInfo = (data, fulfilled, pending, rejected, error, getApi) => {
     introduction: ""
   });
 
-  useEffect(() => {
-    if (fulfilled) {
-      setProfileData({
-        userName: data.userName,
-        role: data.role,
-        stacks: data.stacks,
-        contact: data.contact,
-        area: data.area,
-        grade: data.grade,
-        introduction: data.introduction
-      });
-      console.log(data);
-    }
-  }, [fulfilled]);
-
+  // 마운트될 때 액션 디스패치
   useEffect(() => {
     getApi("inho");
   }, []);
 
+  // info get 성공시
   useEffect(() => {
-    if (rejected) {
-      if (error) {
-        alert(error);
-        console.log(error);
+    if (getfulfilled) {
+      setProfileData({
+        userName: getdata.userName,
+        role: getdata.role,
+        stacks: getdata.stacks,
+        contact: getdata.contact,
+        area: getdata.area,
+        grade: getdata.grade,
+        introduction: getdata.introduction
+      });
+      console.log(getdata);
+    }
+  }, [getfulfilled]);
+
+  // info get 실패시
+  useEffect(() => {
+    if (getrejected) {
+      if (geterror) {
+        alert(geterror);
+        console.log(geterror);
       }
     }
-  }, [rejected]);
+  }, [getrejected]);
 
+  // get refresh~
   const Refresh = () => {
     getApi();
   };
 
-  return [profileData, { Refresh }];
-};
-
-const staticProfile = {
-  userName: "Inho",
-  role: "DEVELOPER",
-  stacks: ["ReactJS", "Django"],
-  contact: "010-1234-5678",
-  area: "Seoul",
-  grade: 1,
-  introduction: "인호 계정입니다.",
-  _links: {
-    self: {
-      href: "https://api.eskiiimo.com/profile/user1"
-    },
-    profile: {
-      href: "https://api.eskiiimo.com/docs/index.html#resourcesProfileGet"
+  // info post 성공시
+  useEffect(() => {
+    if (postfulfilled) {
+      // (ProfileInfoModify 말고) ProfileInfo 컴포넌트 다시 마운트
+      toggle(!infoModifying);
     }
-  }
+  }, [postfulfilled]);
+
+  return [profileData, { Refresh }];
 };
 
 export default useProfileInfo;

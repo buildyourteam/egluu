@@ -2,26 +2,41 @@ import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import { useDropzone } from "react-dropzone";
 import ImageModify from "./ImageModify";
-const ProfileInfoModify = ({ data }) => {
+import useProfileInfoApi from "../../hook/api/profileApi";
+const ProfileInfoModify = ({ data, api }) => {
+  // input state
   const [modifyState, setModifyState] = useState({
     userName: data.userName,
     role: data.role,
     stacks: data.stacks,
     contact: data.contact,
     area: data.area,
+    grade: 10,
     introduction: data.introduction
   });
 
   const handleChange = e => {
-    setModifyState({
-      ...modifyState,
-      [e.target.name]: e.target.value
-    });
+    // stack은 지금은 무조건 배열상태로 들어가게 임시방편함
+    if (e.target.name === "stacks") {
+      setModifyState({
+        ...modifyState,
+        [e.target.name]: [e.target.value]
+      });
+    }
+    // 나머지는 원래 방식대로
+    else {
+      setModifyState({
+        ...modifyState,
+        [e.target.name]: e.target.value
+      });
+    }
     console.log(modifyState);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    // submit 누르면 post요청하는 액션 디스패치
+    api("inho", modifyState);
   };
   return (
     <div>
@@ -46,10 +61,10 @@ const ProfileInfoModify = ({ data }) => {
             value={modifyState.role}
             onChange={handleChange}
           >
-            <option>DEVELOPER</option>
-            <option>DESIGNER</option>
-            <option>DIRECTOR</option>
-            <option>ETC</option>
+            <option value="DEVELOPER">DEVELOPER</option>
+            <option value="DESIGNER">DESIGNER</option>
+            <option value="LEADER">LEADER</option>
+            <option value="ETC">ETC</option>
           </Input>
         </FormGroup>
 
