@@ -12,8 +12,8 @@ export function useProfileInfoApi() {
   // post info api
   const postProfileInfo = async (userId, data) => {
     const token = window.sessionStorage.getItem("accessToken");
-    console.log(token);
-    console.log(userId);
+    //console.log(token);
+    //console.log(userId);
     const res = await axios.put(
       `http://34.105.29.115:8080/profile/${userId}`,
       data,

@@ -13,7 +13,8 @@ const useProfileInfo = (
   posterror,
 
   toggle,
-  infoModifying
+  infoModifying,
+  userId
 ) => {
   // info 데이터 state
   const [profileData, setProfileData] = useState({
@@ -28,7 +29,7 @@ const useProfileInfo = (
 
   // 마운트될 때 액션 디스패치
   useEffect(() => {
-    getApi("inho");
+    getApi(userId);
   }, []);
 
   // info get 성공시
@@ -67,6 +68,7 @@ const useProfileInfo = (
     if (postfulfilled) {
       // (ProfileInfoModify 말고) ProfileInfo 컴포넌트 다시 마운트
       toggle(!infoModifying);
+      getApi(userId);
     }
   }, [postfulfilled]);
 

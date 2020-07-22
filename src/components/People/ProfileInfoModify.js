@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import { useDropzone } from "react-dropzone";
 import ImageModify from "./ImageModify";
 import useProfileInfoApi from "../../hook/api/profileApi";
-const ProfileInfoModify = ({ data, api }) => {
+const ProfileInfoModify = ({ data, api, userId }) => {
   // input state
   const [modifyState, setModifyState] = useState({
     userName: data.userName,
@@ -36,7 +36,7 @@ const ProfileInfoModify = ({ data, api }) => {
   const handleSubmit = e => {
     e.preventDefault();
     // submit 누르면 post요청하는 액션 디스패치
-    api("inho", modifyState);
+    api(userId, modifyState);
   };
   return (
     <div>

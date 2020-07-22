@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Layout, ProfileInfo, ProfileInfoModify } from "../components";
 import { useProfileInfoApi } from "../hook/api/profileApi";
 import { useRequest } from "../hook";
@@ -15,6 +16,11 @@ import {
 import classnames from "classnames";
 import useProfileInfo from "../hook/profile/useProfileInfo";
 const Profile = () => {
+  // url에서 userId 추출
+  const location = useLocation();
+  const url = location.pathname.split("/");
+  const userId = url[2];
+
   // info 정보 get, post 하는 api
   const { getProfileInfo, postProfileInfo } = useProfileInfoApi();
 
@@ -65,7 +71,8 @@ const Profile = () => {
 
     // postProfileInfoFulfilled 시 modify창을 닫기위함
     infoModifyToggle,
-    infoModifying
+    infoModifying,
+    userId
   );
 
   // 우측 탭 상태변수
@@ -82,7 +89,11 @@ const Profile = () => {
       <Row xs="4">
         <Col>
           {infoModifying ? (
-            <ProfileInfoModify data={profileData} api={postProfileInfoApi} />
+            <ProfileInfoModify
+              data={profileData}
+              api={postProfileInfoApi}
+              userId={userId}
+            />
           ) : getProfileInfoPending ? (
             <div>로딩중...</div>
           ) : (
