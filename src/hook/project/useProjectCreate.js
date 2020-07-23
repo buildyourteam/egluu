@@ -20,26 +20,24 @@ const useProjectCreateState = () => {
 
     const fetchImg = async (projectId, data) => {
         const token = window.sessionStorage.getItem("accessToken");
-        headers = {
-            'Content-Type': 'multipart/form-data;charset=UTF-8',
-            'Accept': 'application/hal+json',
-            'authtoken': token
-        }
-        files = {
-            'image': data,
-        }
-
-        const res = await axios.post(`http://34.105.29.115:8080/projects/image/${projectId}`, {
-            headers: headers
-        }, files);
+        const imgData = new FormData();
+        imgData.append('image', data);
+        imgData.append('type', 'image/jpeg');
+        const res = await axios.post(`http://34.105.29.115:8080/projects/image/${projectId}`,
+            imgData,
+            {
+                headers: {
+                    'authtoken': token,
+                    'Content-Type': 'multipart/form-data;charset=UTF-8',
+                    'Accept': 'application/hal+json',
+                }
+            });
         return res.data;
     }
 
     const inputProject = (e) => {
         const name = e.target.name;
         const targetValue = e.target.value;
-        console.log(name)
-        console.log(targetValue)
 
         setProject(value => {
             return {
@@ -48,9 +46,19 @@ const useProjectCreateState = () => {
             }
         });
     }
+    const inputDate = (date) => {
+        setProject(value => {
+            return {
+                ...value,
+                endDate: date
+            }
+        });
+    }
+
     const inputImg = (data) => {
         setImg(data);
     }
+
 
     const inputProjectMember = e => {
         const name = e.target.name;
@@ -66,14 +74,16 @@ const useProjectCreateState = () => {
         })
     }
 
-    return [{ project, img }, { fetchPostCreate, inputProject, inputImg, inputProjectMember, fetchImg }]
+    return [{ project, img }, { fetchPostCreate, inputProject, inputImg, inputProjectMember, fetchImg, inputDate }]
 }
 
-const useProjectCreateEffect = (data, fulfilled, rejected, error, createProjectApi, project) => {
+const useProjectCreateEffect = (data, fulfilled, rejected, error, createImgApi, projectImg) => {
 
     useEffect(() => {
         if (fulfilled) {
-            createProjectApi(project);
+            console.log(projectImg)
+            const projectId = data._links.createdProject.href.split('/');
+            createImgApi(projectId[2], projectImg);
         }
     }, [fulfilled]);
 
@@ -91,18 +101,18 @@ export { useProjectCreateState, useProjectCreateEffect };
 const projectDetail = {
     projectName: "",
     teamName: "",
-    endDate: "2020-04-30T23:59:00",
-    description: "",
-    status: null,
-    projectField: "",
+    endDate: "2020-10-30T23:59:00",
+    introduction: "123",
+    state: 'RECRUTING',
+    projectField: "1",
     applyCanFile: true,
-    questions: ['123', '234'],
     needMember: {
         developer: 0,
         designer: 0,
         planner: 0,
         etc: 0
     },
+    currentMember: null,
     memberList: null
 }
 

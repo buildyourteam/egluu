@@ -50,7 +50,17 @@ export default function CreateProject() {
         },
         { run: createProjectApi }
     ] = useRequest(projectAction.fetchPostCreate);
-    useProjectCreateEffect(resProject, getProjectFulfilled, getProjectRejected, getProjectError, createProjectApi, project)
+    const [
+        {
+            data: resImg,
+            fulfilled: getImgFulfilled,
+            pending: getImgPending,
+            rejected: getImgRejected,
+            error: getImgError
+        },
+        { run: createImgApi }
+    ] = useRequest(projectAction.fetchImg);
+    useProjectCreateEffect(resProject, getProjectFulfilled, getProjectRejected, getProjectError, createImgApi, project.img)
 
     const handleClickCreate = () => {
         createProjectApi(project.project);
@@ -80,7 +90,7 @@ export default function CreateProject() {
                             <MuiDateTimePicker
                                 name="endDate"
                                 value={project.project.endDate}
-                                onChange={projectAction.inputProject}
+                                onChange={projectAction.inputDate}
                                 format="yy.MM.dd HH:mm"
                                 placeholder="종료일"
                                 variant="dialog"
