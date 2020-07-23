@@ -21,6 +21,7 @@ const useProjectDetailState = () => {
     }
 
     const inputProject = (e) => {
+
         setProject(value => {
             return {
                 ...value,
@@ -54,12 +55,13 @@ const useProjectDetailState = () => {
             }
         })
     }
-    console.log(check)
     const checkSwitch = (e) => {
+        const name = e.target.name;
+        const checked = e.target.checked
         setCheck(value => {
             return {
                 ...value,
-                [e.target.name]: e.target.checked
+                [name]: checked
             }
         })
     }

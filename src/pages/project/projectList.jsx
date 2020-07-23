@@ -4,10 +4,10 @@ import {
   useProjectListState,
   usePeopleListState,
   useRequest
-} from "../hook";
-import { Layout, ProjectBox } from "../components";
+} from "../../hook";
+import { Layout, ProjectBox } from "../../components";
 
-import Sort from "../components/List/Sort";
+import Sort from "../../components/List/Sort";
 
 export default function ProjectList() {
   const [role, setRole] = useState("");

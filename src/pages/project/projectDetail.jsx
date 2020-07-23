@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import {
     useProjectDetailState, useProjectDetailEffect, useRequest, useProjectApplyEffect, useProjectRecruitEffect
-} from "../hook";
+} from "../../hook";
 import {
     Button,
     Layout,
@@ -23,9 +23,9 @@ import {
     PeopleBox,
     IOSSwitch,
     AntSwitch
-} from "../components";
-import "./main.css";
-import tempimg from '../components/icon/move.gif';
+} from "../../components";
+import "../main.css";
+import tempimg from '../../components/icon/move.gif';
 import { Typography, List, ListItem, ListItemAvatar, ListItemIcon, ListItemSecondaryAction, ListItemText, FormControlLabel } from '@material-ui/core';
 import {
     DateTimePicker as MuiDateTimePicker,
@@ -114,31 +114,26 @@ export default function ProjectDetail() {
                             <ListItem>
                                 <ListItemText
                                     primary='현재 인원'
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`개발자 : ${project.project.needMember.developer}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`디자이너 : ${project.project.needMember.designer}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`기획자 : ${project.project.needMember.planner}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`기타 : ${project.project.needMember.etc}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                         </List>
@@ -146,31 +141,26 @@ export default function ProjectDetail() {
                             <ListItem>
                                 <ListItemText
                                     primary='모집 인원'
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`개발자 : ${project.project.needMember.developer}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`디자이너 : ${project.project.needMember.designer}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`기획자 : ${project.project.needMember.planner}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`기타 : ${project.project.needMember.etc}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                         </List>
