@@ -1,35 +1,38 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 export const useImage = (
   resImage,
-  getImageFulfilled,
-  getImageRejected,
-  getImageError,
-  getImageApi,
+  fulfilled,
+  rejected,
+  error,
+  Api,
+
+  imgState,
+  setImgState,
+
   userId
 ) => {
-  const [imgUrl, setImgUrl] = useState("");
-
   useEffect(() => {
-    getImageApi(userId);
+    Api(userId);
   }, []);
 
   useEffect(() => {
-    //console.log(resImage);
-    setImgUrl(
-      "https://i.pinimg.com/236x/dd/5b/5c/dd5b5cda2e670c25f9c81b35d1e2ee59.jpg"
-    );
-  }, [getImageFulfilled]);
+    //console.log("img=" + resImage);
+    setImgState({
+      ...imgState,
+      imgUrl: `http://34.105.29.115:8080/profile/image/${userId}`
+    });
+  }, [fulfilled]);
 
   useEffect(() => {
-    if (getImageRejected) {
-      if (getImageError) {
-        alert(getImageError);
-        console.log(getImageError);
+    if (rejected) {
+      if (error) {
+        alert(error);
+        console.log(error);
       }
     }
-  }, [getImageRejected]);
-  return { imgUrl };
+  }, [rejected]);
+  return;
 };
 
 export default useImage;

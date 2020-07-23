@@ -64,7 +64,7 @@ export default function Layout({ children }) {
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
+          <Nav className="container-fluid" navbar>
             <NavItem>
               <NavLink tag={Link} to="/projects">
                 프로젝트 목록보기
@@ -77,7 +77,7 @@ export default function Layout({ children }) {
             </NavItem>
             {isToken ? (
               <>
-                <NavItem>
+                <NavItem className="ml-auto">
                   <NavLink tag={Link} to={profileUrl}>
                     {userId} 님 환영해~
                   </NavLink>
@@ -88,12 +88,12 @@ export default function Layout({ children }) {
               </>
             ) : (
               <>
-                <NavItem>
+                <NavItem className="ml-auto">
                   <NavLink tag={Link} to="/login">
                     Login
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                <NavItem className="nav-right">
                   <NavLink tag={Link} to="/register">
                     Register
                   </NavLink>

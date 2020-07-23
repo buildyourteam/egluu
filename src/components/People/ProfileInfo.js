@@ -1,54 +1,101 @@
 import React from "react";
 import { Row, Col, Alert } from "reactstrap";
 import "./Profile.css";
-import profile from "../icon/baseImg.png";
-import { useRequest } from "../../hook";
-import { useProfileImgApi } from "../../hook/api/profileApi";
+import { useInfoApi, useImgApi } from "../../hook/api/profileApi";
+import { useRequest } from "../../hook/useRequest";
 import { useImage } from "../../hook/profile/useImage";
+import useProfileInfo from "../../hook/profile/useProfileInfo";
 
-const ProfileInfo = ({ data, userId }) => {
-  const { getProfileInfoImg } = useProfileImgApi();
+const ProfileInfo = ({
+  // 이미지까지 다하고 필요없으면 모디파이 props는 삭제!
+
+  setModifying,
+  infoState,
+  setInfoState,
+  imgState,
+  setImgState,
+  userId
+}) => {
+  // info 정보 get 하는 api
+  const { getInfo } = useInfoApi();
+
+  // info get의 상태변수와 데이터 및 액션 디스패쳐
+  const [
+    {
+      data: resGetInfo,
+      fulfilled: getInfoFulfilled,
+      pending: getInfoPending,
+      rejected: getInfoRejected,
+      error: getInfoError
+    },
+    { run: getInfoApi }
+  ] = useRequest(getInfo);
+
+  // 상태변화에 대한 sideEffect에 쓰일 args
+  useProfileInfo(
+    resGetInfo,
+    getInfoFulfilled,
+    getInfoRejected,
+    getInfoError,
+    getInfoApi,
+
+    infoState,
+    setInfoState,
+
+    userId
+  );
+  /////////////////////////////////////////////////////////////////////////////////////////
+
+  const { getImg } = useImgApi();
   // img get의 상태변수와 데이터 및 액션 디스패쳐
 
   const [
     {
-      data: resGetImgInfo,
-      fulfilled: getImgInfoFulfilled,
-      pending: getImgInfoPending,
-      rejected: getImgInfoRejected,
-      error: getImgInfoError
+      data: resGetImg,
+      fulfilled: getImgFulfilled,
+      pending: getImgPending,
+      rejected: getImgRejected,
+      error: getImgError
     },
-    { run: getImgInfoApi }
-  ] = useRequest(getProfileInfoImg);
+    { run: getImgApi }
+  ] = useRequest(getImg);
 
-  const { imgUrl } = useImage(
-    resGetImgInfo,
-    getImgInfoFulfilled,
-    getImgInfoRejected,
-    getImgInfoError,
-    getImgInfoApi,
+  useImage(
+    resGetImg,
+    getImgFulfilled,
+    getImgRejected,
+    getImgError,
+    getImgApi,
+
+    imgState,
+    setImgState,
+
     userId
   );
 
   return (
     <div>
-      <Alert color="secondary">{data.introduction} </Alert>
-
-      {/* width="100%" 으로 비율유지 
-object-fit="contain" 으로 1/4칸에 딱 맞게 조정 */}
-      {getImgInfoPending ? (
+      {getInfoPending ? (
         <p>로딩중...</p>
       ) : (
-        <img src={imgUrl} width="100%" object-fit="contain"></img>
+        <>
+          <Alert color="secondary">{infoState.introduction} </Alert>
+          {/* width="100%" 으로 비율유지 
+  object-fit="contain" 으로 1/4칸에 딱 맞게 조정 */}
+          {getImgPending ? (
+            <p>로딩중...</p>
+          ) : (
+            <img src={imgState.imgUrl} width="100%" object-fit="contain"></img>
+          )}
+          <h3 className="profile-info-id">inho2736</h3>
+          <h6 className="profile-info-id">{infoState.userName}</h6>
+          <h6>
+            Lev. {infoState.grade} {infoState.role}
+          </h6>
+          <h6>area : {infoState.area}</h6>
+          <p>#ReactJs #Javascript</p>
+        </>
       )}
-
-      <h3 className="profile-info-id">inho2736</h3>
-      <h6 className="profile-info-id">{data.userName}</h6>
-      <h6>
-        Lev. {data.grade} {data.role}
-      </h6>
-      <h6>area : {data.area}</h6>
-      <p>#ReactJs #Javascript</p>
     </div>
   );
 };

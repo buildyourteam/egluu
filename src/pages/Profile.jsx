@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Layout, ProfileInfo, ProfileInfoModify } from "../components";
-import { useProfileInfoApi } from "../hook/api/profileApi";
-import { useRequest } from "../hook";
 import {
   Row,
   Col,
@@ -14,8 +12,6 @@ import {
   Button
 } from "reactstrap";
 import classnames from "classnames";
-import useProfileInfo from "../hook/profile/useProfileInfo";
-import useProfileInfoModify from "../hook/profile/useProfileInfoModify";
 
 const Profile = () => {
   // url에서 userId 추출
@@ -23,58 +19,28 @@ const Profile = () => {
   const url = location.pathname.split("/");
   const userId = url[2];
 
-  // info 정보 get, post 하는 api
-  const { getProfileInfo, postProfileInfo } = useProfileInfoApi();
-
-  // info get의 상태변수와 데이터 및 액션 디스패쳐
-  const [
-    {
-      data: resGetProfileInfo,
-      fulfilled: getProfileInfoFulfilled,
-      pending: getProfileInfoPending,
-      rejected: getProfileInfoRejected,
-      error: getProfileInfoError
-    },
-    { run: getProfileInfoApi }
-  ] = useRequest(getProfileInfo);
-
-  // info post 상태변수와 데이터 및 액션 디스패쳐
-  const [
-    {
-      data: resPostProfileInfo,
-      fulfilled: postProfileInfoFulfilled,
-      pending: postProfileInfoPending,
-      rejected: postProfileInfoRejected,
-      error: postProfileInfoError
-    },
-    { run: postProfileInfoApi }
-  ] = useRequest(postProfileInfo);
-
-  // 상태변화에 대한 sideEffect에 쓰일 args
-  const [profileData, infoModifying, setInfoModifying] = useProfileInfo(
-    resGetProfileInfo,
-    getProfileInfoFulfilled,
-    getProfileInfoRejected,
-    getProfileInfoError,
-    getProfileInfoApi,
-
-    userId
-  );
+  // 컴포넌트 이동을 다룰 변수
+  const [modifying, setModifying] = useState(false);
 
   // modify창 열고 닫을 토글
-  const infoModifyToggle = () => {
-    setInfoModifying(!infoModifying);
+  const modifyToggle = () => {
+    setModifying(!modifying);
   };
 
-  useProfileInfoModify(
-    resPostProfileInfo,
-    postProfileInfoFulfilled,
-    postProfileInfoRejected,
-    postProfileInfoError,
-    getProfileInfoApi,
-    infoModifyToggle,
-    userId
-  );
+  const [infoState, setInfoState] = useState({
+    userName: "",
+    role: "",
+    stacks: [""],
+    contact: "",
+    area: "",
+    grade: 0,
+    introduction: ""
+  });
+
+  const [imgState, setImgState] = useState({
+    imgUrl: "",
+    isImgChange: false
+  });
 
   // 우측 탭 상태변수
   const [activeTab, setActiveTab] = useState("1");
@@ -89,18 +55,26 @@ const Profile = () => {
       <br />
       <Row xs="4">
         <Col>
-          {infoModifying ? (
+          {modifying ? (
             <ProfileInfoModify
-              data={profileData}
-              api={postProfileInfoApi}
+              setModifying={modifyToggle}
+              infoState={infoState}
+              setInfoState={setInfoState}
+              imgState={imgState}
+              setImgState={setImgState}
               userId={userId}
             />
-          ) : getProfileInfoPending ? (
-            <div>로딩중...</div>
           ) : (
             <>
-              <ProfileInfo data={profileData} userId={userId} />
-              <Button onClick={infoModifyToggle}>Modify</Button>
+              <ProfileInfo
+                setModifying={modifyToggle}
+                infoState={infoState}
+                setInfoState={setInfoState}
+                imgState={imgState}
+                setImgState={setImgState}
+                userId={userId}
+              />
+              <Button onClick={modifyToggle}>Modify</Button>
             </>
           )}
         </Col>

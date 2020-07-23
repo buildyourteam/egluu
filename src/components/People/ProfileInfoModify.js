@@ -1,58 +1,102 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import ImageModify from "./ImageModify";
-import { useProfileImgApi } from "../../hook/api/profileApi";
+import { useInfoApi, useImgApi } from "../../hook/api/profileApi";
 import { useRequest } from "../../hook/useRequest";
-const ProfileInfoModify = ({ data, api, userId }) => {
-  const { postProfileInfoImg } = useProfileImgApi();
+import useProfileInfoModify from "../../hook/profile/useProfileInfoModify";
+
+const ProfileInfoModify = ({
+  setModifying,
+
+  infoState,
+  setInfoState,
+
+  imgState,
+  setImgState,
+
+  userId
+}) => {
+  // info 정보 post 하는 api
+  const { postInfo } = useInfoApi();
+
+  // info post 상태변수와 데이터 및 액션 디스패쳐
+  const [
+    {
+      data: resPostInfo,
+      fulfilled: postInfoFulfilled,
+      pending: postInfoPending,
+      rejected: postInfoRejected,
+      error: postInfoError
+    },
+    { run: postInfoApi }
+  ] = useRequest(postInfo);
+
+  //////////////////////////////////////////////////////////////////////
+  const { postImg } = useImgApi();
 
   const [
     {
-      data: resPostImgInfo,
-      fulfilled: postImgInfoFulfilled,
-      pending: postImgInfoPending,
-      rejected: postImgInfoRejected,
-      error: postImgInfoError
+      data: resPostImg,
+      fulfilled: postImgFulfilled,
+      pending: postImgPending,
+      rejected: postImgRejected,
+      error: postImgError
     },
-    { run: postImgInfoApi }
-  ] = useRequest(postProfileInfoImg);
+    { run: postImgApi }
+  ] = useRequest(postImg);
 
-  // input state
-  const [modifyState, setModifyState] = useState({
-    userName: data.userName,
-    role: data.role,
-    stacks: data.stacks,
-    contact: data.contact,
-    area: data.area,
-    grade: 10,
-    introduction: data.introduction
-  });
+  //////////////////////////////
+  useProfileInfoModify(
+    resPostInfo,
+    postInfoFulfilled,
+    postInfoRejected,
+    postInfoError,
+    postInfoApi,
 
-  const [imgState, setImgState] = useState({ imgUrl: "", isImgChange: false });
+    resPostImg,
+    postImgFulfilled,
+    postImgRejected,
+    postImgError,
+    postImgApi,
+
+    setModifying,
+
+    infoState,
+    setInfoState,
+
+    imgState,
+    setImgState,
+
+    userId
+  );
+  ////////////////////////////////////////////////////////////
+
   const handleChange = e => {
     // stack은 지금은 무조건 배열상태로 들어가게 임시방편함
     if (e.target.name === "stacks") {
-      setModifyState({
-        ...modifyState,
+      setInfoState({
+        ...infoState,
         [e.target.name]: [e.target.value]
       });
     }
     // 나머지는 원래 방식대로
     else {
-      setModifyState({
-        ...modifyState,
+      setInfoState({
+        ...infoState,
         [e.target.name]: e.target.value
       });
     }
-    console.log(modifyState);
+    console.log(infoState);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
     // submit 누르면 post요청하는 액션 디스패치
-    api(userId, modifyState);
+    postInfoApi(userId, infoState);
 
-    postImgInfoApi(userId, imgState);
+    if (imgState.isImgChange) {
+      postImgApi(userId, imgState);
+    }
   };
 
   return (
@@ -65,7 +109,7 @@ const ProfileInfoModify = ({ data, api, userId }) => {
             type="name"
             name="userName"
             placeholder="name"
-            value={modifyState.userName}
+            value={infoState.userName}
             onChange={handleChange}
           />
         </FormGroup>
@@ -75,7 +119,7 @@ const ProfileInfoModify = ({ data, api, userId }) => {
           <Input
             type="select"
             name="role"
-            value={modifyState.role}
+            value={infoState.role}
             onChange={handleChange}
           >
             <option value="DEVELOPER">DEVELOPER</option>
@@ -92,7 +136,7 @@ const ProfileInfoModify = ({ data, api, userId }) => {
             name="stacks"
             //id="exampleEmail"
             placeholder="stack"
-            value={modifyState.stacks}
+            value={infoState.stacks}
             onChange={handleChange}
           />
         </FormGroup>
@@ -104,7 +148,7 @@ const ProfileInfoModify = ({ data, api, userId }) => {
             name="contact"
             //id="exampleEmail"
             placeholder="contact"
-            value={modifyState.contact}
+            value={infoState.contact}
             onChange={handleChange}
           />
         </FormGroup>
@@ -116,7 +160,7 @@ const ProfileInfoModify = ({ data, api, userId }) => {
             name="area"
             //id="exampleEmail"
             placeholder="area"
-            value={modifyState.area}
+            value={infoState.area}
             onChange={handleChange}
           />
         </FormGroup>
@@ -127,7 +171,7 @@ const ProfileInfoModify = ({ data, api, userId }) => {
             type="textarea"
             name="introduction"
             id="introduction"
-            value={modifyState.introduction}
+            value={infoState.introduction}
             onChange={handleChange}
           />
         </FormGroup>

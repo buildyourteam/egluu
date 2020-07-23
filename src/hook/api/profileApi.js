@@ -1,16 +1,16 @@
 import axios from "axios";
 const BASE_URL = `http://34.105.29.115:8080/profile/`;
 // Profile Page 좌측 Info창에서 사용되는 api
-export function useProfileInfoApi() {
+export function useInfoApi() {
   // get info api
-  const getProfileInfo = async userId => {
+  const getInfo = async userId => {
     const res = await axios.get(`${BASE_URL}${userId}`);
     console.log(res);
     return res.data;
   };
 
   // post info api
-  const postProfileInfo = async (userId, data) => {
+  const postInfo = async (userId, data) => {
     const token = window.sessionStorage.getItem("accessToken");
     //console.log(token);
     //console.log(userId);
@@ -23,24 +23,24 @@ export function useProfileInfoApi() {
     console.log(res);
     return res;
   };
-  return { getProfileInfo, postProfileInfo };
+  return { getInfo, postInfo };
 }
-export function useProfileImgApi() {
+export function useImgApi() {
   // get Img api
-  const getProfileInfoImg = async userId => {
-    // const res = await axios.get(`${BASE_URL}image/${userId}`);
-    const res = await axios.get(`https://apis.tracker.delivery/carriers`);
+  const getImg = async userId => {
+    const res = await axios.get(`${BASE_URL}image/${userId}`);
+    //const res = await axios.get(`https://apis.tracker.delivery/carriers`);
     //console.log(res);
     return res.data;
   };
 
-  const postProfileInfoImg = async (userId, data) => {
+  const postImg = async (userId, data) => {
     const token = window.sessionStorage.getItem("accessToken");
     //console.log(token);
     //console.log(userId);
     let image = new FormData();
     image.append("image", data.imgUrl);
-    const res = await axios.put(`${BASE_URL}${userId}`, image, {
+    const res = await axios.post(`${BASE_URL}image/${userId}`, image, {
       headers: {
         "Content-type": "application/json;charset=UTF-8",
         authToken: token
@@ -49,5 +49,5 @@ export function useProfileImgApi() {
     console.log(res);
     return res;
   };
-  return { getProfileInfoImg, postProfileInfoImg };
+  return { getImg, postImg };
 }
