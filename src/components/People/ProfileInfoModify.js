@@ -1,9 +1,22 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
-import { useDropzone } from "react-dropzone";
 import ImageModify from "./ImageModify";
-import useProfileInfoApi from "../../hook/api/profileApi";
+import { useProfileImgApi } from "../../hook/api/profileApi";
+import { useRequest } from "../../hook/useRequest";
 const ProfileInfoModify = ({ data, api, userId }) => {
+  const { postProfileInfoImg } = useProfileImgApi();
+
+  const [
+    {
+      data: resPostImgInfo,
+      fulfilled: postImgInfoFulfilled,
+      pending: postImgInfoPending,
+      rejected: postImgInfoRejected,
+      error: postImgInfoError
+    },
+    { run: postImgInfoApi }
+  ] = useRequest(postProfileInfoImg);
+
   // input state
   const [modifyState, setModifyState] = useState({
     userName: data.userName,
@@ -15,6 +28,7 @@ const ProfileInfoModify = ({ data, api, userId }) => {
     introduction: data.introduction
   });
 
+  const [imgState, setImgState] = useState({ imgUrl: "", isImgChange: false });
   const handleChange = e => {
     // stack은 지금은 무조건 배열상태로 들어가게 임시방편함
     if (e.target.name === "stacks") {
@@ -37,10 +51,13 @@ const ProfileInfoModify = ({ data, api, userId }) => {
     e.preventDefault();
     // submit 누르면 post요청하는 액션 디스패치
     api(userId, modifyState);
+
+    postImgInfoApi(userId, imgState);
   };
+
   return (
     <div>
-      {/* <ImageModify /> */}
+      <ImageModify state={imgState} setState={setImgState} />
       <Form>
         <FormGroup>
           <Label for="exampleEmail">Name</Label>

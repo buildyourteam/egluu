@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import { useDropzone } from "react-dropzone";
 const ImageModify = ({ state, setState }) => {
   const { getRootProps, getInputProps } = useDropzone({
@@ -9,7 +10,7 @@ const ImageModify = ({ state, setState }) => {
           url: URL.createObjectURL(file)
         })
       );
-      setState({ ...state, imgUrl: imgFile[0], isImgChange: true });
+      setState({ imgUrl: imgFile[0], isImgChange: true });
     }
   });
 
@@ -30,7 +31,7 @@ const ImageModify = ({ state, setState }) => {
           <input {...getInputProps()} />
           {state.imgUrl === "" ? (
             <img
-              src={thumbnail}
+              src="https://image.fmkorea.com/files/attach/new/20190706/486616/1139515760/1964885644/69a5ed6da6368495f69472d79fd6e19f.jpg"
               alt="이미지 에러"
               align="center"
               heigth="100%"
@@ -60,7 +61,6 @@ const ImageModify = ({ state, setState }) => {
         </div>
       </div>
       <Form>
-        import {useDropzone} from 'react-dropzone';
         <FormGroup>
           <Label for="exampleFile">File</Label>
           <Input type="file" name="file" id="exampleFile" />

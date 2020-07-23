@@ -7,13 +7,6 @@ const useProfileInfo = (
   geterror,
   getApi,
 
-  postdata,
-  postfulfilled,
-  postrejected,
-  posterror,
-
-  toggle,
-  infoModifying,
   userId
 ) => {
   // info 데이터 state
@@ -26,6 +19,9 @@ const useProfileInfo = (
     grade: 0,
     introduction: ""
   });
+
+  // modify창 열고 닫고
+  const [infoModifying, setInfoModifying] = useState(false);
 
   // 마운트될 때 액션 디스패치
   useEffect(() => {
@@ -44,7 +40,7 @@ const useProfileInfo = (
         grade: getdata.grade,
         introduction: getdata.introduction
       });
-      console.log(getdata);
+      //console.log(getdata);
     }
   }, [getfulfilled]);
 
@@ -63,16 +59,7 @@ const useProfileInfo = (
     getApi();
   };
 
-  // info post 성공시
-  useEffect(() => {
-    if (postfulfilled) {
-      // (ProfileInfoModify 말고) ProfileInfo 컴포넌트 다시 마운트
-      toggle(!infoModifying);
-      getApi(userId);
-    }
-  }, [postfulfilled]);
-
-  return [profileData, { Refresh }];
+  return [profileData, infoModifying, setInfoModifying, { Refresh }];
 };
 
 export default useProfileInfo;

@@ -15,6 +15,8 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import useProfileInfo from "../hook/profile/useProfileInfo";
+import useProfileInfoModify from "../hook/profile/useProfileInfoModify";
+
 const Profile = () => {
   // url에서 userId 추출
   const location = useLocation();
@@ -24,7 +26,7 @@ const Profile = () => {
   // info 정보 get, post 하는 api
   const { getProfileInfo, postProfileInfo } = useProfileInfoApi();
 
-  // info get의 상태변수와 데이터 및 액션디스패쳐
+  // info get의 상태변수와 데이터 및 액션 디스패쳐
   const [
     {
       data: resGetProfileInfo,
@@ -48,30 +50,29 @@ const Profile = () => {
     { run: postProfileInfoApi }
   ] = useRequest(postProfileInfo);
 
-  // modify창 열고 닫고
-  const [infoModifying, setInfoModifying] = useState(false);
-
-  // modify창 열고 닫을 토글
-  const infoModifyToggle = () => {
-    setInfoModifying(!infoModifying);
-  };
-
   // 상태변화에 대한 sideEffect에 쓰일 args
-  const [profileData] = useProfileInfo(
+  const [profileData, infoModifying, setInfoModifying] = useProfileInfo(
     resGetProfileInfo,
     getProfileInfoFulfilled,
     getProfileInfoRejected,
     getProfileInfoError,
     getProfileInfoApi,
 
+    userId
+  );
+
+  // modify창 열고 닫을 토글
+  const infoModifyToggle = () => {
+    setInfoModifying(!infoModifying);
+  };
+
+  useProfileInfoModify(
     resPostProfileInfo,
     postProfileInfoFulfilled,
     postProfileInfoRejected,
     postProfileInfoError,
-
-    // postProfileInfoFulfilled 시 modify창을 닫기위함
+    getProfileInfoApi,
     infoModifyToggle,
-    infoModifying,
     userId
   );
 
@@ -98,7 +99,7 @@ const Profile = () => {
             <div>로딩중...</div>
           ) : (
             <>
-              <ProfileInfo data={profileData} />
+              <ProfileInfo data={profileData} userId={userId} />
               <Button onClick={infoModifyToggle}>Modify</Button>
             </>
           )}
