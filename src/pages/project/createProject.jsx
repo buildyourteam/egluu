@@ -52,6 +52,10 @@ export default function CreateProject() {
     ] = useRequest(projectAction.fetchPostCreate);
     useProjectCreateEffect(resProject, getProjectFulfilled, getProjectRejected, getProjectError, createProjectApi, project)
 
+    const handleClickCreate = () => {
+        createProjectApi(project.project);
+    }
+
     return (
         <Layout>
             {false ? (
@@ -97,7 +101,7 @@ export default function CreateProject() {
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText>개발 분야</InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="개발 분야" />
+                            <Input placeholder="개발 분야" name="projectField" onChange={projectAction.inputProject} value={project.project.projectField} />
                         </InputGroup>
                         <List dense>
                             <ListItem>
@@ -122,6 +126,9 @@ export default function CreateProject() {
                                 <Input placeholder="0" min={0} max={100} type="number" step="1" name="etc" onChange={projectAction.inputProjectMember} value={project.project.needMember.etc} />
                             </InputGroup>
                         </List>
+                        <Button onClick={handleClickCreate}>
+                            프로젝트 생성
+                        </Button>
                     </div>
                 )
             }

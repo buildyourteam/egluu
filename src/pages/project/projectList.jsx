@@ -5,7 +5,8 @@ import {
   usePeopleListState,
   useRequest
 } from "../../hook";
-import { Layout, ProjectBox } from "../../components";
+import { Link } from 'react-router-dom';
+import { Layout, ProjectBox, Button } from "../../components";
 
 import Sort from "../../components/List/Sort";
 
@@ -29,7 +30,9 @@ export default function ProjectList() {
         search={search}
         setSearch={setSearch}
       />
-
+      <Link to="/createProject">
+        <Button>프로젝트 생성</Button>
+      </Link>
       <hr />
       <h1>{role}</h1>
       <h1>{region}</h1>

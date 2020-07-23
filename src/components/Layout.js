@@ -75,19 +75,19 @@ export default function Layout({ children }) {
                 </NavItem>
               </>
             ) : (
-              <>
-                <NavItem>
-                  <NavLink tag={Link} to="/login">
-                    Login
+                <>
+                  <NavItem>
+                    <NavLink tag={Link} to="/login">
+                      Login
                   </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} to="/register">
-                    Register
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} to="/register">
+                      Register
                   </NavLink>
-                </NavItem>
-              </>
-            )}
+                  </NavItem>
+                </>
+              )}
           </Nav>
         </Collapse>
       </Navbar>

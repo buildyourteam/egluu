@@ -5,10 +5,35 @@ const axios = require("axios");
 const useProjectCreateState = () => {
     const [project, setProject] = useState(projectDetail);
     const [img, setImg] = useState('');
-    const fetchPostCreate = async (projectId) => {
-        const res = await axios.get(`https://apis.tracker.delivery/carriers`);
+    const fetchPostCreate = async (data) => {
+        const token = window.sessionStorage.getItem("accessToken");
+        console.log(token)
+        const res = await axios.post(`http://34.105.29.115:8080/projects`, data, {
+            headers: {
+                'authtoken': token,
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Accept': 'application/hal+json'
+            }
+        });
         return res.data;
     };
+
+    const fetchImg = async (projectId, data) => {
+        const token = window.sessionStorage.getItem("accessToken");
+        headers = {
+            'Content-Type': 'multipart/form-data;charset=UTF-8',
+            'Accept': 'application/hal+json',
+            'authtoken': token
+        }
+        files = {
+            'image': data,
+        }
+
+        const res = await axios.post(`http://34.105.29.115:8080/projects/image/${projectId}`, {
+            headers: headers
+        }, files);
+        return res.data;
+    }
 
     const inputProject = (e) => {
         const name = e.target.name;
@@ -41,7 +66,7 @@ const useProjectCreateState = () => {
         })
     }
 
-    return [{ project, img }, { fetchPostCreate, inputProject, inputImg, inputProjectMember }]
+    return [{ project, img }, { fetchPostCreate, inputProject, inputImg, inputProjectMember, fetchImg }]
 }
 
 const useProjectCreateEffect = (data, fulfilled, rejected, error, createProjectApi, project) => {
@@ -64,25 +89,21 @@ const useProjectCreateEffect = (data, fulfilled, rejected, error, createProjectA
 export { useProjectCreateState, useProjectCreateEffect };
 
 const projectDetail = {
-    projectName: "Hi project....",
-    teamName: "project team2",
+    projectName: "",
+    teamName: "",
     endDate: "2020-04-30T23:59:00",
-    description: "need yes 입니다.",
-    status: "RECRUTING",
-    projectField: "APP",
+    description: "",
+    status: null,
+    projectField: "",
     applyCanFile: true,
-    questions: ["question1", "question2"],
+    questions: ['123', '234'],
     needMember: {
-        developer: 1,
-        designer: 4,
-        planner: 6,
-        etc: 8
+        developer: 0,
+        designer: 0,
+        planner: 0,
+        etc: 0
     },
-    _links: {
-        self: {
-            href: "https://api.eskiiimo.com/projects/1"
-        }
-    }
+    memberList: null
 }
 
 const projectApplicantDtoList = [{
