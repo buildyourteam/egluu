@@ -1,40 +1,107 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import ImageModify from "./ImageModify";
+import { useInfoApi, useImgApi } from "../../hook/api/profileApi";
+import { useRequest } from "../../hook/useRequest";
+import useProfileInfoModify from "../../hook/profile/useProfileInfoModify";
 
-const ProfileInfoModify = ({ data }) => {
-  // 바꿔야 할 것들
-  // 이미지
-  //
-  // props로 state값 전달//
-  // 기본값 원래 값으로 채우기//
+const ProfileInfoModify = ({
+  setModifying,
 
-  // 로딩 관련 변수이름 정리
-  //
-  // 로딩을 각 컴포넌트 안에 넣기
-  // 수정완료시 api요청 후 원래 페이지로
+  infoState,
+  setInfoState,
 
-  const [modifyState, setModifyState] = useState({
-    userName: data.userName,
-    role: data.role,
-    stacks: data.stacks,
-    contact: data.contact,
-    area: data.area,
-    introduction: data.introduction
-  });
+  imgState,
+  setImgState,
+
+  userId
+}) => {
+  // info 정보 post 하는 api
+  const { postInfo } = useInfoApi();
+
+  // info post 상태변수와 데이터 및 액션 디스패쳐
+  const [
+    {
+      data: resPostInfo,
+      fulfilled: postInfoFulfilled,
+      pending: postInfoPending,
+      rejected: postInfoRejected,
+      error: postInfoError
+    },
+    { run: postInfoApi }
+  ] = useRequest(postInfo);
+
+  //////////////////////////////////////////////////////////////////////
+  const { postImg } = useImgApi();
+
+  const [
+    {
+      data: resPostImg,
+      fulfilled: postImgFulfilled,
+      pending: postImgPending,
+      rejected: postImgRejected,
+      error: postImgError
+    },
+    { run: postImgApi }
+  ] = useRequest(postImg);
+
+  //////////////////////////////
+  useProfileInfoModify(
+    resPostInfo,
+    postInfoFulfilled,
+    postInfoRejected,
+    postInfoError,
+    postInfoApi,
+
+    resPostImg,
+    postImgFulfilled,
+    postImgRejected,
+    postImgError,
+    postImgApi,
+
+    setModifying,
+
+    infoState,
+    setInfoState,
+
+    imgState,
+    setImgState,
+
+    userId
+  );
+  ////////////////////////////////////////////////////////////
 
   const handleChange = e => {
-    setModifyState({
-      ...modifyState,
-      [e.target.name]: e.target.value
-    });
-    console.log(modifyState);
+    // stack은 지금은 무조건 배열상태로 들어가게 임시방편함
+    if (e.target.name === "stacks") {
+      setInfoState({
+        ...infoState,
+        [e.target.name]: [e.target.value]
+      });
+    }
+    // 나머지는 원래 방식대로
+    else {
+      setInfoState({
+        ...infoState,
+        [e.target.name]: e.target.value
+      });
+    }
+    console.log(infoState);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    // submit 누르면 post요청하는 액션 디스패치
+    postInfoApi(userId, infoState);
+
+    if (imgState.isImgChange) {
+      postImgApi(userId, imgState);
+    }
   };
+
   return (
     <div>
+      <ImageModify state={imgState} setState={setImgState} />
       <Form>
         <FormGroup>
           <Label for="exampleEmail">Name</Label>
@@ -42,7 +109,7 @@ const ProfileInfoModify = ({ data }) => {
             type="name"
             name="userName"
             placeholder="name"
-            value={modifyState.userName}
+            value={infoState.userName}
             onChange={handleChange}
           />
         </FormGroup>
@@ -52,13 +119,13 @@ const ProfileInfoModify = ({ data }) => {
           <Input
             type="select"
             name="role"
-            value={modifyState.role}
+            value={infoState.role}
             onChange={handleChange}
           >
-            <option>Developer</option>
-            <option>Designer</option>
-            <option>Director</option>
-            <option>.etc</option>
+            <option value="DEVELOPER">DEVELOPER</option>
+            <option value="DESIGNER">DESIGNER</option>
+            <option value="LEADER">LEADER</option>
+            <option value="ETC">ETC</option>
           </Input>
         </FormGroup>
 
@@ -69,7 +136,7 @@ const ProfileInfoModify = ({ data }) => {
             name="stacks"
             //id="exampleEmail"
             placeholder="stack"
-            value={modifyState.stack}
+            value={infoState.stacks}
             onChange={handleChange}
           />
         </FormGroup>
@@ -77,11 +144,11 @@ const ProfileInfoModify = ({ data }) => {
         <FormGroup>
           <Label for="exampleEmail">Email Contact</Label>
           <Input
-            type="email"
+            type="contact"
             name="contact"
-            id="exampleEmail"
-            placeholder="with a placeholder"
-            value={modifyState.contact}
+            //id="exampleEmail"
+            placeholder="contact"
+            value={infoState.contact}
             onChange={handleChange}
           />
         </FormGroup>
@@ -93,7 +160,7 @@ const ProfileInfoModify = ({ data }) => {
             name="area"
             //id="exampleEmail"
             placeholder="area"
-            value={modifyState.area}
+            value={infoState.area}
             onChange={handleChange}
           />
         </FormGroup>
@@ -104,7 +171,7 @@ const ProfileInfoModify = ({ data }) => {
             type="textarea"
             name="introduction"
             id="introduction"
-            value={modifyState.introduction}
+            value={infoState.introduction}
             onChange={handleChange}
           />
         </FormGroup>

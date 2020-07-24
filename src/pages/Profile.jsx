@@ -1,67 +1,87 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Layout, ProfileInfo, ProfileInfoModify } from "../components";
-import { useTemporaryApi, useRequest } from "../hook";
+import { useSelector } from "react-redux";
 import {
   Row,
   Col,
-  Alert,
   TabContent,
   TabPane,
   Nav,
   NavItem,
   NavLink,
-  Card,
-  Button,
-  CardTitle,
-  CardText
+  Button
 } from "reactstrap";
 import classnames from "classnames";
-import useProfileInfo from "../hook/profile/useProfileInfo";
+
 const Profile = () => {
-  const [temporary, apiAction] = useTemporaryApi();
-  const [
-    {
-      data: resProfileData,
-      fulfilled: getProfileDataFulfilled,
-      pending: getProfileDataPending,
-      rejected: getProfileDataRejected,
-      error: getProfileDataError
-    },
-    { run: getProfileDataApi }
-  ] = useRequest(apiAction.getProfileData);
+  // url에서 userId 추출
+  const location = useLocation();
+  const url = location.pathname.split("/");
+  const userId = url[2];
 
-  const [profileData] = useProfileInfo(
-    resProfileData,
-    getProfileDataFulfilled,
-    getProfileDataPending,
-    getProfileDataRejected,
-    getProfileDataError,
-    getProfileDataApi
-  );
+  const myId = useSelector(state => state.login.userId);
 
+  // 컴포넌트 이동을 다룰 변수
+  const [modifying, setModifying] = useState(false);
+
+  // modify창 열고 닫을 토글
+  const modifyToggle = () => {
+    setModifying(!modifying);
+  };
+
+  const [infoState, setInfoState] = useState({
+    userName: "",
+    role: "",
+    stacks: [""],
+    contact: "",
+    area: "",
+    grade: 0,
+    introduction: ""
+  });
+
+  const [imgState, setImgState] = useState({
+    imgUrl: "",
+    isImgChange: false
+  });
+
+  // 우측 탭 상태변수
   const [activeTab, setActiveTab] = useState("1");
 
+  // 탭 토글
   const tabToggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const [infoModifying, setInfoModifying] = useState(false);
-  const infoModifyToggle = () => {
-    setInfoModifying(!infoModifying);
-  };
   return (
     <Layout>
       <br />
       <Row xs="4">
         <Col>
-          {/* {getProfileDataPending ? <div>로딩중...</div> : <ProfileInfoModify />} */}
-
-          {infoModifying ? (
-            <ProfileInfoModify data={profileData} />
+          {modifying ? (
+            <ProfileInfoModify
+              setModifying={modifyToggle}
+              infoState={infoState}
+              setInfoState={setInfoState}
+              imgState={imgState}
+              setImgState={setImgState}
+              userId={userId}
+            />
           ) : (
             <>
-              <ProfileInfo />
-              <Button onClick={infoModifyToggle}>Modify</Button>
+              <ProfileInfo
+                setModifying={modifyToggle}
+                infoState={infoState}
+                setInfoState={setInfoState}
+                imgState={imgState}
+                setImgState={setImgState}
+                userId={userId}
+              />
+              {userId === myId ? (
+                <Button onClick={modifyToggle}>Modify</Button>
+              ) : (
+                <Button> recruit </Button>
+              )}
             </>
           )}
         </Col>
