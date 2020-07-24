@@ -85,7 +85,13 @@ const ProfileInfo = ({
           {getImgPending ? (
             <p>로딩중...</p>
           ) : (
-            <img src={imgState.imgUrl} width="100%" object-fit="contain"></img>
+            <div className="profile-img">
+              <img
+                src={imgState.imgUrl}
+                width="100%"
+                object-fit="contain"
+              ></img>
+            </div>
           )}
           <h3 className="profile-info-id">inho2736</h3>
           <h6 className="profile-info-id">{infoState.userName}</h6>
