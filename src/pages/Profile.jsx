@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Layout, ProfileInfo, ProfileInfoModify } from "../components";
+import { useSelector } from "react-redux";
 import {
   Row,
   Col,
@@ -18,6 +19,8 @@ const Profile = () => {
   const location = useLocation();
   const url = location.pathname.split("/");
   const userId = url[2];
+
+  const myId = useSelector(state => state.login.userId);
 
   // 컴포넌트 이동을 다룰 변수
   const [modifying, setModifying] = useState(false);
@@ -74,7 +77,11 @@ const Profile = () => {
                 setImgState={setImgState}
                 userId={userId}
               />
-              <Button onClick={modifyToggle}>Modify</Button>
+              {userId === myId ? (
+                <Button onClick={modifyToggle}>Modify</Button>
+              ) : (
+                <Button> recruit </Button>
+              )}
             </>
           )}
         </Col>

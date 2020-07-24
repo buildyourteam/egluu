@@ -93,7 +93,7 @@ const ProfileInfo = ({
               ></img>
             </div>
           )}
-          <h3 className="profile-info-id">inho2736</h3>
+          <h3 className="profile-info-id">{userId}</h3>
           <h6 className="profile-info-id">{infoState.userName}</h6>
           <h6>
             Lev. {infoState.grade} {infoState.role}
