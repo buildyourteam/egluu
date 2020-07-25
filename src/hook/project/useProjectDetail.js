@@ -1,20 +1,54 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom';
 const axios = require("axios");
 
 const useProjectDetailState = () => {
+    const history = useHistory();
     const [project, setProject] = useState(projectDetail);
-    const [apply, setApply] = useState(projectApplicantDtoList);
+    const [apply, setApply] = useState([]);
     const [recruit, setRecruit] = useState(recruitDtoList)
     const [check, setCheck] = useState({
         apply: false,
         recruit: false
     })
     const fetchGetDetail = async (projectId) => {
-        const res = await axios.get(`https://apis.tracker.delivery/carriers`);
-        return res.data;
-    };
+        const token = window.sessionStorage.getItem("accessToken");
+        console.log(token)
+        let resApply
+        let res = await axios.get(`http://34.105.29.115:8080/projects/${projectId}`);
+        res = res.data;
+        console.log(res._links.apply)
+        if (res._links.apply) {
+            resApply = await axios.get(res._links.apply.href, {
+                headers: {
+                    'authtoken': token,
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Accept': 'application/hal+json'
+                }
+            }).then((resData) => {
+                resApply = resData.data;
+            }).catch(error => {
+                if (error.response.error === 101) {
+                    console.log('지원자 없음');
+                    resApply = [];
+                }
+            });
+        }
+        return { res, resApply }
+    }
 
+    const fetchDeleteProject = async (projectId) => {
+        const token = window.sessionStorage.getItem("accessToken");
+        await axios.delete(`http://34.105.29.115:8080/projects/${projectId}`, {
+            headers: {
+                'authtoken': token,
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Accept': 'application/hal+json'
+            }
+        });
+        history.push('/projects');
+    }
 
     const setProjectState = (data) => {
         setProject(data);
@@ -66,44 +100,33 @@ const useProjectDetailState = () => {
         })
     }
 
-    return [{ project, check, apply, recruit }, { fetchGetDetail, inputProject, setProjectState, checkSwitch, inputApply, setApplyState, setRecruitState, inputRecruit }]
+    return [{ project, check, apply, recruit }, { fetchGetDetail, inputProject, setProjectState, checkSwitch, inputApply, setApplyState, setRecruitState, inputRecruit, fetchDeleteProject }]
 }
 
-const useProjectDetailEffect = (data, fulfilled, rejected, error, fetchDetail, inputDetail, projectId) => {
+const useProjectDetailEffect = (data, fulfilled, rejected, error, fetchDetail, projectAction, projectId) => {
     useEffect(() => {
-        fetchDetail.getProjectApi(projectId);
+        fetchDetail(projectId);
     }, []);
 
     useEffect(() => {
         if (fulfilled) {
-            // inputDetail(data);
-            inputDetail(projectDetail);
-            if (true) { // 소유자
-                fetchDetail.getApplyApi(projectId);
+            console.log(data)
+            projectAction.setProjectState(data.res);
+            if (data.resApply !== undefined) {
+                projectAction.setApplyState(data.resApply)
             }
         }
     }, [fulfilled]);
 
     useEffect(() => {
         if (rejected) {
-            alert('에러 발생');
+            // alert('에러 발생');
+            // if (error.response.error === 101) {
+            //     console.log('지원자 없음');
+            //     projectAction.setApplyState([])
+            // }
             console.log(error);
-        }
-    }, [rejected]);
-}
 
-const useProjectApplyEffect = (data, fulfilled, rejected, error, inputState) => {
-    useEffect(() => {
-        if (fulfilled) {
-            // inputDetail(data);
-            inputState(projectApplicantDtoList);
-        }
-    }, [fulfilled]);
-
-    useEffect(() => {
-        if (rejected) {
-            alert('에러 발생');
-            console.log(error);
         }
     }, [rejected]);
 }
@@ -124,49 +147,45 @@ const useProjectRecruitEffect = (data, fulfilled, rejected, error, inputState) =
     }, [rejected]);
 }
 
-export { useProjectDetailState, useProjectDetailEffect, useProjectApplyEffect, useProjectRecruitEffect };
+export { useProjectDetailState, useProjectDetailEffect, useProjectRecruitEffect };
 
 const projectDetail = {
-    projectName: "Hi project....",
-    teamName: "project team2",
-    endDate: "2020-04-30T23:59:00",
-    description: "need yes 입니다.",
-    status: "RECRUTING",
-    projectField: "APP",
+    projectName: "",
+    teamName: "",
+    endDate: "",
+    description: "",
+    status: "",
+    projectField: "",
     applyCanFile: true,
-    questions: ["question1", "question2"],
+    questions: [],
     needMember: {
-        developer: 1,
-        designer: 4,
-        planner: 6,
-        etc: 8
+        developer: 0,
+        designer: 0,
+        planner: 0,
+        etc: 0
+    },
+    currentMember: {
+        developer: 0,
+        designer: 0,
+        planner: 0,
+        etc: 0
     },
     _links: {
         self: {
-            href: "https://api.eskiiimo.com/projects/1"
+            href: ""
         }
     }
 }
 
 const projectApplicantDtoList = [{
-    userId: "testApplicant1",
-    userName: "테스터",
-    status: "UNREAD",
-    role: "DEVELOPER",
+    userId: "",
+    userName: "",
+    status: "",
+    role: "",
     _links: {
         self: {
-            href: "https://api.eskiiimo.com/projects/1/apply/testApplicant1"
-        }
-    }
-}, {
-    userId: "testApplicant2",
-    userName: "테스터",
-    status: "UNREAD",
-    role: "DEVELOPER",
-    _links: {
-        self: {
-            href: "https://api.eskiiimo.com/projects/1/apply/testApplicant2"
-        }
+            href: ""
+        },
     }
 }]
 

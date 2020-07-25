@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useLocation, useHistory } from 'react-router-dom';
+import React from "react";
+import { useLocation } from 'react-router-dom';
 import {
     Card,
     CardImg,
@@ -13,7 +13,9 @@ import {
 
 } from "reactstrap";
 import {
-    useProjectCreateState, useProjectCreateEffect, useRequest
+    useProjectUpdateState,
+    useProjectUpdateEffect,
+    useRequest
 } from "../../hook";
 import {
     Button,
@@ -37,11 +39,11 @@ import DateFnsUtils from '@date-io/date-fns';
 import { ko } from 'date-fns/locale';
 import { InputGroup, InputGroupAddon, InputGroupText, Input, Form } from 'reactstrap';
 
-export default function ProjectCreate() {
+export default function ProjectUpdate() {
     const location = useLocation();
-    const history = useHistory();
     const url = location.pathname.split('/');
-    const [project, projectAction] = useProjectCreateState();
+    const projectId = url[2];
+    const [project, projectAction] = useProjectUpdateState();
     const [
         {
             data: resProject,
@@ -50,8 +52,8 @@ export default function ProjectCreate() {
             rejected: getProjectRejected,
             error: getProjectError
         },
-        { run: createProjectApi }
-    ] = useRequest(projectAction.fetchPostCreate);
+        { run: UpdateProjectApi }
+    ] = useRequest(projectAction.fetchPutUpdate);
     const [
         {
             data: resImg,
@@ -60,19 +62,28 @@ export default function ProjectCreate() {
             rejected: getImgRejected,
             error: getImgError
         },
-        { run: createImgApi }
+        { run: UpdateImgApi }
     ] = useRequest(projectAction.fetchImg);
-    useProjectCreateEffect(resProject, getProjectFulfilled, getProjectRejected, getProjectError, createImgApi, project.img)
+    useProjectUpdateEffect(resProject, getProjectFulfilled, getProjectRejected, getProjectError, UpdateImgApi, project.img[0], url[2])
 
-    useEffect(() => {
-        if (getImgFulfilled) {
-            const projectId = resProject._links.createdProject.href.split('/');
-            history.push(`/projectDetail/${projectId[2]}`)
+    const handleClickUpdate = () => {
+        const updateData = {
+            projectName: project.project.projectName,
+            teamName: project.project.teamName,
+            endDate: project.project.endDate,
+            introduction: project.project.introduction,
+            state: project.project.state,
+            projectField: project.project.projectField,
+            applyCanFile: project.project.applyCanFile,
+            needMember: {
+                developer: project.project.needMember.developer,
+                designer: project.project.needMember.designer,
+                planner: project.project.needMember.planner,
+                etc: project.project.needMember.etc
+            },
+            questions: project.project.questions,
         }
-    }, [getImgFulfilled])
-
-    const handleClickCreate = () => {
-        createProjectApi(project.project);
+        UpdateProjectApi(projectId, updateData);
     }
 
     return (
@@ -82,7 +93,6 @@ export default function ProjectCreate() {
             ) : (
                     <div>
                         <ImgInput img={project.img} saveImg={projectAction.inputImg} />
-                        {/* <img src={project.url} alt='temp' /> */}
                         <InputGroup>
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText>프로젝트 이름</InputGroupText>
@@ -146,17 +156,6 @@ export default function ProjectCreate() {
                             </InputGroup>
                         </List>
                         {project.project.questions.map((value, index) => (
-                            // <InputGroup key={index}>
-                            //     {console.log(value)}
-                            //     <InputGroupAddon addonType="prepend">질문 {index}번</InputGroupAddon>
-                            //     <InputGroup.Append>
-                            //         <Button variant="outline-secondary" onClick={() => projectAction.deleteQuestion(index)}>삭제</Button>
-                            //     </InputGroup.Append>
-                            //     <Form.Control
-                            //         placeholder={`질문 ${index}번`}
-                            //         name="question" onChange={e => projectAction.inputQuestion(e.target.value, index)} value={value}
-                            //     />
-                            // </InputGroup>
                             <InputGroup>
                                 <InputGroupAddon addonType="prepend">질문</InputGroupAddon>
                                 <Input placeholder="질문" name="questions" onChange={e => projectAction.inputQuestion(e.target.value, index)} value={value} />
@@ -167,8 +166,8 @@ export default function ProjectCreate() {
                         ))}
                         <Button variant="outline-secondary" onClick={projectAction.addQuestion}>질문 추가</Button>
                         <br />
-                        <Button onClick={handleClickCreate}>
-                            프로젝트 생성
+                        <Button onClick={handleClickUpdate}>
+                            프로젝트 수정
                         </Button>
                     </div>
                 )
@@ -176,22 +175,3 @@ export default function ProjectCreate() {
         </Layout >
     );
 }
-
-{/* <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
-<MuiDateTimePicker
-    name="endDate"
-    value={project.endDate}
-    onChange={setStartDate}
-    format="yy.MM.dd HH:mm"
-    placeholder="종료일"
-    variant="dialog"
-    disableUnderline
-    disableToolbar={false}
-    hideTabs
-    clearable
-    ampm
-    style={{
-        borderLeft: '1px solid #cdcecd',
-    }}
-/>
-</MuiPickersUtilsProvider> */}

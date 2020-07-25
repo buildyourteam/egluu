@@ -3,21 +3,28 @@ import { useSelector, useDispatch } from "react-redux";
 import { setTemporary } from "../../reducers/temporary";
 const axios = require("axios");
 
-export function useProjectListState(
-  data,
-  fulfilled,
-  pending,
-  rejected,
-  error,
-
-  getApi
-) {
+export function useProjectListState() {
   const [projectList, setProjectList] = useState(staticProjectData);
 
+  const getProjectList = async () => {
+    const res = await axios.get('http://34.105.29.115:8080/projects');
+    return res.data._embedded.projectList;
+  }
+  return [projectList, { getProjectList, setProjectList }];
+}
+
+export function useProjectListEffect(data, fulfilled, rejected, error, getApi, setProjectList) {
+  const dispatch = useDispatch();
+
+
   useEffect(() => {
-    // if (fulfilled) setProjectList(data);
-    if (fulfilled) setProjectList(staticProjectData); // 임시데이터
+    if (fulfilled) {
+      if (data !== undefined) {
+        setProjectList(data);
+      }
+    }
   }, [fulfilled]);
+
 
   useEffect(() => {
     getApi();
@@ -26,37 +33,12 @@ export function useProjectListState(
   useEffect(() => {
     if (rejected) {
       if (error) {
-        alert(error);
         console.log(error);
+        setProjectList([]);
       }
     }
   }, [rejected]);
 
-  const listRefresh = () => {
-    getApi();
-  };
-
-  return [projectList, { listRefresh }];
-}
-
-export function useProjectSaveEffect(data, fulfilled, rejected, error, posApi) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (fulfilled) {
-      alert("전송 성공!");
-      dispatch(setTemporary(data));
-    }
-  }, [fulfilled]);
-
-  useEffect(() => {
-    if (rejected) {
-      if (error) {
-        alert(error.response);
-        console.log(error);
-      }
-    }
-  }, [rejected]);
 }
 
 const staticProjectData = [

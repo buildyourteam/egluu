@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom';
+
 const axios = require("axios");
 
-const useProjectCreateState = () => {
+const useProjectUpdateState = () => {
+    const projectDetail = useSelector(state => state.project.projectDetail)
     const [project, setProject] = useState(projectDetail);
-    const [img, setImg] = useState('');
-    const fetchPostCreate = async (data) => {
+    const [img, setImg] = useState(projectDetail.img);
+    const fetchPutUpdate = async (projectId, data) => {
         const token = window.sessionStorage.getItem("accessToken");
-        console.log(token)
-        const res = await axios.post(`http://34.105.29.115:8080/projects`, data, {
+        const res = await axios.put(`http://34.105.29.115:8080/projects/${projectId}`, data, {
             headers: {
                 'authtoken': token,
                 'Content-Type': 'application/json;charset=UTF-8',
@@ -109,15 +111,18 @@ const useProjectCreateState = () => {
         })
     }
 
-    return [{ project, img }, { fetchPostCreate, inputProject, inputImg, inputProjectMember, fetchImg, inputDate, inputQuestion, addQuestion, deleteQuestion }]
+    return [{ project, img }, { fetchPutUpdate, inputProject, inputImg, inputProjectMember, fetchImg, inputDate, inputQuestion, addQuestion, deleteQuestion }]
 }
 
-const useProjectCreateEffect = (data, fulfilled, rejected, error, createImgApi, projectImg) => {
-
+const useProjectUpdateEffect = (data, fulfilled, rejected, error, UpdateImgApi, projectImg, projectId) => {
+    const history = useHistory();
     useEffect(() => {
         if (fulfilled) {
-            const projectId = data._links.createdProject.href.split('/');
-            createImgApi(projectId[2], projectImg);
+            console.log(typeof projectImg)
+            if (typeof projectImg !== 'string')
+                UpdateImgApi(projectId, projectImg);
+            history.push(`/projectDetail/${projectId}`);
+
         }
     }, [fulfilled]);
 
@@ -130,26 +135,8 @@ const useProjectCreateEffect = (data, fulfilled, rejected, error, createImgApi, 
 }
 
 
-export { useProjectCreateState, useProjectCreateEffect };
+export { useProjectUpdateState, useProjectUpdateEffect };
 
-const projectDetail = {
-    projectName: "",
-    teamName: "",
-    endDate: "2020-10-30T23:59:00",
-    introduction: "",
-    state: 'RECRUTING',
-    projectField: "",
-    applyCanFile: true,
-    needMember: {
-        developer: 0,
-        designer: 0,
-        planner: 0,
-        etc: 0
-    },
-    questions: [],
-    currentMember: null,
-    memberList: null
-}
 
 const projectApplicantDtoList = [{
     userId: "testApplicant1",
