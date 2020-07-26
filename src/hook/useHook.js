@@ -18,9 +18,6 @@ export function useTemporaryApi() {
   const postPeopletList = async data => {
     await axios.post(`https://apis.tracker.delivery/carriers`, { data: data });
   };
-  const getProfileData = async data => {
-    await axios.get(`https://apis.tracker.delivery/carriers`);
-  };
 
   return [
     temporary,
@@ -28,8 +25,7 @@ export function useTemporaryApi() {
       getProjectList,
       getPeopleList,
       postProjectList,
-      postPeopletList,
-      getProfileData
+      postPeopletList
     }
   ];
 }
