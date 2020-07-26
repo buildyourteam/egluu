@@ -14,7 +14,7 @@ import sampleimg from "../icon/baseImg.png";
 import './Project.css'
 
 export default function ProjectBox(props) {
-    const staticProjectData = props.data;
+  const staticProjectData = props.data;
   // 0으로 나눌 경우 예외처리!
   const developerPercent =
     (staticProjectData.currentMember.developer /
@@ -33,12 +33,12 @@ export default function ProjectBox(props) {
       staticProjectData.needMember.etc) *
     100;
   return (
-    <div id="ProjectBoxCard" > 
-      <Card >
+    <div id="ProjectBoxCard" >
+      <Card>
         <CardImg
           width="100%"
           height="150"
-          src={sampleimg}
+          src={`http://34.105.29.115:8080/projects/image/${staticProjectData.projectId}`}
           alt="Card image cap"
         />
         <CardBody>
