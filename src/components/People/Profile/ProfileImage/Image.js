@@ -1,6 +1,6 @@
 import React from "react";
 import ImageApi from "../../hook/api/imgApi";
-import useRequest from "../../hook/useRequest";
+import useRequest from "../../../../hook/useRequest";
 
 const Image = ({ purpose, userId }) => {
   const { getImage } = ImageApi();

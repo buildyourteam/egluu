@@ -1,10 +1,10 @@
 import React from "react";
-import { Row, Col, Alert } from "reactstrap";
-import "./Profile.css";
-import { useInfoApi, useImgApi } from "../../hook/api/profileApi";
-import { useRequest } from "../../hook/useRequest";
-import { useImage } from "../../hook/profile/useImage";
-import useProfileInfo from "../../hook/profile/useProfileInfo";
+import { Alert } from "reactstrap";
+import "../Profile.css";
+import { useInfoApi, useImgApi } from "../../../../hook/api/profileApi";
+import { useRequest } from "../../../../hook/useRequest";
+import { useImage } from "../../../../hook/profile/useImage";
+import useProfileInfo from "../../../../hook/profile/useProfileInfo";
 
 const ProfileInfo = ({
   // 이미지까지 다하고 필요없으면 모디파이 props는 삭제!

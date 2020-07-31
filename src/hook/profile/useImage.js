@@ -20,7 +20,7 @@ export const useImage = (
     //console.log("img=" + resImage);
     setImgState({
       ...imgState,
-      imgUrl: `http://34.105.29.115:8080/profile/image/${userId}`
+      imgUrl: `https://egluuapi.codingnome.dev/profile/image/${userId}`
     });
   }, [fulfilled]);
 

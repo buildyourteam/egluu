@@ -13,6 +13,9 @@ import {
   Button
 } from "reactstrap";
 import classnames from "classnames";
+import RunningProjects from "../components/People/Profile/ProfileProjects/RunningProjects";
+import EndedProjects from "../components/People/Profile/ProfileProjects/EndedProjects";
+import PlanProjects from "../components/People/Profile/ProfileProjects/PlanProjects";
 
 const Profile = () => {
   // url에서 userId 추출
@@ -95,7 +98,7 @@ const Profile = () => {
                     tabToggle("1");
                   }}
                 >
-                  Completed Projects
+                  Ended Projects
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -115,19 +118,22 @@ const Profile = () => {
                     tabToggle("3");
                   }}
                 >
-                  Planned Projects
+                  Plan Projects
                 </NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
-                <Row>
-                  <Col sm="12">
-                    <h4>Tab 1 Contents</h4>
-                  </Col>
-                </Row>
+                <EndedProjects userId={userId} />
               </TabPane>
-              <TabPane tabId="2">sdfsd</TabPane>
+
+              <TabPane tabId="2">
+                <RunningProjects userId={userId} />
+              </TabPane>
+
+              <TabPane tabId="3">
+                <PlanProjects userId={userId} />
+              </TabPane>
             </TabContent>
           </div>
         </Col>
