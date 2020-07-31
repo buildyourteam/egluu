@@ -12,12 +12,10 @@ export const useRunningProject = (
 
   useEffect(() => {
     getProjectApi(userId);
-    console.log("마운트");
   }, []);
 
   useEffect(() => {
-    console.log("fulfilled");
-    if (getProjectFulfilled) {
+    if (getProjectFulfilled && resGetProject.page.totalElements) {
       setList(resGetProject._embedded.projectList);
     }
   }, [getProjectFulfilled]);
@@ -38,7 +36,7 @@ export const usePlanProject = (
   }, []);
 
   useEffect(() => {
-    if (getProjectFulfilled) {
+    if (getProjectFulfilled && resGetProject.page.totalElements) {
       setList(resGetProject._embedded.projectList);
     }
   }, [getProjectFulfilled]);
@@ -61,7 +59,8 @@ export const useEndedProject = (
   }, []);
 
   useEffect(() => {
-    if (getProjectFulfilled) {
+    console.log(resGetProject);
+    if (getProjectFulfilled && resGetProject.page.totalElements) {
       setList(resGetProject._embedded.projectList);
     }
   }, [getProjectFulfilled]);

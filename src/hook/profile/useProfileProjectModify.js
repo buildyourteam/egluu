@@ -31,7 +31,6 @@ export const useEndedModify = (
 
   useEffect(() => {
     if (getProjectFulfilled) {
-      console.log(resGetProject);
       if (resGetProject.page.totalElements) {
         setHideList(resGetProject._embedded.projectList);
       }
@@ -39,8 +38,40 @@ export const useEndedModify = (
   }, [getProjectFulfilled]);
 
   useEffect(() => {
-    if (hideProjectFulfilled || displayProjectFulfilled) {
-      getHideProjectApi(userId);
+    if (hideProjectFulfilled) {
+      let moveData = {};
+      setList(
+        list.filter(a => {
+          if (a.projectId === resHideProject.projectId) {
+            moveData = a;
+            return false;
+          }
+          return true;
+        })
+      );
+      setHideList(hideList => {
+        const newList = hideList.concat(moveData);
+        return newList;
+      });
     }
-  }, [hideProjectFulfilled, displayProjectFulfilled]);
+  }, [hideProjectFulfilled]);
+
+  useEffect(() => {
+    if (displayProjectFulfilled) {
+      let moveData = {};
+      setHideList(
+        hideList.filter(a => {
+          if (a.projectId === resDisplayProject.projectId) {
+            moveData = a;
+            return false;
+          }
+          return true;
+        })
+      );
+      setList(list => {
+        const newList = list.concat(moveData);
+        return newList;
+      });
+    }
+  }, [displayProjectFulfilled]);
 };

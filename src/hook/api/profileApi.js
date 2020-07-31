@@ -67,7 +67,6 @@ export function useEndedProjectApi() {
     const res = await axios.get(
       `${BASE_URL}${userId}/ended?page=0&size=10&sort=projectName%2CDESC`
     );
-    console.log(`종료프로젝트 목록 ${res.data}`);
     return res.data;
   };
 
@@ -83,7 +82,6 @@ export function useEndedProjectApi() {
         }
       }
     );
-    console.log(`숨긴프로젝트 목록 ${res.data}`);
     return res.data;
   };
 
@@ -98,7 +96,7 @@ export function useEndedProjectApi() {
         }
       }
     );
-    return res.data;
+    return { res, projectId };
   };
 
   const displayProject = async (userId, projectId) => {
@@ -113,7 +111,7 @@ export function useEndedProjectApi() {
         }
       }
     );
-    return res.data;
+    return { res, projectId };
   };
 
   return { getProject, getHideProject, hideProject, displayProject };

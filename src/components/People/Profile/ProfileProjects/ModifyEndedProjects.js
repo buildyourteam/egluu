@@ -71,7 +71,6 @@ const ModifyEndedProjects = ({ list, setList, userId }) => {
   );
 
   const handleHide = id => {
-    // console.log(id);
     hideProjectApi(userId, id);
   };
 
@@ -81,19 +80,30 @@ const ModifyEndedProjects = ({ list, setList, userId }) => {
 
   return (
     <>
-      <Row xs="3">
-        {list.map((value, index) => (
-          <Col key={index}>
-            <Button onClick={() => handleHide(value.projectId)}>Hide</Button>
-            <ProjectBox data={value} />
-          </Col>
-        ))}
-      </Row>
+      <div className="display-projects">
+        <Row xs="3">
+          {list.map((value, index) => (
+            <Col key={index}>
+              <Button
+                className="hide-botton"
+                onClick={() => handleHide(value.projectId)}
+              >
+                Hide
+              </Button>
+              <ProjectBox data={value} />
+            </Col>
+          ))}
+        </Row>
+      </div>
+
       <div className="hidden-projects">
         <Row xs="3">
           {hideList.map((value, index) => (
             <Col key={index}>
-              <Button onClick={() => handleDisplay(value.projectId)}>
+              <Button
+                className="display-botton"
+                onClick={() => handleDisplay(value.projectId)}
+              >
                 Display
               </Button>
               <ProjectBox data={value} />

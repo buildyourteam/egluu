@@ -1,6 +1,7 @@
 #ProjectBoxCard {
   width: 13vw;
   height: auto;
+  margin-top: 10px;
 }
 
 #ProjectBoxCard .card-title {

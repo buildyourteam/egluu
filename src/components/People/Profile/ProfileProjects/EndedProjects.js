@@ -62,7 +62,7 @@ const EndedProjects = ({ userId }) => {
       )}
       {myId === userId && (
         <div>
-          <Button id="hide-button" onClick={hideToggle}>
+          <Button id="hide-toggle-button" onClick={hideToggle}>
             Hide
           </Button>
         </div>
