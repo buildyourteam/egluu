@@ -7,15 +7,21 @@ export function useProjectListState() {
   const [projectList, setProjectList] = useState(staticProjectData);
 
   const getProjectList = async () => {
-    const res = await axios.get('http://34.105.29.115:8080/projects');
+    const res = await axios.get("https://egluuapi.codingnome.dev/projects");
     return res.data._embedded.projectList;
-  }
+  };
   return [projectList, { getProjectList, setProjectList }];
 }
 
-export function useProjectListEffect(data, fulfilled, rejected, error, getApi, setProjectList) {
+export function useProjectListEffect(
+  data,
+  fulfilled,
+  rejected,
+  error,
+  getApi,
+  setProjectList
+) {
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     if (fulfilled) {
@@ -24,7 +30,6 @@ export function useProjectListEffect(data, fulfilled, rejected, error, getApi, s
       }
     }
   }, [fulfilled]);
-
 
   useEffect(() => {
     getApi();
@@ -38,7 +43,6 @@ export function useProjectListEffect(data, fulfilled, rejected, error, getApi, s
       }
     }
   }, [rejected]);
-
 }
 
 const staticProjectData = [
@@ -55,15 +59,15 @@ const staticProjectData = [
       developer: 2,
       designer: 1,
       planner: 1,
-      etc: 2
+      etc: 2,
     },
     needMember: {
       developer: 2,
       designer: 2,
       planner: 3,
-      etc: 4
+      etc: 4,
     },
-    leaderId: null
+    leaderId: null,
   },
   {
     projectId: 16,
@@ -78,15 +82,15 @@ const staticProjectData = [
       developer: 2,
       designer: 1,
       planner: 1,
-      etc: 2
+      etc: 2,
     },
     needMember: {
       developer: 2,
       designer: 2,
       planner: 3,
-      etc: 4
+      etc: 4,
     },
-    leaderId: null
+    leaderId: null,
   },
   {
     projectId: 16,
@@ -101,15 +105,15 @@ const staticProjectData = [
       developer: 2,
       designer: 1,
       planner: 1,
-      etc: 2
+      etc: 2,
     },
     needMember: {
       developer: 2,
       designer: 2,
       planner: 3,
-      etc: 4
+      etc: 4,
     },
-    leaderId: null
+    leaderId: null,
   },
   {
     projectId: 16,
@@ -124,14 +128,14 @@ const staticProjectData = [
       developer: 2,
       designer: 1,
       planner: 1,
-      etc: 2
+      etc: 2,
     },
     needMember: {
       developer: 2,
       designer: 2,
       planner: 3,
-      etc: 4
+      etc: 4,
     },
-    leaderId: null
-  }
+    leaderId: null,
+  },
 ];

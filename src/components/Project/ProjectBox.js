@@ -8,10 +8,10 @@ import {
   CardSubtitle,
   Row,
   Col,
-  Progress
+  Progress,
 } from "reactstrap";
 import sampleimg from "../icon/baseImg.png";
-import './Project.css'
+import "./Project.css";
 
 export default function ProjectBox(props) {
   const staticProjectData = props.data;
@@ -29,16 +29,15 @@ export default function ProjectBox(props) {
       staticProjectData.needMember.designer) *
     100;
   const etcPercent =
-    (staticProjectData.currentMember.etc /
-      staticProjectData.needMember.etc) *
+    (staticProjectData.currentMember.etc / staticProjectData.needMember.etc) *
     100;
   return (
-    <div id="ProjectBoxCard" >
+    <div id="ProjectBoxCard">
       <Card>
         <CardImg
           width="100%"
           height="150"
-          src={`http://34.105.29.115:8080/projects/image/${staticProjectData.projectId}`}
+          src={`https://egluuapi.codingnome.dev/projects/image/${staticProjectData.projectId}`}
           alt="Card image cap"
         />
         <CardBody>
