@@ -92,7 +92,10 @@ const ProfileInfoModify = ({
   const handleSubmit = e => {
     e.preventDefault();
     // submit 누르면 post요청하는 액션 디스패치
-    postInfoApi(userId, infoState);
+
+    const { grade, ...withOutGrade } = infoState;
+
+    postInfoApi(userId, withOutGrade);
 
     if (imgState.isImgChange) {
       postImgApi(userId, imgState);

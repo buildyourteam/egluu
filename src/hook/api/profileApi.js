@@ -58,7 +58,22 @@ export function useRunningProjectApi() {
 
     return res.data;
   };
-  return { getProject };
+  // 숨긴 프로젝트 목록 가져오기
+  const getHideProject = async userId => {
+    const token = window.sessionStorage.getItem("accessToken");
+    const res = await axios.get(
+      `${BASE_URL}${userId}/running/hidden?page=0&size=10&sort=projectName%2CDESC`,
+      {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          authToken: token
+        }
+      }
+    );
+    return res.data;
+  };
+
+  return { getProject, getHideProject };
 }
 export function useEndedProjectApi() {
   // 종료된 프로젝트 목록 가져오기
@@ -125,5 +140,20 @@ export function usePlanProjectApi() {
 
     return res.data;
   };
-  return { getProject };
+  // 숨긴 프로젝트 목록 가져오기
+  const getHideProject = async userId => {
+    const token = window.sessionStorage.getItem("accessToken");
+    const res = await axios.get(
+      `${BASE_URL}${userId}/running/hidden?page=0&size=10&sort=projectName%2CDESC`,
+      {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          authToken: token
+        }
+      }
+    );
+    return res.data;
+  };
+
+  return { getProject, getHideProject };
 }
