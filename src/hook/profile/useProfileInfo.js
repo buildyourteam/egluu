@@ -15,7 +15,7 @@ const useProfileInfo = (
   // 마운트될 때 액션 디스패치
   useEffect(() => {
     Api(userId);
-  }, []);
+  }, [userId]);
 
   // info get 성공시
   useEffect(() => {

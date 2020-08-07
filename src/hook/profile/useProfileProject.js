@@ -12,7 +12,7 @@ export const useRunningProject = (
 
   useEffect(() => {
     getProjectApi(userId);
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (getProjectFulfilled && resGetProject.page.totalElements) {
