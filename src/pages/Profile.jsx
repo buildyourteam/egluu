@@ -16,6 +16,7 @@ import classnames from "classnames";
 import RunningProjects from "../components/People/Profile/ProfileProjects/RunningProjects";
 import EndedProjects from "../components/People/Profile/ProfileProjects/EndedProjects";
 import PlanProjects from "../components/People/Profile/ProfileProjects/PlanProjects";
+import RecruitModal from "../components/People/Profile/RecruitModal";
 
 const Profile = () => {
   // url에서 userId 추출
@@ -47,6 +48,10 @@ const Profile = () => {
     imgUrl: "",
     isImgChange: false
   });
+
+  // Recruit modal
+  const [modal, setModal] = useState(false);
+  const recruitToggle = () => setModal(!modal);
 
   // 우측 탭 상태변수
   const [activeTab, setActiveTab] = useState("1");
@@ -83,7 +88,10 @@ const Profile = () => {
               {userId === myId ? (
                 <Button onClick={modifyToggle}>Modify</Button>
               ) : (
-                <Button> recruit </Button>
+                <>
+                  <Button onClick={recruitToggle}> recruit </Button>
+                  <RecruitModal modal={modal} toggle={recruitToggle} />
+                </>
               )}
             </>
           )}

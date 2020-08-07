@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
+
 const BASE_URL = `https://egluuapi.codingnome.dev/profile/`;
 // Profile Page 좌측 Info창에서 사용되는 api
 export function useInfoApi() {
@@ -133,18 +135,18 @@ export function useEndedProjectApi() {
 }
 export function usePlanProjectApi() {
   const getProject = async userId => {
-    //const res = await axios.get(`${BASE_URL}${userId}`);
     const res = await axios.get(
       `${BASE_URL}${userId}/plan?page=0&size=10&sort=projectName%2CDESC`
     );
 
     return res.data;
   };
+
   // 숨긴 프로젝트 목록 가져오기
   const getHideProject = async userId => {
     const token = window.sessionStorage.getItem("accessToken");
     const res = await axios.get(
-      `${BASE_URL}${userId}/running/hidden?page=0&size=10&sort=projectName%2CDESC`,
+      `${BASE_URL}${userId}/plan/hidden?page=0&size=10&sort=projectName%2CDESC`,
       {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
@@ -155,5 +157,32 @@ export function usePlanProjectApi() {
     return res.data;
   };
 
-  return { getProject, getHideProject };
+  // 모든 (planned) 프로젝트 목록 가져오기 (recruit modal에서 프로젝트 선택용)
+  const getAllPlannedProject = async myId => {
+    const token = window.sessionStorage.getItem("accessToken");
+
+    const res = await axios.get(`${BASE_URL}${myId}/plan`, {
+      headers: {
+        "Content-type": "application/json;charset=UTF-8",
+        authToken: token
+      }
+    });
+
+    const res2 = await axios.get(`${BASE_URL}${myId}/plan/hidden`, {
+      headers: {
+        "Content-type": "application/json;charset=UTF-8",
+        authToken: token
+      }
+    });
+    let totalRes = [];
+    if (res.data.page.totalElements) {
+      totalRes = totalRes.concat(res.data._embedded.projectList);
+    }
+    if (res2.data.page.totalElements) {
+      totalRes = totalRes.concat(res.data._embedded.projectList);
+    }
+    return totalRes;
+  };
+
+  return { getProject, getHideProject, getAllPlannedProject };
 }
