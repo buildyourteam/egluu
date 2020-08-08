@@ -132,26 +132,30 @@ export function usePlanProjectApi() {
   const getAllPlannedProject = async myId => {
     const token = window.sessionStorage.getItem("accessToken");
 
+    // 헤더
+    const header = {
+      "Content-type": "application/json;charset=UTF-8",
+      authToken: token
+    };
+
+    // 일반 plan과 숨겨진 plan 가져오기
     const res = await axios.get(`${BASE_URL}${myId}/plan`, {
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-        authToken: token
-      }
+      headers: header
+    });
+    const res2 = await axios.get(`${BASE_URL}${myId}/plan/hidden`, {
+      headers: header
     });
 
-    const res2 = await axios.get(`${BASE_URL}${myId}/plan/hidden`, {
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-        authToken: token
-      }
-    });
     let totalRes = [];
+
+    // 안에 데이터가 있을 경우 데이터 가져오기
     if (res.data.page.totalElements) {
       totalRes = totalRes.concat(res.data._embedded.projectList);
     }
     if (res2.data.page.totalElements) {
       totalRes = totalRes.concat(res.data._embedded.projectList);
     }
+
     return totalRes;
   };
 
@@ -188,3 +192,20 @@ export function useHideProjectApi() {
   };
   return { hideProject, displayProject };
 }
+export function useSendRecruitPeopleApi() {
+  const postRecruit = async (userId, data) => {
+    const token = window.sessionStorage.getItem("accessToken");
+    const res = await axios.post(`${BASE_URL}${userId}/recruit`, data, {
+      headers: {
+        "Content-type": "application/json;charset=UTF-8",
+        Accept: "application/hal+json",
+        authToken: token
+      }
+    });
+    return res;
+  };
+  return { postRecruit };
+}
+
+// recruitToPeople
+// recruitToProject

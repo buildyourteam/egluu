@@ -90,7 +90,11 @@ const Profile = () => {
               ) : (
                 <>
                   <Button onClick={recruitToggle}> recruit </Button>
-                  <RecruitModal modal={modal} toggle={recruitToggle} />
+                  <RecruitModal
+                    modal={modal}
+                    toggle={recruitToggle}
+                    userId={userId}
+                  />
                 </>
               )}
             </>

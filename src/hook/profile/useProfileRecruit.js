@@ -6,7 +6,15 @@ const useProfileRecruit = (
   getProjectFulfilled,
   getProjectRejected,
   getProjecsError,
-  getProjectApi
+  getProjectApi,
+
+  postRecruitData,
+  postRecruitFulfilled,
+  postRecruitRejected,
+  postRecruitError,
+
+  toggleNested,
+  setNestedMessage
 ) => {
   const [plannedProjects, setPlannedProjects] = useState([]);
   const myId = useSelector(state => state.login.userId);
@@ -30,6 +38,29 @@ const useProfileRecruit = (
       }
     }
   }, [getProjectRejected]);
+
+  useEffect(() => {
+    if (postRecruitFulfilled) {
+      setNestedMessage({
+        status: true,
+        message: "영입 메시지를 성공적으로 전달했습니다!"
+      });
+      toggleNested();
+    }
+  }, [postRecruitFulfilled]);
+
+  useEffect(() => {
+    if (postRecruitRejected) {
+      if (postRecruitError) {
+        console.log(postRecruitError);
+        setNestedMessage({
+          status: false,
+          message: "오류가 발생했습니다. 다시 시도해주세요."
+        });
+        toggleNested();
+      }
+    }
+  }, [postRecruitRejected]);
   return { plannedProjects };
 };
 
