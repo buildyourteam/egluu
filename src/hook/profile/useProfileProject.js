@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 export const useRunningProject = (
   resGetProject,
@@ -8,11 +9,15 @@ export const useRunningProject = (
   getProjectApi,
   userId
 ) => {
+  const check = useSelector(state => state.profile.isHideChange);
+
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    getProjectApi(userId);
-  }, [userId]);
+    if (check) {
+      getProjectApi(userId);
+    }
+  }, [check]);
 
   useEffect(() => {
     if (getProjectFulfilled && resGetProject.page.totalElements) {
@@ -29,11 +34,15 @@ export const usePlanProject = (
   getProjectApi,
   userId
 ) => {
+  const check = useSelector(state => state.profile.isHideChange);
+
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    getProjectApi(userId);
-  }, []);
+    if (check) {
+      getProjectApi(userId);
+    }
+  }, [check]);
 
   useEffect(() => {
     if (getProjectFulfilled && resGetProject.page.totalElements) {
@@ -54,14 +63,21 @@ export const useEndedProject = (
 
   userId
 ) => {
-  useEffect(() => {
-    getProjectApi(userId);
-  }, []);
+  const check = useSelector(state => state.profile.isHideChange);
 
+  // hide 변경사항이 있으면 다시 get요청
   useEffect(() => {
-    console.log(resGetProject);
-    if (getProjectFulfilled && resGetProject.page.totalElements) {
-      setList(resGetProject._embedded.projectList);
+    if (check) {
+      getProjectApi(userId);
+    }
+  }, [check]);
+
+  // 요청 성공시
+  useEffect(() => {
+    if (getProjectFulfilled) {
+      if (resGetProject.page.totalElements) {
+        setList(resGetProject._embedded.projectList);
+      }
     }
   }, [getProjectFulfilled]);
 };

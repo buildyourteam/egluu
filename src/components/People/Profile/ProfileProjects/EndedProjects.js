@@ -5,17 +5,33 @@ import ProjectBox from "../../../Project/ProjectBox";
 import { useEndedProjectApi } from "../../../../hook/api/profileApi";
 import { useEndedProject } from "../../../../hook/profile/useProfileProject";
 import "./profileProject.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setHideChange } from "../../../../reducers/profile";
+
 import ModifyEndedProjects from "./ModifyEndedProjects";
 
 const EndedProjects = ({ userId }) => {
+  const dispatch = useDispatch();
+
   const myId = useSelector(state => state.login.userId);
 
   const [hiding, setHiding] = useState(false);
   const [list, setList] = useState([]);
 
   const hideToggle = () => {
-    setHiding(!hiding);
+    if (hiding) {
+      setHiding(false);
+      const reduxData = {
+        isHideChange: true
+      };
+      dispatch(setHideChange(reduxData));
+    } else {
+      setHiding(true);
+      const reduxData = {
+        isHideChange: false
+      };
+      dispatch(setHideChange(reduxData));
+    }
   };
 
   const { getProject } = useEndedProjectApi();
