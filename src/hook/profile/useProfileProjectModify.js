@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useEndedModify = (
+const useProfileProjectModify = (
   resGetProject,
   getProjectFulfilled,
   getProjectRejected,
@@ -84,3 +84,5 @@ export const useEndedModify = (
     }
   }, [displayProjectFulfilled]);
 };
+
+export default useProfileProjectModify;

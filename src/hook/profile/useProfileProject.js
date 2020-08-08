@@ -1,57 +1,7 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-export const useRunningProject = (
-  resGetProject,
-  getProjectFulfilled,
-  getProjectRejected,
-  getProjectError,
-  getProjectApi,
-  userId
-) => {
-  const check = useSelector(state => state.profile.isHideChange);
-
-  const [list, setList] = useState([]);
-
-  useEffect(() => {
-    if (check) {
-      getProjectApi(userId);
-    }
-  }, [check]);
-
-  useEffect(() => {
-    if (getProjectFulfilled && resGetProject.page.totalElements) {
-      setList(resGetProject._embedded.projectList);
-    }
-  }, [getProjectFulfilled]);
-  return list;
-};
-export const usePlanProject = (
-  resGetProject,
-  getProjectFulfilled,
-  getProjectRejected,
-  getProjectError,
-  getProjectApi,
-  userId
-) => {
-  const check = useSelector(state => state.profile.isHideChange);
-
-  const [list, setList] = useState([]);
-
-  useEffect(() => {
-    if (check) {
-      getProjectApi(userId);
-    }
-  }, [check]);
-
-  useEffect(() => {
-    if (getProjectFulfilled && resGetProject.page.totalElements) {
-      setList(resGetProject._embedded.projectList);
-    }
-  }, [getProjectFulfilled]);
-  return list;
-};
-export const useEndedProject = (
+const useProfileProject = (
   resGetProject,
   getProjectFulfilled,
   getProjectRejected,
@@ -81,3 +31,5 @@ export const useEndedProject = (
     }
   }, [getProjectFulfilled]);
 };
+
+export default useProfileProject;

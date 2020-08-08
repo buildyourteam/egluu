@@ -3,17 +3,16 @@ import { Row, Col, Button } from "reactstrap";
 import { useRequest } from "../../../../hook/useRequest";
 import ProjectBox from "../../../Project/ProjectBox";
 import {
-  useEndedProjectApi,
+  usePlanProjectApi,
   useHideProjectApi
 } from "../../../../hook/api/profileApi";
 import useProfileProjectModify from "../../../../hook/profile/useProfileProjectModify";
 import "./profileProject.css";
 
-const ModifyEndedProjects = ({ list, setList, userId }) => {
+const ModifyPlanProjects = ({ list, setList, userId }) => {
   const [hideList, setHideList] = useState([]);
-  const { getHideProject } = useEndedProjectApi();
+  const { getHideProject } = usePlanProjectApi();
   const { hideProject, displayProject } = useHideProjectApi();
-
   const [
     {
       data: resGetProject,
@@ -118,4 +117,4 @@ const ModifyEndedProjects = ({ list, setList, userId }) => {
   );
 };
 
-export default ModifyEndedProjects;
+export default ModifyPlanProjects;

@@ -3,7 +3,7 @@ import { Row, Col, Button } from "reactstrap";
 import { useRequest } from "../../../../hook/useRequest";
 import ProjectBox from "../../../Project/ProjectBox";
 import { useEndedProjectApi } from "../../../../hook/api/profileApi";
-import { useEndedProject } from "../../../../hook/profile/useProfileProject";
+import useProfileProject from "../../../../hook/profile/useProfileProject";
 import "./profileProject.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setHideChange } from "../../../../reducers/profile";
@@ -47,7 +47,7 @@ const EndedProjects = ({ userId }) => {
     { run: getProjectApi }
   ] = useRequest(getProject);
 
-  useEndedProject(
+  useProfileProject(
     resGetProject,
     getProjectFulfilled,
     getProjectRejected,
@@ -59,7 +59,6 @@ const EndedProjects = ({ userId }) => {
 
     userId
   );
-  //console.log(projectList);
 
   return (
     <div className="insideTab">

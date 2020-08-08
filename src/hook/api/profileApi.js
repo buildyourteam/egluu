@@ -102,36 +102,7 @@ export function useEndedProjectApi() {
     return res.data;
   };
 
-  const hideProject = async (userId, projectId) => {
-    const token = window.sessionStorage.getItem("accessToken");
-    const res = await axios.delete(
-      `${BASE_URL}${userId}/projects/${projectId}`,
-      {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          authToken: token
-        }
-      }
-    );
-    return { res, projectId };
-  };
-
-  const displayProject = async (userId, projectId) => {
-    const token = window.sessionStorage.getItem("accessToken");
-    const res = await axios.put(
-      `${BASE_URL}${userId}/projects/${projectId}`,
-      {},
-      {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          authToken: token
-        }
-      }
-    );
-    return { res, projectId };
-  };
-
-  return { getProject, getHideProject, hideProject, displayProject };
+  return { getProject, getHideProject };
 }
 export function usePlanProjectApi() {
   const getProject = async userId => {
@@ -185,4 +156,35 @@ export function usePlanProjectApi() {
   };
 
   return { getProject, getHideProject, getAllPlannedProject };
+}
+export function useHideProjectApi() {
+  const hideProject = async (userId, projectId) => {
+    const token = window.sessionStorage.getItem("accessToken");
+    const res = await axios.delete(
+      `${BASE_URL}${userId}/projects/${projectId}`,
+      {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          authToken: token
+        }
+      }
+    );
+    return { res, projectId };
+  };
+
+  const displayProject = async (userId, projectId) => {
+    const token = window.sessionStorage.getItem("accessToken");
+    const res = await axios.put(
+      `${BASE_URL}${userId}/projects/${projectId}`,
+      {},
+      {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          authToken: token
+        }
+      }
+    );
+    return { res, projectId };
+  };
+  return { hideProject, displayProject };
 }
