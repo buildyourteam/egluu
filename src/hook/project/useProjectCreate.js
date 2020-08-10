@@ -65,6 +65,15 @@ const useProjectCreateState = () => {
     setImg(data);
   };
 
+  const inputField = (data) => {
+    setProject((value) => {
+      return {
+        ...value,
+        projectField: data,
+      };
+    });
+  };
+
   const inputQuestion = (data, index) => {
     setProject((value) => {
       const questions = value.questions.map((q, i) => {
@@ -126,6 +135,7 @@ const useProjectCreateState = () => {
       inputQuestion,
       addQuestion,
       deleteQuestion,
+      inputField,
     },
   ];
 };
@@ -161,7 +171,7 @@ const projectDetail = {
   teamName: "",
   endDate: "2020-10-30T23:59:00",
   introduction: "",
-  state: "RECRUTING",
+  state: null,
   projectField: "",
   applyCanFile: true,
   questions: [],

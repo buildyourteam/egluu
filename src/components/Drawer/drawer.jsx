@@ -58,7 +58,6 @@ export default function HalfDrawer(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  console.log(theme);
   return (
     <div>
       <React.Fragment key={anchor}>

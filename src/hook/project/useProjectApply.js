@@ -6,16 +6,18 @@ const axios = require("axios");
 
 export const useProjectApplyState = (api) => {
   const [apply, setApply] = useState(projectApply);
-
+  const [applied, setApplied] = useState(false);
   const fetchGetApply = async () => {
     const token = window.sessionStorage.getItem("accessToken");
-    await axios.get(api, {
+    const id = window.sessionStorage.getItem("id");
+    const res = await axios.get(`${api}/${id}`, {
       headers: {
         authtoken: token,
         "Content-Type": "application/json;charset=UTF-8",
         Accept: "application/hal+json",
       },
     });
+    return res.data;
   };
 
   const fetchPostApply = async (data, projectId) => {
@@ -75,29 +77,32 @@ export const useProjectApplyState = (api) => {
   };
 
   return [
-    { apply },
+    { apply, applied },
     {
       fetchPostApply,
       inputAnswer,
+      setApply,
       inputApply,
       selectRole,
       fetchGetApply,
       fetchPutApply,
+      setApplied,
     },
   ];
 };
 
 export const useProjectApplyEffect = (
   questions,
+  getApply,
   apply,
   applyAction,
   applyRes,
   applyGetRes,
   applyPutRes,
-  applyApi
+  detailGet,
+  applyLink
 ) => {
   const history = useHistory();
-  console.log(applyRes);
   useEffect(() => {
     const defaultAnaswer = questions.map(() => {
       return "";
@@ -106,10 +111,19 @@ export const useProjectApplyEffect = (
   }, [questions]);
 
   useEffect(() => {
-    if (applyApi !== "") {
-      applyAction.fetchGetApply();
+    if (detailGet && applyLink !== "") {
+      getApply();
     }
-  }, [applyApi]);
+  }, [detailGet, applyLink]);
+
+  useEffect(() => {
+    if (applyGetRes.fulfilled) {
+      applyAction.setApply(applyGetRes.data);
+      if (apply.answer !== "") {
+        applyAction.setApplied(true);
+      }
+    }
+  }, [applyGetRes.fulfilled]);
 
   useEffect(() => {
     if (applyRes.fulfilled) {

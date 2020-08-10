@@ -95,6 +95,7 @@ export default function ProjectDetail() {
                 questions={project.project.questions}
                 projectId={projectId}
                 applyApi={project.project._links}
+                detailGet={getProjectFulfilled}
               />
             </HalfDrawer>
           )}
@@ -243,7 +244,7 @@ export default function ProjectDetail() {
 }
 
 const ApplyProject = (props) => {
-  const { questions, projectId, applyApi } = props;
+  const { questions, projectId, applyApi, detailGet } = props;
   const [apply, applyAction] = useProjectApplyState(applyApi.apply.href);
   const [applyRes, { run: postApply }] = useRequest(applyAction.fetchPostApply);
   const [applyPutRes, { run: putApply }] = useRequest(
@@ -252,14 +253,16 @@ const ApplyProject = (props) => {
   const [applyGetRes, { run: getApply }] = useRequest(
     applyAction.fetchGetApply
   );
-
+  console.log(apply);
   useProjectApplyEffect(
     questions,
+    getApply,
     apply,
     applyAction,
     applyRes,
     applyGetRes,
     applyPutRes,
+    detailGet,
     applyApi.apply.href
   );
 
@@ -295,20 +298,37 @@ const ApplyProject = (props) => {
         action={applyAction.selectRole}
         pick={apply.apply.role}
       />
-      <Button
-        onClick={() => {
-          postApply(apply.apply, projectId);
-        }}
-      >
-        지원하기
-      </Button>
-      <Button
-        onClick={() => {
-          putApply(apply.apply, projectId);
-        }}
-      >
-        수정하기
-      </Button>
+      {apply.applied ? (
+        <Button
+          onClick={() => {
+            putApply(
+              {
+                answers: apply.apply.answers,
+                introduction: apply.apply.introduction,
+                role: apply.apply.role,
+              },
+              projectId
+            );
+          }}
+        >
+          수정하기
+        </Button>
+      ) : (
+        <Button
+          onClick={() => {
+            postApply(
+              {
+                answers: apply.apply.answers,
+                introduction: apply.apply.introduction,
+                role: apply.apply.role,
+              },
+              projectId
+            );
+          }}
+        >
+          지원하기
+        </Button>
+      )}
     </div>
   );
 };

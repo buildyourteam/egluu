@@ -5,7 +5,7 @@ import {
   useProjectCreateEffect,
   useRequest,
 } from "../../hook";
-import { Button, Layout, ImgInput } from "../../components";
+import { Button, Layout, ImgInput, DropdownField } from "../../components";
 import "../main.css";
 import tempimg from "../../components/icon/move.gif";
 import { List, ListItem, ListItemText } from "@material-ui/core";
@@ -135,6 +135,11 @@ export default function ProjectCreate() {
               value={project.project.projectField}
             />
           </InputGroup>
+          <DropdownField
+            dropdownCaret="역할 선택"
+            action={projectAction.inputField}
+            pick={project.project.projectField}
+          />
           <List dense>
             <ListItem>
               <ListItemText primary="모집 인원" />
@@ -193,17 +198,6 @@ export default function ProjectCreate() {
             </InputGroup>
           </List>
           {project.project.questions.map((value, index) => (
-            // <InputGroup key={index}>
-            //     {console.log(value)}
-            //     <InputGroupAddon addonType="prepend">질문 {index}번</InputGroupAddon>
-            //     <InputGroup.Append>
-            //         <Button variant="outline-secondary" onClick={() => projectAction.deleteQuestion(index)}>삭제</Button>
-            //     </InputGroup.Append>
-            //     <Form.Control
-            //         placeholder={`질문 ${index}번`}
-            //         name="question" onChange={e => projectAction.inputQuestion(e.target.value, index)} value={value}
-            //     />
-            // </InputGroup>
             <InputGroup>
               <InputGroupAddon addonType="prepend">질문</InputGroupAddon>
               <Input

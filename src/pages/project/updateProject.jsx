@@ -53,10 +53,9 @@ export default function ProjectUpdate() {
     getProjectRejected,
     getProjectError,
     UpdateImgApi,
-    project.img[0],
+    project.img,
     url[2]
   );
-
   const handleClickUpdate = () => {
     const updateData = {
       projectName: project.project.projectName,

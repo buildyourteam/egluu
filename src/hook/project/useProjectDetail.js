@@ -16,12 +16,10 @@ const useProjectDetailState = () => {
   const [teamReader, setTeamReader] = useState(false);
   const fetchGetDetail = async (projectId) => {
     const token = window.sessionStorage.getItem("accessToken");
-    console.log(token);
     let resApply;
     let res = await axios.get(
       `https://egluuapi.codingnome.dev/projects/${projectId}`
     );
-    console.log(res.data);
     const id = window.sessionStorage.getItem("id");
     if (res.data.memberList[0].userName === id) {
       await axios
@@ -34,7 +32,8 @@ const useProjectDetailState = () => {
         })
         .then((value) => {
           setApplyState(value.data._embedded.projectApplicantDtoList);
-        });
+        })
+        .catch((error) => {});
     }
     res = res.data;
     return { res, resApply };
