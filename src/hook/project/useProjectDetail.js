@@ -13,6 +13,10 @@ const useProjectDetailState = () => {
     recruit: false,
     reader: false,
   });
+  const [pagination, setPagination] = useState({
+    apply: 0,
+    recruit: 0,
+  });
   const [teamReader, setTeamReader] = useState(false);
   const fetchGetDetail = async (projectId) => {
     const token = window.sessionStorage.getItem("accessToken");
@@ -101,8 +105,18 @@ const useProjectDetailState = () => {
     });
   };
 
+  const clickPagination = (name, nextPage) => {
+    setPagination((value) => {
+      const count = value[name] + nextPage;
+      return {
+        ...value,
+        [name]: count,
+      };
+    });
+  };
+
   return [
-    { project, check, apply, recruit },
+    { project, check, apply, recruit, pagination },
     {
       fetchGetDetail,
       inputProject,
@@ -113,6 +127,7 @@ const useProjectDetailState = () => {
       setRecruitState,
       inputRecruit,
       fetchDeleteProject,
+      clickPagination,
     },
   ];
 };

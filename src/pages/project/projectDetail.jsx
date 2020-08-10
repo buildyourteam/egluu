@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   useProjectDetailState,
@@ -41,6 +41,7 @@ import {
 export default function ProjectDetail() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
   const url = location.pathname.split("/");
   const projectId = url[2];
   const [project, projectAction] = useProjectDetailState();
@@ -180,23 +181,51 @@ export default function ProjectDetail() {
                 (project.apply.length === 0 ? (
                   <div>지원자가 없습니다 </div>
                 ) : (
-                  project.apply.map((value) => (
+                  <div>
                     <List dense>
                       <ListItem>
                         <ListItemText
-                          primary={`이름 : ${value.userName}`}
+                          primary={`이름 : ${
+                            project.apply[project.pagination.apply].userName
+                          }`}
                           secondary="Secondary text"
                         />
                       </ListItem>
                       <ListItem>
                         <ListItemText
-                          primary={`역할 : ${value.role}`}
+                          primary={`역할 : ${
+                            project.apply[project.pagination.apply].role
+                          }`}
                           secondary="Secondary text"
                         />
                       </ListItem>
-                      <Button>상세보기</Button>
+                      <Button
+                        onClick={() => {
+                          history.push(
+                            `/profile/${
+                              project.apply[project.pagination.apply].userId
+                            }`
+                          );
+                        }}
+                      >
+                        상세보기
+                      </Button>
                     </List>
-                  ))
+                    <Button
+                      disabled={project.pagination.apply === 0}
+                      onClick={() => projectAction.clickPagination("apply", -1)}
+                    >
+                      이전
+                    </Button>
+                    <Button
+                      disabled={
+                        project.apply.length - project.pagination.apply < 2
+                      }
+                      onClick={() => projectAction.clickPagination("apply", 1)}
+                    >
+                      다음
+                    </Button>
+                  </div>
                 ))}
               <br />
               <FormControlLabel
@@ -212,29 +241,51 @@ export default function ProjectDetail() {
                   />
                 }
               />
-              {project.check.recruit &&
-                project.recruit.map((value) => (
+              {project.check.recruit && (
+                <div>
                   <List dense>
                     <ListItem>
                       <ListItemText
-                        primary={`이름 : ${value.userName}`}
+                        primary={`이름 : ${
+                          project.recruit[project.pagination.recruit].userName
+                        }`}
                         secondary="Secondary text"
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary={`역할 : ${value.role}`}
+                        primary={`역할 : ${
+                          project.recruit[project.pagination.recruit].role
+                        }`}
                         secondary="Secondary text"
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary={`자기소개 : ${value.selfDescription}`}
+                        primary={`자기소개 : ${
+                          project.recruit[project.pagination.recruit]
+                            .selfDescription
+                        }`}
                         secondary="Secondary text"
                       />
                     </ListItem>
                   </List>
-                ))}
+                  <Button
+                    disabled={project.pagination.recruit === 0}
+                    onClick={() => projectAction.clickPagination("recruit", -1)}
+                  >
+                    이전
+                  </Button>
+                  <Button
+                    disabled={
+                      project.recruit.length - project.pagination.recruit < 2
+                    }
+                    onClick={() => projectAction.clickPagination("recruit", 1)}
+                  >
+                    다음
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -253,7 +304,6 @@ const ApplyProject = (props) => {
   const [applyGetRes, { run: getApply }] = useRequest(
     applyAction.fetchGetApply
   );
-  console.log(apply);
   useProjectApplyEffect(
     questions,
     getApply,
