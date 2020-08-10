@@ -140,6 +140,7 @@ const useProjectCreateEffect = (
 ) => {
   useEffect(() => {
     if (fulfilled) {
+      console.log(data);
       const projectId = data._links.createdProject.href.split("/");
       createImgApi(projectId[2], projectImg);
     }
@@ -163,15 +164,13 @@ const projectDetail = {
   state: "RECRUTING",
   projectField: "",
   applyCanFile: true,
+  questions: [],
   needMember: {
     developer: 0,
     designer: 0,
     planner: 0,
     etc: 0,
   },
-  questions: [],
-  currentMember: null,
-  memberList: null,
 };
 
 const projectApplicantDtoList = [

@@ -76,7 +76,6 @@ export default function ProjectDetail() {
   const handleClickDelete = () => {
     projectAction.fetchDeleteProject(projectId);
   };
-
   return (
     <Layout>
       {getProjectPending ? (
@@ -95,6 +94,7 @@ export default function ProjectDetail() {
               <ApplyProject
                 questions={project.project.questions}
                 projectId={projectId}
+                applyApi={project.project._links}
               />
             </HalfDrawer>
           )}
@@ -243,9 +243,25 @@ export default function ProjectDetail() {
 }
 
 const ApplyProject = (props) => {
-  const { questions, projectId } = props;
-  const [apply, applyAction] = useProjectApplyState();
-  useProjectApplyEffect(questions, apply, applyAction);
+  const { questions, projectId, applyApi } = props;
+  const [apply, applyAction] = useProjectApplyState(applyApi.apply.href);
+  const [applyRes, { run: postApply }] = useRequest(applyAction.fetchPostApply);
+  const [applyPutRes, { run: putApply }] = useRequest(
+    applyAction.fetchPutApply
+  );
+  const [applyGetRes, { run: getApply }] = useRequest(
+    applyAction.fetchGetApply
+  );
+
+  useProjectApplyEffect(
+    questions,
+    apply,
+    applyAction,
+    applyRes,
+    applyGetRes,
+    applyPutRes,
+    applyApi.apply.href
+  );
 
   return (
     <div>
@@ -281,10 +297,17 @@ const ApplyProject = (props) => {
       />
       <Button
         onClick={() => {
-          applyAction.fetchPostApply(apply.apply, projectId);
+          postApply(apply.apply, projectId);
         }}
       >
         지원하기
+      </Button>
+      <Button
+        onClick={() => {
+          putApply(apply.apply, projectId);
+        }}
+      >
+        수정하기
       </Button>
     </div>
   );

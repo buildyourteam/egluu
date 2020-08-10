@@ -11,7 +11,7 @@ const useProjectDetailState = () => {
   const [check, setCheck] = useState({
     apply: true,
     recruit: false,
-    reader: true,
+    reader: false,
   });
   const [teamReader, setTeamReader] = useState(false);
   const fetchGetDetail = async (projectId) => {
@@ -22,29 +22,6 @@ const useProjectDetailState = () => {
       `https://egluuapi.codingnome.dev/projects/${projectId}`
     );
     res = res.data;
-    console.log(res._links.apply);
-    if (res._links.apply) {
-      resApply = await axios
-        .get(res._links.apply.href, {
-          headers: {
-            authtoken: token,
-            "Content-Type": "application/json;charset=UTF-8",
-            Accept: "application/hal+json",
-          },
-        })
-        .then((resData) => {
-          resApply = resData.data;
-        })
-        .catch((error) => {
-          console.log(error.response.data.error);
-          if (error.response.error === 101) {
-            console.log("지원자 없음");
-            resApply = [];
-          } else if (error.response.data.error === 107) {
-            checkSwitch("reader", false);
-          }
-        });
-    }
     return { res, resApply };
   };
 
@@ -141,10 +118,13 @@ const useProjectDetailEffect = (
 
   useEffect(() => {
     if (fulfilled) {
-      console.log(data);
       projectAction.setProjectState(data.res);
-      if (data.resApply !== undefined) {
-        projectAction.setApplyState(data.resApply);
+      const id = window.sessionStorage.getItem("id");
+      console.log(data.res);
+      if (data.res.memberList[0].userName === id) {
+        projectAction.checkSwitch("reader", true);
+        if (data.resApply !== undefined)
+          projectAction.setApplyState(data.resApply);
       }
     }
   }, [fulfilled]);
@@ -213,6 +193,9 @@ const projectDetail = {
   },
   _links: {
     self: {
+      href: "",
+    },
+    apply: {
       href: "",
     },
   },
