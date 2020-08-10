@@ -21,6 +21,21 @@ const useProjectDetailState = () => {
     let res = await axios.get(
       `https://egluuapi.codingnome.dev/projects/${projectId}`
     );
+    console.log(res.data);
+    const id = window.sessionStorage.getItem("id");
+    if (res.data.memberList[0].userName === id) {
+      await axios
+        .get(res.data._links.apply.href, {
+          headers: {
+            authtoken: token,
+            "Content-Type": "application/json;charset=UTF-8",
+            Accept: "application/hal+json",
+          },
+        })
+        .then((value) => {
+          setApplyState(value.data._embedded.projectApplicantDtoList);
+        });
+    }
     res = res.data;
     return { res, resApply };
   };
@@ -120,8 +135,9 @@ const useProjectDetailEffect = (
     if (fulfilled) {
       projectAction.setProjectState(data.res);
       const id = window.sessionStorage.getItem("id");
-      console.log(data.res);
+      console.log(data);
       if (data.res.memberList[0].userName === id) {
+        console.log("reader");
         projectAction.checkSwitch("reader", true);
         if (data.resApply !== undefined)
           projectAction.setApplyState(data.resApply);
@@ -136,8 +152,7 @@ const useProjectDetailEffect = (
       //     console.log('지원자 없음');
       //     projectAction.setApplyState([])
       // }
-
-      console.log(error.response);
+      console.log(error);
     }
   }, [rejected]);
 };
