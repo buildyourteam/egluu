@@ -1,33 +1,45 @@
 import { useEffect } from "react";
-
+import { useInfoApi, useImgApi } from "../api/profileApi";
+import { useRequest } from "../useRequest";
 const useProfileInfoModify = (
-  resInfo,
-  infoFulfilled,
-  infoRejected,
-  infoError,
-  infoApi,
-
-  resImg,
-  imgFulfilled,
-  imgRejected,
-  imgError,
-  imgApi,
-
   setModifying,
-
-  infoState,
-  setInfoState,
 
   imgState,
   setImgState,
 
   userId
 ) => {
+  const { postInfo } = useInfoApi();
+
+  const [
+    {
+      data: infoResponse,
+      fulfilled: infoFulfilled,
+      pending: infoPending,
+      rejected: infoRejected,
+      error: infoError
+    },
+    { run: postInfoApi }
+  ] = useRequest(postInfo);
+
+  const { postImg } = useImgApi();
+
+  const [
+    {
+      data: imgResponse,
+      fulfilled: imgFulfilled,
+      pending: imgPending,
+      rejected: imgRejected,
+      error: imgError
+    },
+    { run: postImgApi }
+  ] = useRequest(postImg);
+
   useEffect(() => {
     if (imgFulfilled && infoFulfilled) {
       setImgState({
         imgUrl: `https://egluuapi.codingnome.dev/profile/image/${userId}`,
-        isImgChange: false,
+        isImgChange: false
       });
       setModifying();
       //console.log("둘다 ");
@@ -59,7 +71,8 @@ const useProfileInfoModify = (
     }
   }, [imgRejected]);
 
-  return;
+  return { postInfoApi, postImgApi };
 };
+const useProfileImgModify = () => {};
 
 export default useProfileInfoModify;

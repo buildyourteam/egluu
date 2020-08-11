@@ -16,3 +16,6 @@
   width: auto;
   height: 220px;
 }
+.modal-content {
+  padding: 30px;
+}

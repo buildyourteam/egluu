@@ -13,6 +13,10 @@ import {
   Button
 } from "reactstrap";
 import classnames from "classnames";
+import RunningProjects from "../components/People/Profile/ProfileProjects/RunningProjects";
+import EndedProjects from "../components/People/Profile/ProfileProjects/EndedProjects";
+import PlanProjects from "../components/People/Profile/ProfileProjects/PlanProjects";
+import RecruitModal from "../components/People/Profile/RecruitModal";
 
 const Profile = () => {
   // url에서 userId 추출
@@ -30,7 +34,7 @@ const Profile = () => {
     setModifying(!modifying);
   };
 
-  const [infoState, setInfoState] = useState({
+  const [info, setInfo] = useState({
     userName: "",
     role: "",
     stacks: [""],
@@ -44,6 +48,10 @@ const Profile = () => {
     imgUrl: "",
     isImgChange: false
   });
+
+  // Recruit modal
+  const [modal, setModal] = useState(false);
+  const recruitToggle = () => setModal(!modal);
 
   // 우측 탭 상태변수
   const [activeTab, setActiveTab] = useState("1");
@@ -61,8 +69,8 @@ const Profile = () => {
           {modifying ? (
             <ProfileInfoModify
               setModifying={modifyToggle}
-              infoState={infoState}
-              setInfoState={setInfoState}
+              info={info}
+              setInfo={setInfo}
               imgState={imgState}
               setImgState={setImgState}
               userId={userId}
@@ -71,16 +79,24 @@ const Profile = () => {
             <>
               <ProfileInfo
                 setModifying={modifyToggle}
-                infoState={infoState}
-                setInfoState={setInfoState}
+                info={info}
+                setInfo={setInfo}
                 imgState={imgState}
                 setImgState={setImgState}
                 userId={userId}
               />
+              {/* myId가 없으면 리쿠르트 버튼 안뜨게 */}
               {userId === myId ? (
                 <Button onClick={modifyToggle}>Modify</Button>
               ) : (
-                <Button> recruit </Button>
+                <>
+                  <Button onClick={recruitToggle}> recruit </Button>
+                  <RecruitModal
+                    modal={modal}
+                    toggle={recruitToggle}
+                    userId={userId}
+                  />
+                </>
               )}
             </>
           )}
@@ -95,7 +111,7 @@ const Profile = () => {
                     tabToggle("1");
                   }}
                 >
-                  Completed Projects
+                  Ended Projects
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -115,19 +131,22 @@ const Profile = () => {
                     tabToggle("3");
                   }}
                 >
-                  Planned Projects
+                  Plan Projects
                 </NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
-                <Row>
-                  <Col sm="12">
-                    <h4>Tab 1 Contents</h4>
-                  </Col>
-                </Row>
+                <EndedProjects userId={userId} />
               </TabPane>
-              <TabPane tabId="2">sdfsd</TabPane>
+
+              <TabPane tabId="2">
+                <RunningProjects userId={userId} />
+              </TabPane>
+
+              <TabPane tabId="3">
+                <PlanProjects userId={userId} />
+              </TabPane>
             </TabContent>
           </div>
         </Col>
