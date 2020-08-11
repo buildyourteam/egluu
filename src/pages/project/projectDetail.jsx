@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 import {
     Card,
     CardImg,
@@ -12,8 +13,8 @@ import {
     Progress
 } from "reactstrap";
 import {
-    useProjectDetailState, useProjectDetailEffect, useRequest, useProjectApplyEffect, useProjectRecruitEffect
-} from "../hook";
+    useProjectDetailState, useProjectDetailEffect, useRequest, useProjectRecruitEffect
+} from "../../hook";
 import {
     Button,
     Layout,
@@ -23,9 +24,9 @@ import {
     PeopleBox,
     IOSSwitch,
     AntSwitch
-} from "../components";
-import "./main.css";
-import tempimg from '../components/icon/move.gif';
+} from "../../components";
+import "../main.css";
+import tempimg from '../../components/icon/move.gif';
 import { Typography, List, ListItem, ListItemAvatar, ListItemIcon, ListItemSecondaryAction, ListItemText, FormControlLabel } from '@material-ui/core';
 import {
     DateTimePicker as MuiDateTimePicker,
@@ -33,10 +34,14 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { ko } from 'date-fns/locale';
+import { Link } from 'react-router-dom';
+import { setProject } from '../../reducers/project';
 
 export default function ProjectDetail() {
+    const dispatch = useDispatch();
     const location = useLocation();
     const url = location.pathname.split('/');
+    const projectId = url[2];
     const [project, projectAction] = useProjectDetailState();
     const [
         {
@@ -48,54 +53,28 @@ export default function ProjectDetail() {
         },
         { run: getProjectApi }
     ] = useRequest(projectAction.fetchGetDetail);
-    const [
-        {
-            data: resApply,
-            fulfilled: getApplyFulfilled,
-            pending: getApplyPending,
-            rejected: getApplyRejected,
-            error: getApplyError
-        },
-        { run: getApplyApi }
-    ] = useRequest(projectAction.fetchGetDetail);
-    const [
-        {
-            data: resRecruit,
-            fulfilled: getRecruitFulfilled,
-            pending: getRecruitPending,
-            rejected: getRecruitRejected,
-            error: getRecruitError
-        },
-        { run: getRequestApi }
-    ] = useRequest(projectAction.fetchGetDetail);
 
     useProjectDetailEffect(
-        resApply,
-        getApplyFulfilled,
-        getApplyRejected,
-        getApplyError,
-        { getProjectApi, getApplyApi },
-        projectAction.setProjectState,
+        resProject,
+        getProjectFulfilled,
+        getProjectRejected,
+        getProjectError,
+        getProjectApi,
+        projectAction,
         url[2]
     );
 
-    useProjectApplyEffect(
-        resApply,
-        getApplyFulfilled,
-        getApplyRejected,
-        getApplyError,
-        projectAction.setApplyState,
-        url[2]
-    );
+    const handleClickUpdate = () => {
+        const updateProject = {
+            img: [`http://34.105.29.115:8080/projects/image/${url[2]}`],
+            ...project.project
+        }
+        dispatch(setProject(updateProject));
+    }
 
-    useProjectRecruitEffect(
-        resRecruit,
-        getRecruitFulfilled,
-        getRecruitRejected,
-        getRecruitError,
-        projectAction.setRecruitState,
-        url[2]
-    );
+    const handleClickDelete = () => {
+        projectAction.fetchDeleteProject(projectId);
+    }
 
     return (
         <Layout>
@@ -103,8 +82,12 @@ export default function ProjectDetail() {
                 <div>로딩중...</div>
             ) : (
                     <div>
-                        <img src={tempimg} alt='temp' />
-                        {/* <img src={project.url} alt='temp' /> */}
+                        <Link to={`/projectUpdate/${url[2]}`}>
+                            <Button onClick={handleClickUpdate}>수정하기</Button>
+                        </Link>
+                        <Button onClick={handleClickDelete}>삭제하기</Button>
+                        <br />
+                        <img height={200} width={200} src={`http://34.105.29.115:8080/projects/image/${url[2]}`} alt='temp' />
                         <Typography>{project.project.projectName}</Typography>
                         <Typography>{project.project.teamName}</Typography>
                         <Typography>종료일 : {project.project.endDate}</Typography>
@@ -114,31 +97,26 @@ export default function ProjectDetail() {
                             <ListItem>
                                 <ListItemText
                                     primary='현재 인원'
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={`개발자 : ${project.project.needMember.developer}`}
-                                    secondary='Secondary text'
+                                    primary={`개발자 : ${project.project.currentMember.developer}`}
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={`디자이너 : ${project.project.needMember.designer}`}
-                                    secondary='Secondary text'
+                                    primary={`디자이너 : ${project.project.currentMember.designer}`}
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={`기획자 : ${project.project.needMember.planner}`}
-                                    secondary='Secondary text'
+                                    primary={`기획자 : ${project.project.currentMember.planner}`}
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
-                                    primary={`기타 : ${project.project.needMember.etc}`}
-                                    secondary='Secondary text'
+                                    primary={`기타 : ${project.project.currentMember.etc}`}
                                 />
                             </ListItem>
                         </List>
@@ -146,31 +124,26 @@ export default function ProjectDetail() {
                             <ListItem>
                                 <ListItemText
                                     primary='모집 인원'
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`개발자 : ${project.project.needMember.developer}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`디자이너 : ${project.project.needMember.designer}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`기획자 : ${project.project.needMember.planner}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemText
                                     primary={`기타 : ${project.project.needMember.etc}`}
-                                    secondary='Secondary text'
                                 />
                             </ListItem>
                         </List>
@@ -186,23 +159,25 @@ export default function ProjectDetail() {
                             }
                         />
                         {project.check.apply && (
-                            project.apply.map(value => (
-                                <List dense>
-                                    <ListItem>
-                                        <ListItemText
-                                            primary={`이름 : ${value.userName}`}
-                                            secondary='Secondary text'
-                                        />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText
-                                            primary={`역할 : ${value.role}`}
-                                            secondary='Secondary text'
-                                        />
-                                    </ListItem>
-                                    <Button>상세보기</Button>
-                                </List>
-                            ))
+                            project.apply.length === 0 ? <div>
+                                지원자가 없습니다 </div> :
+                                project.apply.map(value => (
+                                    <List dense>
+                                        <ListItem>
+                                            <ListItemText
+                                                primary={`이름 : ${value.userName}`}
+                                                secondary='Secondary text'
+                                            />
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListItemText
+                                                primary={`역할 : ${value.role}`}
+                                                secondary='Secondary text'
+                                            />
+                                        </ListItem>
+                                        <Button>상세보기</Button>
+                                    </List>
+                                ))
                         )}
                         <br />
                         <FormControlLabel

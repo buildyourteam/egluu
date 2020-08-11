@@ -97,9 +97,9 @@ export default function Layout({ children }) {
                   <NavLink tag={Link} to="/register">
                     Register
                   </NavLink>
-                </NavItem>
-              </>
-            )}
+                  </NavItem>
+                </>
+              )}
           </Nav>
         </Collapse>
       </Navbar>
