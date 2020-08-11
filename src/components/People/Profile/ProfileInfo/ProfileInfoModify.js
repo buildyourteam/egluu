@@ -16,60 +16,14 @@ const ProfileInfoModify = ({
 
   userId
 }) => {
-  // info 정보 post 하는 api
-  const { postInfo } = useInfoApi();
-
-  // info post 상태변수와 데이터 및 액션 디스패쳐
-  const [
-    {
-      data: resPostInfo,
-      fulfilled: postInfoFulfilled,
-      pending: postInfoPending,
-      rejected: postInfoRejected,
-      error: postInfoError
-    },
-    { run: postInfoApi }
-  ] = useRequest(postInfo);
-
-  //////////////////////////////////////////////////////////////////////
-  const { postImg } = useImgApi();
-
-  const [
-    {
-      data: resPostImg,
-      fulfilled: postImgFulfilled,
-      pending: postImgPending,
-      rejected: postImgRejected,
-      error: postImgError
-    },
-    { run: postImgApi }
-  ] = useRequest(postImg);
-
-  //////////////////////////////
-  useProfileInfoModify(
-    resPostInfo,
-    postInfoFulfilled,
-    postInfoRejected,
-    postInfoError,
-    postInfoApi,
-
-    resPostImg,
-    postImgFulfilled,
-    postImgRejected,
-    postImgError,
-    postImgApi,
-
+  const { postInfoApi, postImgApi } = useProfileInfoModify(
     setModifying,
-
-    info,
-    setInfo,
 
     imgState,
     setImgState,
 
     userId
   );
-  ////////////////////////////////////////////////////////////
 
   const handleChange = e => {
     // stack은 지금은 무조건 배열상태로 들어가게 임시방편함
@@ -91,12 +45,8 @@ const ProfileInfoModify = ({
 
   const handleSubmit = e => {
     e.preventDefault();
-    // submit 누르면 post요청하는 액션 디스패치
-
     const { grade, ...withOutGrade } = info;
-
     postInfoApi(userId, withOutGrade);
-
     if (imgState.isImgChange) {
       postImgApi(userId, imgState);
     }

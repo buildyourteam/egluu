@@ -26,6 +26,7 @@ const useProfileRecruit = (
 
   useEffect(() => {
     if (getProjectFulfilled) {
+      // console.log(getProjectData);
       setPlannedProjects(getProjectData);
     }
   }, [getProjectFulfilled]);

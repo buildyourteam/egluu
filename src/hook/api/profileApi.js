@@ -153,7 +153,7 @@ export function usePlanProjectApi() {
       totalRes = totalRes.concat(res.data._embedded.projectList);
     }
     if (res2.data.page.totalElements) {
-      totalRes = totalRes.concat(res.data._embedded.projectList);
+      totalRes = totalRes.concat(res2.data._embedded.projectList);
     }
 
     return totalRes;
