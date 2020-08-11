@@ -1,23 +1,24 @@
 import { useEffect } from "react";
-
+import { useImgApi } from "../api/profileApi";
+import { useRequest } from "../useRequest";
 export const useImage = (
-  resImage,
-  fulfilled,
-  rejected,
-  error,
-  Api,
-
   imgState,
   setImgState,
 
   userId
 ) => {
-  useEffect(() => {
-    Api(userId);
-  }, []);
+  const { getImg } = useImgApi();
+
+  const [
+    { data, fulfilled, pending, rejected, error },
+    { run: getImgApi }
+  ] = useRequest(getImg);
 
   useEffect(() => {
-    //console.log("img=" + resImage);
+    getImgApi(userId);
+  }, [userId]);
+
+  useEffect(() => {
     setImgState({
       ...imgState,
       imgUrl: `https://egluuapi.codingnome.dev/profile/image/${userId}`
@@ -27,9 +28,7 @@ export const useImage = (
   useEffect(() => {
     if (rejected) {
       if (error) {
-        //alert(error);
         console.log(error.response.data);
-        // 이미지 설정한적 없어서 get 이미지가 에러날 때 기본이미지로 대체
         if (error.response.data.error === 305) {
           setImgState({
             ...imgState,
@@ -40,7 +39,7 @@ export const useImage = (
       }
     }
   }, [rejected]);
-  return;
+  return pending;
 };
 
 export default useImage;

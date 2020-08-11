@@ -15,8 +15,8 @@ const useProfileInfoModify = (
 
   setModifying,
 
-  infoState,
-  setInfoState,
+  info,
+  setInfo,
 
   imgState,
   setImgState,

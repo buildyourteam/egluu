@@ -20,7 +20,7 @@ const useProfileProject = (
     if (check) {
       getProjectApi(userId);
     }
-  }, [check]);
+  }, [check, userId]);
 
   // 요청 성공시
   useEffect(() => {

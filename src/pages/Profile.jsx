@@ -34,7 +34,7 @@ const Profile = () => {
     setModifying(!modifying);
   };
 
-  const [infoState, setInfoState] = useState({
+  const [info, setInfo] = useState({
     userName: "",
     role: "",
     stacks: [""],
@@ -69,8 +69,8 @@ const Profile = () => {
           {modifying ? (
             <ProfileInfoModify
               setModifying={modifyToggle}
-              infoState={infoState}
-              setInfoState={setInfoState}
+              info={info}
+              setInfo={setInfo}
               imgState={imgState}
               setImgState={setImgState}
               userId={userId}
@@ -79,12 +79,13 @@ const Profile = () => {
             <>
               <ProfileInfo
                 setModifying={modifyToggle}
-                infoState={infoState}
-                setInfoState={setInfoState}
+                info={info}
+                setInfo={setInfo}
                 imgState={imgState}
                 setImgState={setImgState}
                 userId={userId}
               />
+              {/* myId가 없으면 리쿠르트 버튼 안뜨게 */}
               {userId === myId ? (
                 <Button onClick={modifyToggle}>Modify</Button>
               ) : (

@@ -1,35 +1,33 @@
 import { useEffect } from "react";
+import { useInfoApi } from "../../hook/api/profileApi";
+import { useRequest } from "../useRequest";
+const useProfileInfo = (setInfo, userId) => {
+  // info 정보 get 하는 api
+  const { getInfo } = useInfoApi();
 
-const useProfileInfo = (
-  data,
-  fulfilled,
-  rejected,
-  error,
-  Api,
+  // info get의 상태변수와 데이터 및 액션 디스패쳐
+  const [
+    { data: response, fulfilled, pending, rejected, error },
+    { run: getInfoApi }
+  ] = useRequest(getInfo);
 
-  infoState,
-  setInfoState,
-
-  userId
-) => {
   // 마운트될 때 액션 디스패치
   useEffect(() => {
-    Api(userId);
+    getInfoApi(userId);
   }, [userId]);
 
   // info get 성공시
   useEffect(() => {
     if (fulfilled) {
-      setInfoState({
-        userName: data.userName,
-        role: data.role,
-        stacks: data.stacks,
-        contact: data.contact,
-        area: data.area,
-        grade: data.grade,
-        introduction: data.introduction
+      setInfo({
+        userName: response.userName,
+        role: response.role,
+        stacks: response.stacks,
+        contact: response.contact,
+        area: response.area,
+        grade: response.grade,
+        introduction: response.introduction
       });
-      //console.log(data);
     }
   }, [fulfilled]);
 
@@ -48,7 +46,7 @@ const useProfileInfo = (
     Api();
   };
 
-  return;
+  return pending;
 };
 
 export default useProfileInfo;

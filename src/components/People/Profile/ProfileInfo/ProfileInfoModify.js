@@ -8,8 +8,8 @@ import useProfileInfoModify from "../../../../hook/profile/useProfileInfoModify"
 const ProfileInfoModify = ({
   setModifying,
 
-  infoState,
-  setInfoState,
+  info,
+  setInfo,
 
   imgState,
   setImgState,
@@ -61,8 +61,8 @@ const ProfileInfoModify = ({
 
     setModifying,
 
-    infoState,
-    setInfoState,
+    info,
+    setInfo,
 
     imgState,
     setImgState,
@@ -74,26 +74,26 @@ const ProfileInfoModify = ({
   const handleChange = e => {
     // stack은 지금은 무조건 배열상태로 들어가게 임시방편함
     if (e.target.name === "stacks") {
-      setInfoState({
-        ...infoState,
+      setInfo({
+        ...info,
         [e.target.name]: [e.target.value]
       });
     }
     // 나머지는 원래 방식대로
     else {
-      setInfoState({
-        ...infoState,
+      setInfo({
+        ...info,
         [e.target.name]: e.target.value
       });
     }
-    console.log(infoState);
+    console.log(info);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
     // submit 누르면 post요청하는 액션 디스패치
 
-    const { grade, ...withOutGrade } = infoState;
+    const { grade, ...withOutGrade } = info;
 
     postInfoApi(userId, withOutGrade);
 
@@ -112,7 +112,7 @@ const ProfileInfoModify = ({
             type="name"
             name="userName"
             placeholder="name"
-            value={infoState.userName}
+            value={info.userName}
             onChange={handleChange}
           />
         </FormGroup>
@@ -122,7 +122,7 @@ const ProfileInfoModify = ({
           <Input
             type="select"
             name="role"
-            value={infoState.role}
+            value={info.role}
             onChange={handleChange}
           >
             <option value="DEVELOPER">DEVELOPER</option>
@@ -139,7 +139,7 @@ const ProfileInfoModify = ({
             name="stacks"
             //id="exampleEmail"
             placeholder="stack"
-            value={infoState.stacks}
+            value={info.stacks}
             onChange={handleChange}
           />
         </FormGroup>
@@ -151,7 +151,7 @@ const ProfileInfoModify = ({
             name="contact"
             //id="exampleEmail"
             placeholder="contact"
-            value={infoState.contact}
+            value={info.contact}
             onChange={handleChange}
           />
         </FormGroup>
@@ -163,7 +163,7 @@ const ProfileInfoModify = ({
             name="area"
             //id="exampleEmail"
             placeholder="area"
-            value={infoState.area}
+            value={info.area}
             onChange={handleChange}
           />
         </FormGroup>
@@ -174,7 +174,7 @@ const ProfileInfoModify = ({
             type="textarea"
             name="introduction"
             id="introduction"
-            value={infoState.introduction}
+            value={info.introduction}
             onChange={handleChange}
           />
         </FormGroup>
