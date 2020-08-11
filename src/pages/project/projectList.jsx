@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import {
-  useTemporaryApi,
   useProjectListState,
   useProjectListEffect,
-  useRequest
+  useRequest,
 } from "../../hook";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { Layout, ProjectBox, Button } from "../../components";
 import { Row, Col } from "reactstrap";
 import Sort from "../../components/List/Sort";
@@ -23,11 +22,18 @@ export default function ProjectList() {
       fulfilled: getProjectListFulfilled,
       pending: getProjectListPending,
       rejected: getProjectListRejected,
-      error: getProjectListError
+      error: getProjectListError,
     },
-    { run: getProjectListApi }
+    { run: getProjectListApi },
   ] = useRequest(projectListAction.getProjectList);
-  useProjectListEffect(resProjectList, getProjectListFulfilled, getProjectListRejected, getProjectListError, getProjectListApi, projectListAction.setProjectList)
+  useProjectListEffect(
+    resProjectList,
+    getProjectListFulfilled,
+    getProjectListRejected,
+    getProjectListError,
+    getProjectListApi,
+    projectListAction.setProjectList
+  );
 
   return (
     <Layout>
@@ -55,10 +61,12 @@ export default function ProjectList() {
           return (
             <Link to={`/projectDetail/${value.projectId}`}>
               <Col xs="3" key={index}>
-                <ProjectBox data={value} onClick={() => handleClickProject(projectId)} />
+                <ProjectBox
+                  data={value}
+                  onClick={() => handleClickProject(projectId)}
+                />
               </Col>
             </Link>
-
           );
         })}
       </Row>

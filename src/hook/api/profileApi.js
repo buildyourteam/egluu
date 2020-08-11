@@ -5,7 +5,7 @@ const BASE_URL = `https://egluuapi.codingnome.dev/profile/`;
 // Profile Page 좌측 Info창에서 사용되는 api
 export function useInfoApi() {
   // get info api
-  const getInfo = async userId => {
+  const getInfo = async (userId) => {
     const res = await axios.get(`${BASE_URL}${userId}`);
     return res.data;
   };
@@ -18,8 +18,8 @@ export function useInfoApi() {
     const res = await axios.put(`${BASE_URL}${userId}`, data, {
       headers: {
         "Content-type": "application/json;charset=UTF-8",
-        authToken: token
-      }
+        authToken: token,
+      },
     });
     return res;
   };
@@ -27,7 +27,7 @@ export function useInfoApi() {
 }
 export function useImgApi() {
   // get Img api
-  const getImg = async userId => {
+  const getImg = async (userId) => {
     const res = await axios.get(`${BASE_URL}image/${userId}`);
     //const res = await axios.get(`https://apis.tracker.delivery/carriers`);
     //console.log(res);
@@ -43,8 +43,8 @@ export function useImgApi() {
     const res = await axios.post(`${BASE_URL}image/${userId}`, image, {
       headers: {
         "Content-type": "application/json;charset=UTF-8",
-        authToken: token
-      }
+        authToken: token,
+      },
     });
     console.log(res);
     return res;

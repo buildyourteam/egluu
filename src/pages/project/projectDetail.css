@@ -1,0 +1,63 @@
+#root {
+}
+
+.full_div {
+  width: 100%;
+  min-height: 36px;
+}
+
+.half_div_left {
+  padding: 10px;
+  float: left;
+  width: 50%;
+}
+
+.half_div_right {
+  padding: 10px;
+  float: right;
+  width: 50%;
+}
+
+.half_div_right > h1 {
+}
+
+.half_div_right > h4 {
+  color: gray;
+  margin: 0px 0px 30px 0px;
+}
+
+#tag_case {
+  padding: 20px 0px 20px 0px;
+  /* border: 2px outset rgba(194, 216, 212, 0.5); */
+  /* border-radius: 12px; */
+}
+
+#tag {
+  background-color: gray;
+  border-radius: 25px;
+  width: auto;
+  padding: 8px;
+  opacity: 0.7;
+  color: white;
+}
+
+#button {
+  float: right;
+}
+
+#button > div > button {
+  float: right;
+}
+
+.half_div_left > img {
+  width: 100%;
+  height: auto;
+}
+
+#list {
+  /* border: 1px solid #bcbcbc; */
+}
+
+#drawer_root {
+  padding: 0px 20px;
+}
