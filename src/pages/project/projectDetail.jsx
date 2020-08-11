@@ -22,6 +22,7 @@ import {
   ListItem,
   ListItemText,
   FormControlLabel,
+  ListItemSecondaryAction,
 } from "@material-ui/core";
 import {
   DateTimePicker as MuiDateTimePicker,
@@ -38,6 +39,8 @@ import {
   Input,
   Form,
 } from "reactstrap";
+import "./projectDetail.css";
+
 export default function ProjectDetail() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -82,86 +85,122 @@ export default function ProjectDetail() {
       {getProjectPending ? (
         <div>로딩중...</div>
       ) : (
-        <div>
-          {project.check.reader ? (
-            <div>
-              <Link to={`/projectUpdate/${url[2]}`}>
-                <Button onClick={handleClickUpdate}>수정하기</Button>
-              </Link>
-              <Button onClick={handleClickDelete}>삭제하기</Button>
+        <div id="root">
+          <div className="full_div">
+            {project.check.reader ? (
+              <div id="button">
+                <Link to={`/projectUpdate/${url[2]}`}>
+                  <Button onClick={handleClickUpdate}>수정하기</Button>
+                </Link>
+                <Button onClick={handleClickDelete}>삭제하기</Button>
+              </div>
+            ) : (
+              <div id="button">
+                <HalfDrawer anchor="left" buttonName="지원하기">
+                  <ApplyProject
+                    questions={project.project.questions}
+                    projectId={projectId}
+                    applyApi={project.project._links}
+                    detailGet={getProjectFulfilled}
+                  />
+                </HalfDrawer>
+              </div>
+            )}
+          </div>
+          <div>
+            <div className="half_div_left">
+              <img
+                id="cover"
+                src={`https://egluuapi.codingnome.dev/projects/image/${url[2]}`}
+                alt="temp"
+              />
             </div>
-          ) : (
-            <HalfDrawer anchor="left" buttonName="지원하기">
-              <ApplyProject
-                questions={project.project.questions}
-                projectId={projectId}
-                applyApi={project.project._links}
-                detailGet={getProjectFulfilled}
-              />
-            </HalfDrawer>
-          )}
-          <br />
-          <img
-            height={200}
-            width={200}
-            src={`https://egluuapi.codingnome.dev/projects/image/${url[2]}`}
-            alt="temp"
-          />
-          <Typography>{project.project.projectName}</Typography>
-          <Typography>{project.project.teamName}</Typography>
-          <Typography>종료일 : {project.project.endDate}</Typography>
-          <Typography>{project.project.description}</Typography>
-          <Typography>개발 분야 : {project.project.projectField}</Typography>
-          <List dense>
-            <ListItem>
-              <ListItemText primary="현재 인원" />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`개발자 : ${project.project.currentMember.developer}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`디자이너 : ${project.project.currentMember.designer}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`기획자 : ${project.project.currentMember.planner}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`기타 : ${project.project.currentMember.etc}`}
-              />
-            </ListItem>
-          </List>
-          <List dense>
-            <ListItem>
-              <ListItemText primary="모집 인원" />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`개발자 : ${project.project.needMember.developer}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`디자이너 : ${project.project.needMember.designer}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`기획자 : ${project.project.needMember.planner}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`기타 : ${project.project.needMember.etc}`}
-              />
-            </ListItem>
-          </List>
+            <div className="half_div_right">
+              <Typography variant="h1">
+                {project.project.projectName}
+              </Typography>
+              <Typography variant="h4">{project.project.teamName}</Typography>
+              <Typography>마감일 : {project.project.endDate}</Typography>
+              <div id="tag_case">
+                <span id="tag">{project.project.projectField}</span>
+              </div>
+              <div id="list">
+                <div className="half_div_left">
+                  <List>
+                    <ListItem divider>
+                      <ListItemText primary="현재 인원" />
+                    </ListItem>
+                    <ListItem
+                      disabled={project.project.currentMember.developer < 1}
+                    >
+                      <ListItemText primary="개발자" />
+                      <ListItemSecondaryAction>
+                        {project.project.currentMember.developer}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem
+                      disabled={project.project.currentMember.designer < 1}
+                    >
+                      <ListItemText primary="디자이너" />
+                      <ListItemSecondaryAction>
+                        {project.project.currentMember.designer}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem
+                      disabled={project.project.currentMember.planner < 1}
+                    >
+                      <ListItemText primary="기획자" />
+                      <ListItemSecondaryAction>
+                        {project.project.currentMember.planner}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem disabled={project.project.currentMember.etc < 1}>
+                      <ListItemText primary="기타" />
+                      <ListItemSecondaryAction>
+                        {project.project.currentMember.etc}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
+                </div>
+                <div className="half_div_right">
+                  <List>
+                    <ListItem divider>
+                      <ListItemText primary="모집 인원" />
+                    </ListItem>
+                    <ListItem
+                      disabled={project.project.needMember.developer < 1}
+                    >
+                      <ListItemText primary={`개발자`} />
+                      <ListItemSecondaryAction>
+                        {project.project.needMember.developer}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem
+                      disabled={project.project.needMember.designer < 1}
+                    >
+                      <ListItemText primary={`디자이너`} />
+                      <ListItemSecondaryAction>
+                        {project.project.needMember.designer}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem disabled={project.project.needMember.planner < 1}>
+                      <ListItemText primary={`기획자`} />
+                      <ListItemSecondaryAction>
+                        {project.project.needMember.planner}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem disabled={project.project.needMember.etc < 1}>
+                      <ListItemText primary={`기타`} />
+                      <ListItemSecondaryAction>
+                        {project.project.needMember.etc}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Typography>{project.project.introduction}</Typography>
           {project.check.reader && (
             <div>
               <FormControlLabel
@@ -304,6 +343,7 @@ const ApplyProject = (props) => {
   const [applyGetRes, { run: getApply }] = useRequest(
     applyAction.fetchGetApply
   );
+  
   useProjectApplyEffect(
     questions,
     getApply,
@@ -317,14 +357,14 @@ const ApplyProject = (props) => {
   );
 
   return (
-    <div>
+    <div id="drawer_root">
       {apply.apply.answers.map((a, i) => (
         <div>
           <Typography>
             {i + 1}번 질문 : {questions[i]}
           </Typography>
           <InputGroup>
-            <InputGroupAddon addonType="prepend">질문</InputGroupAddon>
+            <InputGroupAddon addonType="prepend">답변</InputGroupAddon>
             <Input
               name="answer"
               onChange={(e) => applyAction.inputAnswer(e.target.value, i)}
