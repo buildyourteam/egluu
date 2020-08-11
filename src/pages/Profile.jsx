@@ -52,6 +52,7 @@ const Profile = () => {
   // Recruit modal
   const [modal, setModal] = useState(false);
   const recruitToggle = () => setModal(!modal);
+  console.log(modal);
 
   // 우측 탭 상태변수
   const [activeTab, setActiveTab] = useState("1");
@@ -85,18 +86,21 @@ const Profile = () => {
                 setImgState={setImgState}
                 userId={userId}
               />
-              {/* myId가 없으면 리쿠르트 버튼 안뜨게 */}
-              {userId === myId ? (
-                <Button onClick={modifyToggle}>Modify</Button>
-              ) : (
-                <>
-                  <Button onClick={recruitToggle}> recruit </Button>
-                  <RecruitModal
-                    modal={modal}
-                    toggle={recruitToggle}
-                    userId={userId}
-                  />
-                </>
+
+              {myId &&
+                (userId === myId ? (
+                  <Button onClick={modifyToggle}>Modify</Button>
+                ) : (
+                  <>
+                    <Button onClick={recruitToggle}> recruit </Button>
+                  </>
+                ))}
+              {modal && (
+                <RecruitModal
+                  modal={modal}
+                  toggle={recruitToggle}
+                  userId={userId}
+                />
               )}
             </>
           )}
