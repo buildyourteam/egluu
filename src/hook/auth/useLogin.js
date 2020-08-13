@@ -16,11 +16,13 @@ export function useLoginEffect(data, fulfilled, pending, rejected, error) {
       alert("로그인 성공!!");
 
       // response에서 토큰 추출
-      const token = data.headers.authtoken;
+      const accessToken = data.accessToken;
+      const refreshToken = data.refreshToken;
 
       // 세션스토리지에 아이디와 토큰 저장
       window.sessionStorage.setItem("id", state.userId);
-      window.sessionStorage.setItem("accessToken", token);
+      window.sessionStorage.setItem("accessToken", accessToken);
+      window.sessionStorage.setItem("refreshToken", refreshToken);
 
       // 리덕스에 디스패치
       const reduxData = {

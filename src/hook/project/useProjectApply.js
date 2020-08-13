@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 const axios = require("axios");
 
-export const useProjectApplyState = (api) => {
+export const useProjectApplyState = api => {
   const [apply, setApply] = useState(projectApply);
   const [applied, setApplied] = useState(false);
   const fetchGetApply = async () => {
@@ -12,10 +12,10 @@ export const useProjectApplyState = (api) => {
     const id = window.sessionStorage.getItem("id");
     const res = await axios.get(`${api}/${id}`, {
       headers: {
-        authtoken: token,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json",
-      },
+        Accept: "application/hal+json"
+      }
     });
     return res.data;
   };
@@ -24,10 +24,10 @@ export const useProjectApplyState = (api) => {
     const token = window.sessionStorage.getItem("accessToken");
     await axios.post(api, data, {
       headers: {
-        authtoken: token,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json",
-      },
+        Accept: "application/hal+json"
+      }
     });
   };
 
@@ -35,10 +35,10 @@ export const useProjectApplyState = (api) => {
     const token = window.sessionStorage.getItem("accessToken");
     await axios.put(api, data, {
       headers: {
-        authtoken: token,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json",
-      },
+        Accept: "application/hal+json"
+      }
     });
   };
 
@@ -46,7 +46,7 @@ export const useProjectApplyState = (api) => {
     setApply((value, index) => {
       return {
         ...value,
-        [name]: data,
+        [name]: data
       };
     });
   };
@@ -62,16 +62,16 @@ export const useProjectApplyState = (api) => {
     setApply((value, index) => {
       return {
         ...value,
-        answers: inputAnswer,
+        answers: inputAnswer
       };
     });
   };
 
-  const selectRole = (data) => {
-    setApply((value) => {
+  const selectRole = data => {
+    setApply(value => {
       return {
         ...value,
-        role: data,
+        role: data
       };
     });
   };
@@ -86,8 +86,8 @@ export const useProjectApplyState = (api) => {
       selectRole,
       fetchGetApply,
       fetchPutApply,
-      setApplied,
-    },
+      setApplied
+    }
   ];
 };
 
@@ -143,5 +143,5 @@ export const useProjectApplyEffect = (
 const projectApply = {
   answers: [],
   introduction: "",
-  role: "",
+  role: ""
 };
