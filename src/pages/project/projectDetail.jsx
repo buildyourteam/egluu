@@ -101,12 +101,30 @@ export default function ProjectDetail() {
                   <Button onClick={handleClickUpdate}>수정하기</Button>
                 </Link>
                 <Button
-                  onClick={handleClickDelete}
+                  onClick={projectAction.openDelete}
                   style={{ marginLeft: "20px" }}
                   color="danger"
                 >
                   삭제하기
                 </Button>
+                <CenterModal
+                  header="삭제하기"
+                  modalFlag={project.check.delete}
+                  close={projectAction.closeDelete}
+                  footer={
+                    <div className="full_div">
+                      <div id="button">
+                        <Button color="danger" onClick={handleClickDelete}>
+                          삭제하기
+                        </Button>
+                      </div>
+                    </div>
+                  }
+                >
+                  <div style={{ height: "12px" }} />
+                  <Typography variant="h6">정말로 삭제하시겠습니까?</Typography>
+                  <div style={{ height: "12px" }} />
+                </CenterModal>
               </div>
             ) : (
               <div id="button">

@@ -13,6 +13,7 @@ const useProjectDetailState = () => {
     recruit: false,
     reader: false,
     applyModal: false,
+    delete: false,
   });
   const [pagination, setPagination] = useState({
     apply: 0,
@@ -134,6 +135,24 @@ const useProjectDetailState = () => {
     });
   };
 
+  const openDelete = (e) => {
+    setCheck((value) => {
+      return {
+        ...value,
+        delete: true,
+      };
+    });
+  };
+
+  const closeDelete = (e) => {
+    setCheck((value) => {
+      return {
+        ...value,
+        delete: false,
+      };
+    });
+  };
+
   return [
     { project, check, apply, recruit, pagination },
     {
@@ -149,6 +168,8 @@ const useProjectDetailState = () => {
       clickPagination,
       openApply,
       closeApply,
+      openDelete,
+      closeDelete,
     },
   ];
 };
