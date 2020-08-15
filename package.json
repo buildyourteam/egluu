@@ -16,6 +16,7 @@
     "bootstrap": "^4.5.0",
     "date-fns": "^2.15.0",
     "eslint-config-prettier": "^6.11.0",
+    "moment-timezone": "^0.5.31",
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
