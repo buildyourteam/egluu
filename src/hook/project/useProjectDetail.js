@@ -11,14 +11,14 @@ const useProjectDetailState = () => {
   const [check, setCheck] = useState({
     apply: true,
     recruit: false,
-    reader: false,
+    reader: false
   });
   const [pagination, setPagination] = useState({
     apply: 0,
-    recruit: 0,
+    recruit: 0
   });
   const [teamReader, setTeamReader] = useState(false);
-  const fetchGetDetail = async (projectId) => {
+  const fetchGetDetail = async projectId => {
     const token = window.sessionStorage.getItem("accessToken");
     let resApply;
     let res = await axios.get(
@@ -29,88 +29,88 @@ const useProjectDetailState = () => {
       await axios
         .get(res.data._links.apply.href, {
           headers: {
-            authtoken: token,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json;charset=UTF-8",
-            Accept: "application/hal+json",
-          },
+            Accept: "application/hal+json"
+          }
         })
-        .then((value) => {
+        .then(value => {
           setApplyState(value.data._embedded.projectApplicantDtoList);
         })
-        .catch((error) => {});
+        .catch(error => {});
     }
     res = res.data;
     return { res, resApply };
   };
 
-  const fetchDeleteProject = async (projectId) => {
+  const fetchDeleteProject = async projectId => {
     const token = window.sessionStorage.getItem("accessToken");
     await axios.delete(
       `https://egluuapi.codingnome.dev/projects/${projectId}`,
       {
         headers: {
-          authtoken: token,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json;charset=UTF-8",
-          Accept: "application/hal+json",
-        },
+          Accept: "application/hal+json"
+        }
       }
     );
     history.push("/projects");
   };
 
-  const setProjectState = (data) => {
+  const setProjectState = data => {
     setProject(data);
   };
 
-  const inputProject = (e) => {
-    setProject((value) => {
+  const inputProject = e => {
+    setProject(value => {
       return {
         ...value,
-        [e.target.name]: e.target.value,
+        [e.target.name]: e.target.value
       };
     });
   };
 
-  const setApplyState = (data) => {
+  const setApplyState = data => {
     setApply(data);
   };
 
-  const inputApply = (e) => {
-    setRecruit((value) => {
+  const inputApply = e => {
+    setRecruit(value => {
       return {
         ...value,
-        [e.target.name]: e.target.value,
+        [e.target.name]: e.target.value
       };
     });
   };
 
-  const setRecruitState = (data) => {
+  const setRecruitState = data => {
     setRecruit(data);
   };
 
-  const inputRecruit = (e) => {
-    setApply((value) => {
+  const inputRecruit = e => {
+    setApply(value => {
       return {
         ...value,
-        [e.target.name]: e.target.value,
+        [e.target.name]: e.target.value
       };
     });
   };
   const checkSwitch = (name, checked) => {
-    setCheck((value) => {
+    setCheck(value => {
       return {
         ...value,
-        [name]: checked,
+        [name]: checked
       };
     });
   };
 
   const clickPagination = (name, nextPage) => {
-    setPagination((value) => {
+    setPagination(value => {
       const count = value[name] + nextPage;
       return {
         ...value,
-        [name]: count,
+        [name]: count
       };
     });
   };
@@ -127,8 +127,8 @@ const useProjectDetailState = () => {
       setRecruitState,
       inputRecruit,
       fetchDeleteProject,
-      clickPagination,
-    },
+      clickPagination
+    }
   ];
 };
 
@@ -196,7 +196,7 @@ const useProjectRecruitEffect = (
 export {
   useProjectDetailState,
   useProjectDetailEffect,
-  useProjectRecruitEffect,
+  useProjectRecruitEffect
 };
 
 const projectDetail = {
@@ -212,22 +212,22 @@ const projectDetail = {
     developer: 0,
     designer: 0,
     planner: 0,
-    etc: 0,
+    etc: 0
   },
   currentMember: {
     developer: 0,
     designer: 0,
     planner: 0,
-    etc: 0,
+    etc: 0
   },
   _links: {
     self: {
-      href: "",
+      href: ""
     },
     apply: {
-      href: "",
-    },
-  },
+      href: ""
+    }
+  }
 };
 
 const projectApplicantDtoList = [
@@ -238,10 +238,10 @@ const projectApplicantDtoList = [
     role: "",
     _links: {
       self: {
-        href: "",
-      },
-    },
-  },
+        href: ""
+      }
+    }
+  }
 ];
 
 const recruitDtoList = [
@@ -254,9 +254,9 @@ const recruitDtoList = [
     projectName: "project1",
     _links: {
       self: {
-        href: "https://api.eskiiimo.com/profile/tester/recruit/11",
-      },
-    },
+        href: "https://api.eskiiimo.com/profile/tester/recruit/11"
+      }
+    }
   },
   {
     userName: "유저02",
@@ -267,8 +267,8 @@ const recruitDtoList = [
     projectName: "project1",
     _links: {
       self: {
-        href: "https://api.eskiiimo.com/profile/tester/recruit/11",
-      },
-    },
-  },
+        href: "https://api.eskiiimo.com/profile/tester/recruit/11"
+      }
+    }
+  }
 ];

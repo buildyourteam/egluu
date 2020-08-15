@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 
 export function useRegisterApi() {
-  const postRegister = async (data) => {
+  const postRegister = async data => {
     const res = await axios.post(
       `https://egluuapi.codingnome.dev/auth/signup`,
       data
@@ -14,13 +14,13 @@ export function useRegisterApi() {
 }
 
 export function useLoginApi() {
-  const postLogin = async (data) => {
+  const postLogin = async data => {
     const res = await axios.post(
       `https://egluuapi.codingnome.dev/auth/signin`,
       data
     );
-    console.log(res);
-    return res;
+    // console.log(res);
+    return res.data;
   };
   return { postLogin };
 }

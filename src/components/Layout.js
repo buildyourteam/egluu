@@ -41,6 +41,7 @@ export default function Layout({ children }) {
     // 세션 스토리지 비우기
     window.sessionStorage.removeItem("id");
     window.sessionStorage.removeItem("accessToken");
+    window.sessionStorage.removeItem("refreshToken");
 
     // 리덕스 초기화 데이터
     const reduxData = {
@@ -97,9 +98,9 @@ export default function Layout({ children }) {
                   <NavLink tag={Link} to="/register">
                     Register
                   </NavLink>
-                  </NavItem>
-                </>
-              )}
+                </NavItem>
+              </>
+            )}
           </Nav>
         </Collapse>
       </Navbar>
