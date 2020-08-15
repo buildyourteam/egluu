@@ -36,9 +36,10 @@
   background-color: gray;
   border-radius: 25px;
   width: auto;
-  padding: 8px;
+  padding: 10px;
   opacity: 0.7;
   color: white;
+  font-size: 25px;
 }
 
 #button {
@@ -50,8 +51,14 @@
 }
 
 .half_div_left > img {
-  width: 100%;
-  height: auto;
+  width: 520px;
+  height: 520px;
+}
+
+.half_div_left > .input_img {
+  width: 380px;
+  height: 380px;
+  margin: auto;
 }
 
 #list {
@@ -60,4 +67,13 @@
 
 #drawer_root {
   padding: 0px 20px;
+}
+
+.input-group-text {
+  width: 100px;
+  float: center;
+}
+
+.form-control {
+  margin-bottom: 10px;
 }

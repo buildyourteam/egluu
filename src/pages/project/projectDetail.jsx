@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useHistory } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
 import {
   useProjectDetailState,
@@ -8,13 +9,7 @@ import {
   useProjectApplyState,
   useProjectApplyEffect,
 } from "../../hook";
-import {
-  Button,
-  Layout,
-  IOSSwitch,
-  DropdownRole,
-  HalfDrawer,
-} from "../../components";
+import { Layout, IOSSwitch, DropdownRole, HalfDrawer } from "../../components";
 import "../main.css";
 import {
   Typography,
@@ -38,8 +33,10 @@ import {
   InputGroupText,
   Input,
   Form,
+  Button,
 } from "reactstrap";
 import "./projectDetail.css";
+const ReactMarkdown = require("react-markdown");
 
 export default function ProjectDetail() {
   const dispatch = useDispatch();
@@ -92,7 +89,13 @@ export default function ProjectDetail() {
                 <Link to={`/projectUpdate/${url[2]}`}>
                   <Button onClick={handleClickUpdate}>수정하기</Button>
                 </Link>
-                <Button onClick={handleClickDelete}>삭제하기</Button>
+                <Button
+                  onClick={handleClickDelete}
+                  style={{ marginLeft: "20px" }}
+                  color="danger"
+                >
+                  삭제하기
+                </Button>
               </div>
             ) : (
               <div id="button">
@@ -116,14 +119,15 @@ export default function ProjectDetail() {
               />
             </div>
             <div className="half_div_right">
+              {/* <div id="tag_case"> */}
+              <div>
+                <span id="tag">{project.project.projectField}</span>
+              </div>
               <Typography variant="h1">
                 {project.project.projectName}
               </Typography>
               <Typography variant="h4">{project.project.teamName}</Typography>
               <Typography>마감일 : {project.project.endDate}</Typography>
-              <div id="tag_case">
-                <span id="tag">{project.project.projectField}</span>
-              </div>
               <div id="list">
                 <div className="half_div_left">
                   <List>
@@ -200,7 +204,8 @@ export default function ProjectDetail() {
               </div>
             </div>
           </div>
-          <Typography>{project.project.introduction}</Typography>
+          <div>소개</div>
+          <ReactMarkdown source={project.project.introduction} />
           {project.check.reader && (
             <div>
               <FormControlLabel
@@ -343,7 +348,7 @@ const ApplyProject = (props) => {
   const [applyGetRes, { run: getApply }] = useRequest(
     applyAction.fetchGetApply
   );
-  
+
   useProjectApplyEffect(
     questions,
     getApply,

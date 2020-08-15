@@ -61,7 +61,9 @@ export default function HalfDrawer(props) {
   return (
     <div>
       <React.Fragment key={anchor}>
-        <Button onClick={handleDrawerOpen}>{buttonName}</Button>
+        <Button style={{ fontSize: "20px" }} onClick={handleDrawerOpen}>
+          {buttonName}
+        </Button>
         <Drawer
           className={classes.drawer}
           variant="persistent"

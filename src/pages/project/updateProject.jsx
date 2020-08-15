@@ -5,8 +5,16 @@ import {
   useRequest,
   useProjectUpdateEffect,
 } from "../../hook";
-import { Button, Layout, ImgInput } from "../../components";
+import { Layout, ImgInput, DropdownField } from "../../components";
 import "../main.css";
+import MultiInput from "@material-ui/core/Input";
+import {
+  fade,
+  ThemeProvider,
+  withStyles,
+  makeStyles,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import {
   DateTimePicker as MuiDateTimePicker,
@@ -15,12 +23,46 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import { ko } from "date-fns/locale";
 import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
   InputGroup,
   InputGroupAddon,
-  InputGroupText,
-  Input,
-  Form,
 } from "reactstrap";
+import InputBase from "@material-ui/core/InputBase";
+
+const BootstrapInput = withStyles((theme) => ({
+  input: {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.common.white,
+    border: "1px solid #ced4da",
+    fontSize: 16,
+    width: "100%",
+    padding: "10px 12px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:focus": {
+      boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
+      borderColor: theme.palette.primary.main,
+    },
+  },
+}))(InputBase);
 
 export default function ProjectUpdate() {
   const location = useLocation();
@@ -81,153 +123,182 @@ export default function ProjectUpdate() {
       {false ? (
         <div>로딩중...</div>
       ) : (
-        <div>
-          <ImgInput img={project.img} saveImg={projectAction.inputImg} />
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>프로젝트 이름</InputGroupText>
-            </InputGroupAddon>
+        <div id="root">
+          <div className="full_div">
+            <div id="button">
+              <Button onClick={handleClickUpdate}>Update Project</Button>
+            </div>
+          </div>
+          <div className="half_div_left">
+            <div className="input_img">
+              <ImgInput img={url[2]} saveImg={projectAction.inputImg} />
+            </div>
+          </div>
+          <div className="half_div_right">
+            <Label for="exampleEmail">Project Name</Label>
             <Input
-              placeholder="프로젝트 이름"
+              type="name"
               name="projectName"
+              placeholder="project name"
               onChange={projectAction.inputProject}
               value={project.project.projectName}
             />
-          </InputGroup>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>팀 이름</InputGroupText>
-            </InputGroupAddon>
+            <Label for="exampleEmail">Team Name</Label>
             <Input
-              placeholder="팀 이름"
+              type="name"
               name="teamName"
+              placeholder="team name"
               onChange={projectAction.inputProject}
               value={project.project.teamName}
             />
-          </InputGroup>
-          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
-            <MuiDateTimePicker
-              name="endDate"
-              value={project.project.endDate}
-              onChange={projectAction.inputDate}
-              format="yy.MM.dd HH:mm"
-              placeholder="종료일"
-              variant="dialog"
-              disableUnderline
-              disableToolbar={false}
-              hideTabs
-              clearable
-              ampm
-            />
-          </MuiPickersUtilsProvider>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>프로젝트 설명</InputGroupText>
-            </InputGroupAddon>
-            <Input
-              placeholder="프로젝트 설명"
+            <div className="half_div_left">
+              <Label for="exampleEmail">Recruit People</Label>
+              <br />
+              <InputGroup>
+                <InputGroupAddon id="input-group-half" addonType="prepend">
+                  Developer
+                </InputGroupAddon>
+                <Input
+                  placeholder="0"
+                  min={0}
+                  max={100}
+                  type="number"
+                  step="1"
+                  name="developer"
+                  onChange={projectAction.inputProjectMember}
+                  value={project.project.needMember.developer}
+                />
+              </InputGroup>
+              <div style={{ height: "12px" }} />
+              <InputGroup>
+                <InputGroupAddon id="input-group-half" addonType="prepend">
+                  Designer
+                </InputGroupAddon>
+                <Input
+                  placeholder="0"
+                  min={0}
+                  max={100}
+                  type="number"
+                  step="1"
+                  name="designer"
+                  onChange={projectAction.inputProjectMember}
+                  value={project.project.needMember.designer}
+                />
+              </InputGroup>
+              <div style={{ height: "12px" }} />
+              <InputGroup>
+                <InputGroupAddon id="input-group-half" addonType="prepend">
+                  Planner
+                </InputGroupAddon>
+                <Input
+                  placeholder="0"
+                  min={0}
+                  max={100}
+                  type="number"
+                  step="1"
+                  name="planner"
+                  onChange={projectAction.inputProjectMember}
+                  value={project.project.needMember.planner}
+                />
+              </InputGroup>
+              <div style={{ height: "12px" }} />
+              <InputGroup>
+                <InputGroupAddon id="input-group-half" addonType="prepend">
+                  Etc
+                </InputGroupAddon>
+                <Input
+                  placeholder="0"
+                  min={0}
+                  max={100}
+                  type="number"
+                  step="1"
+                  name="etc"
+                  onChange={projectAction.inputProjectMember}
+                  value={project.project.needMember.etc}
+                />
+              </InputGroup>
+            </div>
+            <div className="half_div_right">
+              <Label for="exampleEmail">End Date</Label>
+              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
+                <MuiDateTimePicker
+                  name="endDate"
+                  value={project.project.endDate}
+                  onChange={projectAction.inputDate}
+                  format="yy.MM.dd HH:mm"
+                  placeholder="종료일"
+                  variant="dialog"
+                  disableUnderline
+                  disableToolbar={false}
+                  hideTabs
+                  clearable
+                  ampm
+                />
+              </MuiPickersUtilsProvider>
+              <br />
+              <br />
+              <br />
+              <Label for="exampleEmail">Role</Label>
+              <DropdownField
+                style={{ width: "100%" }}
+                dropdownCaret="Role"
+                action={projectAction.inputField}
+                pick={project.project.projectField}
+              />
+            </div>
+          </div>
+          <div>
+            <Label for="exampleEmail">Introduction</Label>
+            <BootstrapInput
+              multiline
               name="introduction"
-              onChange={projectAction.inputProject}
+              placeholder="introduction"
               value={project.project.introduction}
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>개발 분야</InputGroupText>
-            </InputGroupAddon>
-            <Input
-              placeholder="개발 분야"
-              name="projectField"
               onChange={projectAction.inputProject}
-              value={project.project.projectField}
+              fullWidth
             />
-          </InputGroup>
-          <List dense>
-            <ListItem>
-              <ListItemText primary="모집 인원" />
-            </ListItem>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">개발자</InputGroupAddon>
-              <Input
-                placeholder="0"
-                min={0}
-                max={100}
-                type="number"
-                step="1"
-                name="developer"
-                onChange={projectAction.inputProjectMember}
-                value={project.project.needMember.developer}
-              />
-            </InputGroup>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">디자이너</InputGroupAddon>
-              <Input
-                placeholder="0"
-                min={0}
-                max={100}
-                type="number"
-                step="1"
-                name="designer"
-                onChange={projectAction.inputProjectMember}
-                value={project.project.needMember.designer}
-              />
-            </InputGroup>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">기획자</InputGroupAddon>
-              <Input
-                placeholder="0"
-                min={0}
-                max={100}
-                type="number"
-                step="1"
-                name="planner"
-                onChange={projectAction.inputProjectMember}
-                value={project.project.needMember.planner}
-              />
-            </InputGroup>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">기타</InputGroupAddon>
-              <Input
-                placeholder="0"
-                min={0}
-                max={100}
-                type="number"
-                step="1"
-                name="etc"
-                onChange={projectAction.inputProjectMember}
-                value={project.project.needMember.etc}
-              />
-            </InputGroup>
-          </List>
-          {project.project.questions.map((value, index) => (
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">질문</InputGroupAddon>
-              <Input
-                placeholder="질문"
-                name="questions"
-                onChange={(e) =>
-                  projectAction.inputQuestion(e.target.value, index)
-                }
-                value={value}
-              />
-              <InputGroupAddon addonType="append">
-                <Button
-                  color="secondary"
-                  onClick={() => projectAction.deleteQuestion(index)}
-                >
-                  삭제
-                </Button>
-              </InputGroupAddon>
-            </InputGroup>
-          ))}
-          <Button
-            variant="outline-secondary"
-            onClick={projectAction.addQuestion}
-          >
-            질문 추가
-          </Button>
+            <Label for="exampleEmail">Questions</Label>
+            {project.project.questions.map((value, index) => {
+              const questionString = `Question ${index + 1}`;
+              return (
+                <div>
+                  <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                      {questionString}
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="question"
+                      name="questions"
+                      onChange={(e) =>
+                        projectAction.inputQuestion(e.target.value, index)
+                      }
+                      value={value}
+                    />
+                    <InputGroupAddon addonType="append">
+                      <Button
+                        color="secondary"
+                        onClick={() => projectAction.deleteQuestion(index)}
+                      >
+                        delete
+                      </Button>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <div style={{ height: "12px" }} />
+                </div>
+              );
+            })}
+          </div>
+          <div className="full_div">
+            <div id="button">
+              <Button
+                variant="outline-secondary"
+                onClick={projectAction.addQuestion}
+              >
+                Add Questions
+              </Button>
+            </div>
+          </div>
           <br />
-          <Button onClick={handleClickUpdate}>프로젝트 수정</Button>
         </div>
       )}
     </Layout>

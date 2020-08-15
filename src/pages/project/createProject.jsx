@@ -5,23 +5,37 @@ import {
   useProjectCreateEffect,
   useRequest,
 } from "../../hook";
-import { Button, Layout, ImgInput, DropdownField } from "../../components";
+import { Layout, ImgInput, DropdownField } from "../../components";
 import "../main.css";
 import tempimg from "../../components/icon/move.gif";
-import { List, ListItem, ListItemText } from "@material-ui/core";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  InputLabel,
+  MenuItem,
+  FormHelperText,
+  FormControl,
+  Select,
+  TextField,
+} from "@material-ui/core";
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  InputGroup,
+  InputGroupAddon,
+} from "reactstrap";
+
 import {
   DateTimePicker as MuiDateTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { ko } from "date-fns/locale";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  Form,
-} from "reactstrap";
 
 export default function ProjectCreate() {
   const location = useLocation();
@@ -39,13 +53,7 @@ export default function ProjectCreate() {
     { run: createProjectApi },
   ] = useRequest(projectAction.fetchPostCreate);
   const [
-    {
-      data: resImg,
-      fulfilled: getImgFulfilled,
-      pending: getImgPending,
-      rejected: getImgRejected,
-      error: getImgError,
-    },
+    { fulfilled: getImgFulfilled, pending: getImgPending },
     { run: createImgApi },
   ] = useRequest(projectAction.fetchImg);
   useProjectCreateEffect(
@@ -59,7 +67,7 @@ export default function ProjectCreate() {
 
   useEffect(() => {
     if (getImgFulfilled) {
-      const projectId = resProject._links.createdProject.href.split("/");
+      const projectId = resProject.data._links.createdProject.href.split("/");
       history.push(`/projectDetail/${projectId[2]}`);
     }
   }, [getImgFulfilled]);
@@ -73,182 +81,183 @@ export default function ProjectCreate() {
       {false ? (
         <div>로딩중...</div>
       ) : (
-        <div>
-          <ImgInput img={project.img} saveImg={projectAction.inputImg} />
-          {/* <img src={project.url} alt='temp' /> */}
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>프로젝트 이름</InputGroupText>
-            </InputGroupAddon>
+        <div id="root">
+          <div className="full_div">
+            <div id="button">
+              <Button onClick={handleClickCreate}>Make Project</Button>
+            </div>
+          </div>
+          <div className="half_div_left">
+            <div className="input_img">
+              <ImgInput img={project.img} saveImg={projectAction.inputImg} />
+            </div>
+          </div>
+          <div className="half_div_right">
+            <Label for="exampleEmail">Project Name</Label>
             <Input
-              placeholder="프로젝트 이름"
+              type="name"
               name="projectName"
-              onChange={projectAction.inputProject}
+              placeholder="project name"
               value={project.project.projectName}
+              onChange={projectAction.inputProject}
             />
-          </InputGroup>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>팀 이름</InputGroupText>
-            </InputGroupAddon>
+            <Label for="exampleEmail">Team Name</Label>
             <Input
-              placeholder="팀 이름"
+              type="name"
               name="teamName"
+              placeholder="team name"
               onChange={projectAction.inputProject}
               value={project.project.teamName}
             />
-          </InputGroup>
-          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
-            <MuiDateTimePicker
-              name="endDate"
-              value={project.project.endDate}
-              onChange={projectAction.inputDate}
-              format="yy.MM.dd HH:mm"
-              placeholder="종료일"
-              variant="dialog"
-              disableUnderline
-              disableToolbar={false}
-              hideTabs
-              clearable
-              ampm
-            />
-          </MuiPickersUtilsProvider>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>프로젝트 설명</InputGroupText>
-            </InputGroupAddon>
+            <div className="half_div_left">
+              <Label for="exampleEmail">Recruit People</Label>
+              <br />
+              <InputGroup>
+                <InputGroupAddon id="input-group-half" addonType="prepend">
+                  Developer
+                </InputGroupAddon>
+                <Input
+                  placeholder="0"
+                  min={0}
+                  max={100}
+                  type="number"
+                  step="1"
+                  name="developer"
+                  onChange={projectAction.inputProjectMember}
+                  value={project.project.needMember.developer}
+                />
+              </InputGroup>
+              <div style={{ height: "12px" }} />
+              <InputGroup>
+                <InputGroupAddon id="input-group-half" addonType="prepend">
+                  Designer
+                </InputGroupAddon>
+                <Input
+                  placeholder="0"
+                  min={0}
+                  max={100}
+                  type="number"
+                  step="1"
+                  name="designer"
+                  onChange={projectAction.inputProjectMember}
+                  value={project.project.needMember.designer}
+                />
+              </InputGroup>
+              <div style={{ height: "12px" }} />
+              <InputGroup>
+                <InputGroupAddon id="input-group-half" addonType="prepend">
+                  Planner
+                </InputGroupAddon>
+                <Input
+                  placeholder="0"
+                  min={0}
+                  max={100}
+                  type="number"
+                  step="1"
+                  name="planner"
+                  onChange={projectAction.inputProjectMember}
+                  value={project.project.needMember.planner}
+                />
+              </InputGroup>
+              <div style={{ height: "12px" }} />
+              <InputGroup>
+                <InputGroupAddon id="input-group-half" addonType="prepend">
+                  Etc
+                </InputGroupAddon>
+                <Input
+                  placeholder="0"
+                  min={0}
+                  max={100}
+                  type="number"
+                  step="1"
+                  name="etc"
+                  onChange={projectAction.inputProjectMember}
+                  value={project.project.needMember.etc}
+                />
+              </InputGroup>
+            </div>
+            <div className="half_div_right">
+              <Label for="exampleEmail">End Date</Label>
+              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
+                <MuiDateTimePicker
+                  name="endDate"
+                  value={project.project.endDate}
+                  onChange={projectAction.inputDate}
+                  format="yy.MM.dd HH:mm"
+                  placeholder="종료일"
+                  variant="dialog"
+                  disableUnderline
+                  disableToolbar={false}
+                  hideTabs
+                  clearable
+                  ampm
+                />
+              </MuiPickersUtilsProvider>
+              <br />
+              <br />
+              <br />
+              <Label for="exampleEmail">Role</Label>
+              <DropdownField
+                style={{ width: "100%" }}
+                dropdownCaret="Role"
+                action={projectAction.inputField}
+                pick={project.project.projectField}
+              />
+            </div>
+          </div>
+          <div>
+            <Label for="exampleEmail">Introduction</Label>
             <Input
-              placeholder="프로젝트 설명"
+              type="name"
               name="introduction"
-              onChange={projectAction.inputProject}
+              placeholder="introduction"
               value={project.project.introduction}
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>개발 분야</InputGroupText>
-            </InputGroupAddon>
-            <Input
-              placeholder="개발 분야"
-              name="projectField"
               onChange={projectAction.inputProject}
-              value={project.project.projectField}
             />
-          </InputGroup>
-          <DropdownField
-            dropdownCaret="역할 선택"
-            action={projectAction.inputField}
-            pick={project.project.projectField}
-          />
-          <List dense>
-            <ListItem>
-              <ListItemText primary="모집 인원" />
-            </ListItem>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">개발자</InputGroupAddon>
-              <Input
-                placeholder="0"
-                min={0}
-                max={100}
-                type="number"
-                step="1"
-                name="developer"
-                onChange={projectAction.inputProjectMember}
-                value={project.project.needMember.developer}
-              />
-            </InputGroup>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">디자이너</InputGroupAddon>
-              <Input
-                placeholder="0"
-                min={0}
-                max={100}
-                type="number"
-                step="1"
-                name="designer"
-                onChange={projectAction.inputProjectMember}
-                value={project.project.needMember.designer}
-              />
-            </InputGroup>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">기획자</InputGroupAddon>
-              <Input
-                placeholder="0"
-                min={0}
-                max={100}
-                type="number"
-                step="1"
-                name="planner"
-                onChange={projectAction.inputProjectMember}
-                value={project.project.needMember.planner}
-              />
-            </InputGroup>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">기타</InputGroupAddon>
-              <Input
-                placeholder="0"
-                min={0}
-                max={100}
-                type="number"
-                step="1"
-                name="etc"
-                onChange={projectAction.inputProjectMember}
-                value={project.project.needMember.etc}
-              />
-            </InputGroup>
-          </List>
-          {project.project.questions.map((value, index) => (
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">질문</InputGroupAddon>
-              <Input
-                placeholder="질문"
-                name="questions"
-                onChange={(e) =>
-                  projectAction.inputQuestion(e.target.value, index)
-                }
-                value={value}
-              />
-              <InputGroupAddon addonType="append">
-                <Button
-                  color="secondary"
-                  onClick={() => projectAction.deleteQuestion(index)}
-                >
-                  삭제
-                </Button>
-              </InputGroupAddon>
-            </InputGroup>
-          ))}
-          <Button
-            variant="outline-secondary"
-            onClick={projectAction.addQuestion}
-          >
-            질문 추가
-          </Button>
+            <Label for="exampleEmail">Questions</Label>
+            {project.project.questions.map((value, index) => {
+              const questionString = `Question ${index + 1}`;
+              return (
+                <div>
+                  <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                      {questionString}
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="question"
+                      name="questions"
+                      onChange={(e) =>
+                        projectAction.inputQuestion(e.target.value, index)
+                      }
+                      value={value}
+                    />
+                    <InputGroupAddon addonType="append">
+                      <Button
+                        color="secondary"
+                        onClick={() => projectAction.deleteQuestion(index)}
+                      >
+                        delete
+                      </Button>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <div style={{ height: "12px" }} />
+                </div>
+              );
+            })}
+          </div>
+          <div className="full_div">
+            <div id="button">
+              <Button
+                variant="outline-secondary"
+                onClick={projectAction.addQuestion}
+              >
+                Add Questions
+              </Button>
+            </div>
+          </div>
           <br />
-          <Button onClick={handleClickCreate}>프로젝트 생성</Button>
         </div>
       )}
     </Layout>
   );
-}
-
-{
-  /* <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
-<MuiDateTimePicker
-    name="endDate"
-    value={project.endDate}
-    onChange={setStartDate}
-    format="yy.MM.dd HH:mm"
-    placeholder="종료일"
-    variant="dialog"
-    disableUnderline
-    disableToolbar={false}
-    hideTabs
-    clearable
-    ampm
-    style={{
-        borderLeft: '1px solid #cdcecd',
-    }}
-/>
-</MuiPickersUtilsProvider> */
 }

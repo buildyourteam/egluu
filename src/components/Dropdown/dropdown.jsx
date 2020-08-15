@@ -44,9 +44,10 @@ const DropdownField = (props) => {
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      {console.log(caret)}
-      <DropdownToggle caret>{caret}</DropdownToggle>
-      <DropdownMenu>
+      <DropdownToggle style={props.style} caret>
+        {caret}
+      </DropdownToggle>
+      <DropdownMenu style={props.style}>
         <DropdownItem onClick={(e) => action("APP")}>APP</DropdownItem>
         <DropdownItem onClick={(e) => action("WEB")}>WEB</DropdownItem>
         <DropdownItem onClick={(e) => action("AI")}>AI</DropdownItem>
