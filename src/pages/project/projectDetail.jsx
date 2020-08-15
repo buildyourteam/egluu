@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation, useHistory } from "react-router-dom";
-
 import { useDispatch } from "react-redux";
 import {
   useProjectDetailState,
@@ -9,7 +8,14 @@ import {
   useProjectApplyState,
   useProjectApplyEffect,
 } from "../../hook";
-import { Layout, IOSSwitch, DropdownRole, HalfDrawer } from "../../components";
+import {
+  Layout,
+  IOSSwitch,
+  DropdownRole,
+  HalfDrawer,
+  CenterModal,
+  BootstrapInput,
+} from "../../components";
 import "../main.css";
 import {
   Typography,
@@ -34,6 +40,11 @@ import {
   Input,
   Form,
   Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Label,
 } from "reactstrap";
 import "./projectDetail.css";
 const ReactMarkdown = require("react-markdown");
@@ -99,14 +110,20 @@ export default function ProjectDetail() {
               </div>
             ) : (
               <div id="button">
-                <HalfDrawer anchor="left" buttonName="지원하기">
+                <Button onClick={projectAction.openApply}>지원서</Button>
+                <CenterModal
+                  header="지원하기"
+                  modalFlag={project.check.applyModal}
+                  close={projectAction.closeApply}
+                >
                   <ApplyProject
                     questions={project.project.questions}
                     projectId={projectId}
                     applyApi={project.project._links}
                     detailGet={getProjectFulfilled}
+                    close={projectAction.closeApply}
                   />
-                </HalfDrawer>
+                </CenterModal>
               </div>
             )}
           </div>
@@ -339,7 +356,7 @@ export default function ProjectDetail() {
 }
 
 const ApplyProject = (props) => {
-  const { questions, projectId, applyApi, detailGet } = props;
+  const { questions, projectId, applyApi, detailGet, close } = props;
   const [apply, applyAction] = useProjectApplyState(applyApi.apply.href);
   const [applyRes, { run: postApply }] = useRequest(applyAction.fetchPostApply);
   const [applyPutRes, { run: putApply }] = useRequest(
@@ -358,14 +375,16 @@ const ApplyProject = (props) => {
     applyGetRes,
     applyPutRes,
     detailGet,
-    applyApi.apply.href
+    applyApi.apply.href,
+    close
   );
 
   return (
     <div id="drawer_root">
+      <div style={{ height: "12px" }} />
       {apply.apply.answers.map((a, i) => (
         <div>
-          <Typography>
+          <Typography variant="h6">
             {i + 1}번 질문 : {questions[i]}
           </Typography>
           <InputGroup>
@@ -376,54 +395,63 @@ const ApplyProject = (props) => {
               value={a}
             />
           </InputGroup>
+          <div style={{ height: "12px" }} />
         </div>
       ))}
-      <InputGroup>
-        <InputGroupAddon addonType="prepend">자기소개</InputGroupAddon>
-        <Input
-          name="introduction"
-          onChange={(e) =>
-            applyAction.inputApply(e.target.name, e.target.value)
-          }
-          value={apply.apply.introduction}
-        />
-      </InputGroup>
+      <Label for="exampleEmail" style={{ marginBottom: "0px" }}>
+        자기 소개
+      </Label>
+      <BootstrapInput
+        multiline
+        name="introduction"
+        onChange={(e) => applyAction.inputApply(e.target.name, e.target.value)}
+        value={apply.apply.introduction}
+        fullWidth
+      />
+      <div style={{ height: "12px" }} />
       <DropdownRole
+        style={{ width: "100%" }}
         dropdownCaret="역할 선택"
         action={applyAction.selectRole}
         pick={apply.apply.role}
       />
-      {apply.applied ? (
-        <Button
-          onClick={() => {
-            putApply(
-              {
-                answers: apply.apply.answers,
-                introduction: apply.apply.introduction,
-                role: apply.apply.role,
-              },
-              projectId
-            );
-          }}
-        >
-          수정하기
-        </Button>
-      ) : (
-        <Button
-          onClick={() => {
-            postApply(
-              {
-                answers: apply.apply.answers,
-                introduction: apply.apply.introduction,
-                role: apply.apply.role,
-              },
-              projectId
-            );
-          }}
-        >
-          지원하기
-        </Button>
-      )}
+      <div style={{ height: "12px" }} />
+      <div className="full_div">
+        <div id="button">
+          {apply.applied ? (
+            <Button
+              onClick={() => {
+                putApply(
+                  {
+                    answers: apply.apply.answers,
+                    introduction: apply.apply.introduction,
+                    role: apply.apply.role,
+                  },
+                  projectId
+                );
+              }}
+            >
+              수정하기
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                postApply(
+                  {
+                    answers: apply.apply.answers,
+                    introduction: apply.apply.introduction,
+                    role: apply.apply.role,
+                  },
+                  projectId
+                );
+              }}
+            >
+              지원하기
+            </Button>
+          )}
+        </div>
+      </div>
+      <div style={{ height: "12px" }} />
     </div>
   );
 };

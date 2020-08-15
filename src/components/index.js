@@ -11,3 +11,5 @@ export { DropdownRole, DropdownField } from "./Dropdown/dropdown";
 export { default as HalfDrawer } from "./Drawer/drawer";
 export { default as ProfileInfo } from "./People/Profile/ProfileInfo/ProfileInfo";
 export { default as ProfileInfoModify } from "./People/Profile/ProfileInfo/ProfileInfoModify";
+export { default as CenterModal } from "./Modal/Modal";
+export { BootstrapInput } from "./Input/Input";

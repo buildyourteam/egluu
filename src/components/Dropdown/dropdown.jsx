@@ -18,9 +18,10 @@ const DropdownRole = (props) => {
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      {console.log(caret)}
-      <DropdownToggle caret>{caret}</DropdownToggle>
-      <DropdownMenu>
+      <DropdownToggle caret style={props.style}>
+        {caret}
+      </DropdownToggle>
+      <DropdownMenu style={props.style}>
         <DropdownItem onClick={(e) => action("DEVELOPER")}>
           DEVELOPER
         </DropdownItem>

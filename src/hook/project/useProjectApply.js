@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 const axios = require("axios");
 
-export const useProjectApplyState = api => {
+export const useProjectApplyState = (api) => {
   const [apply, setApply] = useState(projectApply);
   const [applied, setApplied] = useState(false);
   const fetchGetApply = async () => {
@@ -14,8 +14,8 @@ export const useProjectApplyState = api => {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json"
-      }
+        Accept: "application/hal+json",
+      },
     });
     return res.data;
   };
@@ -26,8 +26,8 @@ export const useProjectApplyState = api => {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json"
-      }
+        Accept: "application/hal+json",
+      },
     });
   };
 
@@ -37,8 +37,8 @@ export const useProjectApplyState = api => {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json"
-      }
+        Accept: "application/hal+json",
+      },
     });
   };
 
@@ -46,7 +46,7 @@ export const useProjectApplyState = api => {
     setApply((value, index) => {
       return {
         ...value,
-        [name]: data
+        [name]: data,
       };
     });
   };
@@ -62,16 +62,16 @@ export const useProjectApplyState = api => {
     setApply((value, index) => {
       return {
         ...value,
-        answers: inputAnswer
+        answers: inputAnswer,
       };
     });
   };
 
-  const selectRole = data => {
-    setApply(value => {
+  const selectRole = (data) => {
+    setApply((value) => {
       return {
         ...value,
-        role: data
+        role: data,
       };
     });
   };
@@ -86,8 +86,8 @@ export const useProjectApplyState = api => {
       selectRole,
       fetchGetApply,
       fetchPutApply,
-      setApplied
-    }
+      setApplied,
+    },
   ];
 };
 
@@ -100,7 +100,8 @@ export const useProjectApplyEffect = (
   applyGetRes,
   applyPutRes,
   detailGet,
-  applyLink
+  applyLink,
+  afterAction
 ) => {
   const history = useHistory();
   useEffect(() => {
@@ -128,13 +129,13 @@ export const useProjectApplyEffect = (
   useEffect(() => {
     if (applyRes.fulfilled) {
       const id = window.sessionStorage.getItem("id");
-      history.push(`/profile/${id}`);
+      afterAction();
     }
   }, [applyRes.fulfilled]);
   useEffect(() => {
     if (applyPutRes.fulfilled) {
       const id = window.sessionStorage.getItem("id");
-      history.push(`/profile/${id}`);
+      afterAction();
     }
   }, [applyPutRes.fulfilled]);
   return "";
@@ -143,5 +144,5 @@ export const useProjectApplyEffect = (
 const projectApply = {
   answers: [],
   introduction: "",
-  role: ""
+  role: "",
 };

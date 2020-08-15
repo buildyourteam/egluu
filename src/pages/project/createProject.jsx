@@ -5,7 +5,12 @@ import {
   useProjectCreateEffect,
   useRequest,
 } from "../../hook";
-import { Layout, ImgInput, DropdownField } from "../../components";
+import {
+  Layout,
+  ImgInput,
+  DropdownField,
+  BootstrapInput,
+} from "../../components";
 import "../main.css";
 import tempimg from "../../components/icon/move.gif";
 import {
@@ -207,12 +212,14 @@ export default function ProjectCreate() {
           </div>
           <div>
             <Label for="exampleEmail">Introduction</Label>
-            <Input
+            <BootstrapInput
+              multiline
               type="name"
               name="introduction"
               placeholder="introduction"
               value={project.project.introduction}
               onChange={projectAction.inputProject}
+              fullWidth
             />
             <Label for="exampleEmail">Questions</Label>
             {project.project.questions.map((value, index) => {

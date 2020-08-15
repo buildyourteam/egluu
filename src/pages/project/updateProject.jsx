@@ -5,16 +5,15 @@ import {
   useRequest,
   useProjectUpdateEffect,
 } from "../../hook";
-import { Layout, ImgInput, DropdownField } from "../../components";
+import {
+  Layout,
+  ImgInput,
+  DropdownField,
+  BootstrapInput,
+} from "../../components";
 import "../main.css";
 import MultiInput from "@material-ui/core/Input";
-import {
-  fade,
-  ThemeProvider,
-  withStyles,
-  makeStyles,
-  createMuiTheme,
-} from "@material-ui/core/styles";
+
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import {
   DateTimePicker as MuiDateTimePicker,
@@ -33,36 +32,6 @@ import {
   InputGroupAddon,
 } from "reactstrap";
 import InputBase from "@material-ui/core/InputBase";
-
-const BootstrapInput = withStyles((theme) => ({
-  input: {
-    borderRadius: 4,
-    position: "relative",
-    backgroundColor: theme.palette.common.white,
-    border: "1px solid #ced4da",
-    fontSize: 16,
-    width: "100%",
-    padding: "10px 12px",
-    transition: theme.transitions.create(["border-color", "box-shadow"]),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
-      borderColor: theme.palette.primary.main,
-    },
-  },
-}))(InputBase);
 
 export default function ProjectUpdate() {
   const location = useLocation();
