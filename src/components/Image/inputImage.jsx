@@ -53,7 +53,7 @@ function ImgInput({ img, saveImg }) {
               />
             ) : (
               <img
-                src={`https://egluuapi.codingnome.dev/projects/image/${img}`}
+                src={`${img}`}
                 alt="이미지"
                 align="center"
                 heigth="100%"

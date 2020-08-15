@@ -100,7 +100,7 @@ export default function ProjectUpdate() {
           </div>
           <div className="half_div_left">
             <div className="input_img">
-              <ImgInput img={url[2]} saveImg={projectAction.inputImg} />
+              <ImgInput img={project.img} saveImg={projectAction.inputImg} />
             </div>
           </div>
           <div className="half_div_right">
