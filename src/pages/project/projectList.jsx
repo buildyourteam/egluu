@@ -5,9 +5,10 @@ import {
   useRequest,
 } from "../../hook";
 import { Link } from "react-router-dom";
-import { Layout, ProjectBox, Button } from "../../components";
+import { Layout, ProjectBox } from "../../components";
 import { Row, Col } from "reactstrap";
 import Sort from "../../components/List/Sort";
+import { Button } from "reactstrap";
 
 export default function ProjectList() {
   const [role, setRole] = useState("");
@@ -48,9 +49,13 @@ export default function ProjectList() {
         search={search}
         setSearch={setSearch}
       />
-      <Link to="/createProject">
-        <Button>프로젝트 생성</Button>
-      </Link>
+      <div className="full_div">
+        <div id="button">
+          <Link to="/createProject">
+            <Button>프로젝트 생성</Button>
+          </Link>
+        </div>
+      </div>
       <hr />
       <h1>{role}</h1>
       <h1>{region}</h1>
@@ -59,14 +64,13 @@ export default function ProjectList() {
       <Row xs="12">
         {projectList.map((value, index) => {
           return (
-            <Link to={`/projectDetail/${value.projectId}`}>
-              <Col xs="3" key={index}>
-                <ProjectBox
-                  data={value}
-                  onClick={() => handleClickProject(projectId)}
-                />
-              </Col>
-            </Link>
+            <Col xs="3" key={index}>
+              <ProjectBox
+                url={`/projectDetail/${value.projectId}`}
+                data={value}
+                // onClick={() => handleClickProject(projectId)}
+              />
+            </Col>
           );
         })}
       </Row>
