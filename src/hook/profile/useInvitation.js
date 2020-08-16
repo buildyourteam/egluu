@@ -46,17 +46,31 @@ export const useInvitationEffect = userId => {
 
 export const useInvitationDetailEffect = (userId, pid) => {
   const [invitaionDetail, setInvitaionDetail] = useState({
-    userId: "",
+    userName: "",
     introduction: "",
     role: "",
     projectName: ""
   });
-  const { getInvitationDetail } = useInvitationDetailApi();
+  const {
+    getInvitationDetail,
+    putInvitationAccept,
+    deleteInvitationReject
+  } = useInvitationDetailApi();
 
   const [
     { data, error, pending, fulfilled, rejected },
     { run: getInvitationDetailApi }
   ] = useRequest(getInvitationDetail);
+
+  const [
+    { putData, putError, putPending, putFulfilled, putRejected },
+    { run: putInvitationAcceptApi }
+  ] = useRequest(putInvitationAccept);
+
+  const [
+    { deleteData, deleteError, deletePending, deleteFulfilled, deleteRejected },
+    { run: deleteInvitationRejectApi }
+  ] = useRequest(deleteInvitationReject);
 
   useEffect(() => {
     getInvitationDetailApi(userId, pid);
@@ -65,6 +79,14 @@ export const useInvitationDetailEffect = (userId, pid) => {
   useEffect(() => {
     if (fulfilled) {
       console.log(data);
+      setInvitaionDetail({
+        userName: data.userName,
+        introduction: data.introduction,
+        projectName: data.projectName,
+        role: data.role
+      });
     }
   }, [fulfilled]);
+
+  return { invitaionDetail, putInvitationAcceptApi, deleteInvitationRejectApi };
 };
