@@ -17,6 +17,7 @@ import RunningProjects from "../components/People/Profile/ProfileProjects/Runnin
 import EndedProjects from "../components/People/Profile/ProfileProjects/EndedProjects";
 import PlanProjects from "../components/People/Profile/ProfileProjects/PlanProjects";
 import RecruitModal from "../components/People/Profile/RecruitModal";
+import InvitationModal from "../components/People/Profile/Invitation/InvitationModal";
 
 const Profile = () => {
   // url에서 userId 추출
@@ -32,6 +33,12 @@ const Profile = () => {
   // modify창 열고 닫을 토글
   const modifyToggle = () => {
     setModifying(!modifying);
+  };
+
+  const [invitationModal, setInvitationModal] = useState(false);
+
+  const invitationToggle = () => {
+    setInvitationModal(!invitationModal);
   };
 
   const [info, setInfo] = useState({
@@ -52,7 +59,7 @@ const Profile = () => {
   // Recruit modal
   const [modal, setModal] = useState(false);
   const recruitToggle = () => setModal(!modal);
-  console.log(modal);
+  // console.log(modal);
 
   // 우측 탭 상태변수
   const [activeTab, setActiveTab] = useState("1");
@@ -89,7 +96,10 @@ const Profile = () => {
 
               {myId &&
                 (userId === myId ? (
-                  <Button onClick={modifyToggle}>Modify</Button>
+                  <>
+                    <Button onClick={modifyToggle}>Modify</Button>
+                    <Button onClick={invitationToggle}>See Invitations</Button>
+                  </>
                 ) : (
                   <>
                     <Button onClick={recruitToggle}> recruit </Button>
@@ -99,6 +109,13 @@ const Profile = () => {
                 <RecruitModal
                   modal={modal}
                   toggle={recruitToggle}
+                  userId={userId}
+                />
+              )}
+              {invitationModal && (
+                <InvitationModal
+                  modal={invitationModal}
+                  toggle={invitationToggle}
                   userId={userId}
                 />
               )}
