@@ -6,6 +6,7 @@ const InvitationBox = ({ data, userId }) => {
   const detailModalToggle = () => {
     setDetailModal(!detailModal);
   };
+
   return (
     <>
       <div>

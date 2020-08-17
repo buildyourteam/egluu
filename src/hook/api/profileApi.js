@@ -232,17 +232,22 @@ export function useInvitationDetailApi() {
     console.log(res);
     return res.data;
   };
+
   const putInvitationAccept = async (userId, pid) => {
     const token = window.sessionStorage.getItem("accessToken");
-    const res = await axios.put(`${BASE_URL}${userId}/recruit/${pid}`, {
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-        Authorization: `Bearer ${token}`
+    const res = await axios.put(
+      `${BASE_URL}${userId}/recruit/${pid}`,
+      {},
+      {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    console.log(res);
+    );
     return res.data;
   };
+
   const deleteInvitationReject = async (userId, pid) => {
     const token = window.sessionStorage.getItem("accessToken");
     const res = await axios.delete(`${BASE_URL}${userId}/recruit/${pid}`, {
@@ -251,7 +256,6 @@ export function useInvitationDetailApi() {
         Authorization: `Bearer ${token}`
       }
     });
-    console.log(res);
     return res.data;
   };
   return { getInvitationDetail, putInvitationAccept, deleteInvitationReject };

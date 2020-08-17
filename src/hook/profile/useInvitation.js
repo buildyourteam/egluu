@@ -44,13 +44,24 @@ export const useInvitationEffect = userId => {
   return { pending, invitationList, noList };
 };
 
-export const useInvitationDetailEffect = (userId, pid) => {
+export const useInvitationDetailEffect = (userId, pid, toggleNested) => {
   const [invitaionDetail, setInvitaionDetail] = useState({
     userName: "",
     introduction: "",
     role: "",
-    projectName: ""
+    projectName: "",
+    state: ""
   });
+  const [activityName, setActivityName] = useState("");
+
+  const handleAccept = () => {
+    putInvitationAcceptApi(userId, pid);
+  };
+
+  const handleReject = () => {
+    deleteInvitationRejectApi(userId, pid);
+  };
+
   const {
     getInvitationDetail,
     putInvitationAccept,
@@ -63,12 +74,24 @@ export const useInvitationDetailEffect = (userId, pid) => {
   ] = useRequest(getInvitationDetail);
 
   const [
-    { putData, putError, putPending, putFulfilled, putRejected },
+    {
+      data: putData,
+      error: putError,
+      pending: putPending,
+      fulfilled: putFulfilled,
+      reject: putRejected
+    },
     { run: putInvitationAcceptApi }
   ] = useRequest(putInvitationAccept);
 
   const [
-    { deleteData, deleteError, deletePending, deleteFulfilled, deleteRejected },
+    {
+      data: deleteData,
+      error: deleteError,
+      pending: deletePending,
+      fulfilled: deleteFulfilled,
+      reject: deleteRejected
+    },
     { run: deleteInvitationRejectApi }
   ] = useRequest(deleteInvitationReject);
 
@@ -78,15 +101,38 @@ export const useInvitationDetailEffect = (userId, pid) => {
 
   useEffect(() => {
     if (fulfilled) {
-      console.log(data);
       setInvitaionDetail({
         userName: data.userName,
         introduction: data.introduction,
         projectName: data.projectName,
-        role: data.role
+        role: data.role,
+        state: data.state
       });
     }
   }, [fulfilled]);
 
-  return { invitaionDetail, putInvitationAcceptApi, deleteInvitationRejectApi };
+  useEffect(() => {
+    if (putFulfilled) {
+      setActivityName("수락");
+      toggleNested();
+    }
+  }, [putFulfilled]);
+
+  useEffect(() => {
+    if (deleteFulfilled) {
+      setActivityName("거절");
+      toggleNested();
+    }
+  }, [deleteFulfilled]);
+
+  return [
+    {
+      invitaionDetail,
+      activityName
+    },
+    {
+      handleAccept,
+      handleReject
+    }
+  ];
 };
