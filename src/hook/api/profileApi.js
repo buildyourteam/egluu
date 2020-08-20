@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
+import refreshToken from "../auth/refreshToken";
 
-const BASE_URL = `https://egluuapi.codingnome.dev/profile/`;
+// const BASE_URL = `https://egluuapi.codingnome.dev/profile/`;
+const BASE_URL = `http://211.209.39.131:8080/profile/`;
 // Profile Page 좌측 Info창에서 사용되는 api
 export function useInfoApi() {
   // get info api
@@ -12,15 +14,38 @@ export function useInfoApi() {
 
   // post info api
   const postInfo = async (userId, data) => {
-    const token = window.sessionStorage.getItem("accessToken");
+    token = await refreshToken();
+    let token = window.sessionStorage.getItem("accessToken");
     //console.log(token);
     //console.log(userId);
-    const res = await axios.put(`${BASE_URL}${userId}`, data, {
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const res = await axios
+      .put(`${BASE_URL}${userId}`, data, {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .catch(async error => {
+        console.log(error.response.data.error === "007");
+
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          console.log(token);
+          const res = await axios
+            .put(`${BASE_URL}${userId}`, data, {
+              headers: {
+                "Content-type": "application/json;charset=UTF-8",
+                Authorization: `Bearer ${token}`
+              }
+            })
+            .catch(error => {
+              throw error;
+            });
+          return res;
+        } else {
+          throw error;
+        }
+      });
     return res;
   };
   return { getInfo, postInfo };
