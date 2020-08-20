@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../reducers/login";
-
+import { useAlert } from "../";
 export function useLoginEffect(data, fulfilled, pending, rejected, error) {
   // 로그인 정보 state
   const [state, setState] = useState({
     userId: "",
-    password: ""
+    password: "",
   });
   const dispatch = useDispatch();
-
+  const [alertData, alertAction] = useAlert();
   // 로그인 성공 시 useEffect
   useEffect(() => {
     if (fulfilled) {
-      alert("로그인 성공!!");
-
       // response에서 토큰 추출
       const accessToken = data.accessToken;
       const refreshToken = data.refreshToken;
@@ -23,11 +21,12 @@ export function useLoginEffect(data, fulfilled, pending, rejected, error) {
       window.sessionStorage.setItem("id", state.userId);
       window.sessionStorage.setItem("accessToken", accessToken);
       window.sessionStorage.setItem("refreshToken", refreshToken);
+      alertAction.open("로그인 성공");
 
       // 리덕스에 디스패치
       const reduxData = {
         isToken: true,
-        userId: state.userId
+        userId: state.userId,
       };
       dispatch(setToken(reduxData));
     }
@@ -43,7 +42,7 @@ export function useLoginEffect(data, fulfilled, pending, rejected, error) {
         // 실패한 아이디는 내버려두고, 비밀번호만 초기화
         setState({
           ...state,
-          password: ""
+          password: "",
         });
       }
     }
@@ -70,7 +69,7 @@ export function useLoginAuth() {
       // payload 만들어서
       const reduxData = {
         isToken: true,
-        userId: id
+        userId: id,
       };
 
       // 액션 디스패치

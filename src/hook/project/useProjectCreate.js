@@ -16,6 +16,7 @@ const useProjectCreateState = () => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json;charset=UTF-8",
           Accept: "application/hal+json",
+          "Access-Control-Expose-Headers": "Location",
         },
       }
     );
