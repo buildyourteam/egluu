@@ -14,99 +14,73 @@ import {
 import { useInvitationDetailEffect } from "../../../../hook/profile/useInvitation";
 
 const DetailModal = ({ pid, userId, modal, toggle }) => {
-  const {
-    invitaionDetail,
-    putInvitationAcceptApi,
-    deleteInvitationRejectApi
-  } = useInvitationDetailEffect(userId, pid);
+  const [nestedModal, setNestedModal] = useState(false);
+  const [closeAll, setCloseAll] = useState(false);
 
-  const [acceptModal, setAcceptModal] = useState(false);
-  const [rejectModal, setRejectModal] = useState(false);
-
-  const [closeAcceptAll, setCloseAcceptAll] = useState(false);
-  const [closeRejectAll, setCloseRejectAll] = useState(false);
-
-  const acceptToggleNested = () => {
-    setAcceptModal(!acceptModal);
-    setCloseAcceptAll(false);
+  const toggleNested = () => {
+    setNestedModal(!nestedModal);
+    setCloseAll(false);
+  };
+  const toggleAll = () => {
+    setNestedModal(!nestedModal);
+    setCloseAll(true);
   };
 
-  const rejectToggleNested = () => {
-    setRejectModal(!rejectModal);
-    setCloseRejectAll(false);
-  };
+  const [
+    { invitaionDetail, activityName },
+    { handleAccept, handleReject }
+  ] = useInvitationDetailEffect(userId, pid, toggleNested);
 
-  const toggleAcceptAll = () => {
-    setAcceptModal(!acceptModal);
-    setCloseAcceptAll(true);
-  };
-
-  const toggleRejectAll = () => {
-    setRejectModal(!rejectModal);
-    setCloseRejectAll(true);
-  };
   return (
     <div>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>{invitaionDetail.projectName}</ModalHeader>
 
         <ModalBody>
-          <div>
-            <Badge color="info" pill>
-              {invitaionDetail.role}
-            </Badge>
-          </div>
+          <Row xs="2">
+            <Col>
+              <div>
+                <Badge color="info" pill>
+                  {invitaionDetail.role}
+                </Badge>
+              </div>
+            </Col>
+            <Col>
+              <p> status : {invitaionDetail.state}</p>
+            </Col>
+          </Row>
+
           <Card body style={{ height: "200px" }}>
             <CardText>{invitaionDetail.introduction}</CardText>
           </Card>
           <div> {invitaionDetail.userName}</div>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={acceptToggleNested}>
-            Accept
-          </Button>
-
-          {/* accept modal */}
-          {acceptModal && (
+          {invitaionDetail.state === "READ" && (
             <>
-              <Modal
-                isOpen={acceptModal}
-                toggle={acceptToggleNested}
-                onClosed={closeAcceptAll ? toggle : undefined}
-              >
-                <ModalHeader>Nested Modal title</ModalHeader>
-                <ModalBody>프로젝트 영입을 수락하시겠습니까?</ModalBody>
-                <ModalFooter>
-                  <Button color="secondary" onClick={acceptToggleNested}>
-                    Cancel
-                  </Button>
-                  <Button color="primary" onClick={toggleAcceptAll}>
-                    Confirm
-                  </Button>
-                </ModalFooter>
-              </Modal>
+              <Button color="primary" onClick={handleAccept}>
+                Accept
+              </Button>
+              <Button color="danger" onClick={handleReject}>
+                Reject
+              </Button>
             </>
           )}
-          <Button color="danger" onClick={rejectToggleNested}>
-            Reject
-          </Button>
-          {/* Rejact Modal */}
+
           <Modal
-            isOpen={rejectModal}
-            toggle={rejectToggleNested}
-            onClosed={closeRejectAll ? toggle : undefined}
+            isOpen={nestedModal}
+            toggle={toggleNested}
+            onClosed={closeAll ? toggle : undefined}
           >
             <ModalHeader>Nested Modal title</ModalHeader>
-            <ModalBody>프로젝트 영입을 거절하겠습니까?</ModalBody>
+            <ModalBody>{activityName}이 완료되었습니다.</ModalBody>
             <ModalFooter>
-              <Button color="secondary" onClick={rejectToggleNested}>
-                Cancel
-              </Button>
-              <Button color="primary" onClick={toggleRejectAll}>
-                Confirm
+              <Button color="secondary" onClick={toggleAll}>
+                All Done
               </Button>
             </ModalFooter>
           </Modal>
+
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>

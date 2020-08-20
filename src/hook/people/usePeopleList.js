@@ -19,7 +19,7 @@ export function usePeopleListState(
   }, [fulfilled]);
 
   useEffect(() => {
-    getApi();
+    // getApi();
   }, []);
 
   useEffect(() => {
