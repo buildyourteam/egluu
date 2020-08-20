@@ -14,7 +14,7 @@ export function useInfoApi() {
 
   // post info api
   const postInfo = async (userId, data) => {
-    token = await refreshToken();
+    // token = await refreshToken();
     let token = window.sessionStorage.getItem("accessToken");
     //console.log(token);
     //console.log(userId);
