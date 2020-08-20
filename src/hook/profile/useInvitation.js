@@ -27,8 +27,14 @@ export const useInvitationEffect = userId => {
 
   useEffect(() => {
     if (fulfilled) {
-      console.log(data._embedded.recruitDtoList);
-      setInvitationList(data._embedded.recruitDtoList);
+      // 데이터가 있을 때
+      if ("_embedded" in data) {
+        setInvitationList(data._embedded.recruitDtoList);
+      }
+      // 데이터가 없을 때
+      else {
+        noticeNoList("초대 요청이 없습니다.");
+      }
     }
   }, [fulfilled]);
 
