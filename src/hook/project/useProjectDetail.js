@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "../";
 import { useHistory } from "react-router-dom";
+
 const axios = require("axios");
 
 const useProjectDetailState = () => {
@@ -9,6 +10,7 @@ const useProjectDetailState = () => {
   const [project, setProject] = useState(projectDetail);
   const [apply, setApply] = useState([]);
   const [recruit, setRecruit] = useState(recruitDtoList);
+  const [alertData, alertAction] = useAlert();
   const [check, setCheck] = useState({
     apply: true,
     recruit: false,
@@ -40,7 +42,9 @@ const useProjectDetailState = () => {
         .then((value) => {
           setApplyState(value.data._embedded.projectApplicantDtoList);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          alertAction.open(error.response.data.message);
+        });
     }
     res = res.data;
     return { res, resApply };
@@ -204,7 +208,7 @@ const useProjectDetailEffect = (
 
   useEffect(() => {
     if (rejected) {
-      alertAction.open(error.response.message);
+      alertAction.open(error.response.data.message);
 
       console.log(error);
     }
@@ -229,7 +233,7 @@ const useProjectRecruitEffect = (
 
   useEffect(() => {
     if (rejected) {
-      alertAction.open(error.response.message);
+      alertAction.open(error.response.data.message);
       console.log(error);
     }
   }, [rejected]);

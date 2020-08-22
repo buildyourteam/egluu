@@ -36,7 +36,7 @@ const useProfileRecruit = (
   useEffect(() => {
     if (getProjectRejected) {
       if (getProjecsError) {
-        alertAction.open(getProjecsError.response.message);
+        alertAction.open(getProjecsError.response.data.message);
         console.log(getProjecsError);
       }
     }

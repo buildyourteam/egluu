@@ -59,7 +59,7 @@ const useProfileInfoModify = (
   useEffect(() => {
     if (infoRejected) {
       if (infoError) {
-        alertAction.open(infoError.response.message);
+        alertAction.open(infoError.response.data.message);
       }
     }
   }, [infoRejected]);
@@ -67,7 +67,7 @@ const useProfileInfoModify = (
   useEffect(() => {
     if (imgRejected) {
       if (imgError) {
-        alertAction.open(imgError.response.message);
+        alertAction.open(imgError.response.data.message);
         console.log(imgError);
       }
     }

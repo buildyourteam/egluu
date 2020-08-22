@@ -38,7 +38,7 @@ const useProfileInfo = (setInfo, userId) => {
   useEffect(() => {
     if (rejected) {
       if (error) {
-        alertAction.open(error.response.message);
+        alertAction.open(error.response.data.message);
         console.log(error);
       }
     }

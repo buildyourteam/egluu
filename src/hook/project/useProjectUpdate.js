@@ -155,7 +155,7 @@ const useProjectUpdateEffect = (
 
   useEffect(() => {
     if (rejected) {
-      alertAction.open(error.response.message);
+      alertAction.open(error.response.data.message);
       console.log(error);
     }
   }, [rejected]);
