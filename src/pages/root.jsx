@@ -4,7 +4,7 @@ import {
   useTemporaryApi,
   useProjectListState,
   usePeopleListState,
-  useRequest
+  useRequest,
 } from "../hook";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   Jumbotron,
   SubtitleHeader,
   ProjectBox,
-  PeopleBox
+  PeopleBox,
 } from "../components";
 import "./main.css";
 export default function Root() {
@@ -23,9 +23,9 @@ export default function Root() {
       fulfilled: getProjectListFulfilled,
       pending: getProjectListPending,
       rejected: getProjectListRejected,
-      error: getProjectListError
+      error: getProjectListError,
     },
-    { run: getProjectListApi }
+    { run: getProjectListApi },
   ] = useRequest(apiAction.getProjectList);
   const [
     {
@@ -33,9 +33,9 @@ export default function Root() {
       fulfilled: getPeopleListFulfilled,
       pending: getPeopleListPending,
       rejected: getPeopleListRejected,
-      error: getPeopleListError
+      error: getPeopleListError,
     },
-    { run: getPeopleListApi }
+    { run: getPeopleListApi },
   ] = useRequest(apiAction.getPeopleList);
 
   const [projectListState] = useProjectListState(
@@ -67,7 +67,10 @@ export default function Root() {
             {projectListState.map((value, index) => {
               return (
                 <Col xs="3" key={index}>
-                  <ProjectBox data={value} />
+                  <ProjectBox
+                    data={value}
+                    url={`/projectDetail/${value.projectId}`}
+                  />
                 </Col>
               );
             })}

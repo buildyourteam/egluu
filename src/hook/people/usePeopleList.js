@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setTemporary } from "../../reducers/temporary";
+import { useAlert } from "../";
+
 const axios = require("axios");
 
 export function usePeopleListState(
@@ -12,6 +14,7 @@ export function usePeopleListState(
   getApi
 ) {
   const [peopleList, setPeopleList] = useState(staticPeopleData);
+  const [alertData, alertAction] = useAlert();
 
   useEffect(() => {
     // if (fulfilled) setPeopleList(data);
@@ -25,7 +28,7 @@ export function usePeopleListState(
   useEffect(() => {
     if (rejected) {
       if (error) {
-        alert(error);
+        alertAction.open(error.data.message);
         console.log(error);
       }
     }
@@ -51,7 +54,7 @@ export function usePeopleSaveEffect(
   useEffect(() => {
     console.log(fulfilled);
     if (fulfilled) {
-      alert("전송 성공!");
+      alertAction.open("전송 성공");
       // dispatch(setTemporary(data));
       dispatch(setTemporary(staticPeopleData));
     }
@@ -60,7 +63,7 @@ export function usePeopleSaveEffect(
   useEffect(() => {
     if (rejected) {
       if (error) {
-        alert(error.response);
+        alertAction.open(error.response.data.message);
         console.log(error);
       }
     }
@@ -76,12 +79,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser1"
+        href: "/profile/testUser1",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser1"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser1",
+      },
+    },
   },
   {
     userId: "testUser4",
@@ -91,12 +94,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser4"
+        href: "/profile/testUser4",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser4"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser4",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -106,12 +109,12 @@ const staticPeopleData = [
     level: 6,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -121,12 +124,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -136,12 +139,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -151,11 +154,11 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
-  }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
+  },
 ];
