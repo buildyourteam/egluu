@@ -61,7 +61,7 @@ export default function ProjectBox(props) {
           <CardImg
             width="240px"
             height="180px"
-            src={`https://egluuapi.codingnome.dev/projects/image/${staticProjectData.projectId}`}
+            src={`${process.env.REACT_APP_BASE_URL}projects/image/${staticProjectData.projectId}`}
             alt="Card image cap"
           />
           <CardBody>

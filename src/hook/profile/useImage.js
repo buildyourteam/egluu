@@ -11,7 +11,7 @@ export const useImage = (
 
   const [
     { data, fulfilled, pending, rejected, error },
-    { run: getImgApi }
+    { run: getImgApi },
   ] = useRequest(getImg);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export const useImage = (
   useEffect(() => {
     setImgState({
       ...imgState,
-      imgUrl: `https://egluuapi.codingnome.dev/profile/image/${userId}`
+      imgUrl: `${process.env.REACT_APP_BASE_URL}profile/image/${userId}`,
     });
   }, [fulfilled]);
 
@@ -33,7 +33,7 @@ export const useImage = (
           setImgState({
             ...imgState,
             imgUrl:
-              "https://i.pinimg.com/236x/21/88/fd/2188fd41b8d31930acc43b7b197e6dfd.jpg"
+              "https://i.pinimg.com/236x/21/88/fd/2188fd41b8d31930acc43b7b197e6dfd.jpg",
           });
         }
       }

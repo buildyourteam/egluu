@@ -24,7 +24,7 @@ const useProjectDetailState = () => {
     const token = window.sessionStorage.getItem("accessToken");
     let resApply;
     let res = await axios.get(
-      `https://egluuapi.codingnome.dev/projects/${projectId}`
+      `${process.env.REACT_APP_BASE_URL}projects/${projectId}`
     );
     const id = window.sessionStorage.getItem("id");
     if (res.data.memberList[0].userName === id) {
@@ -48,7 +48,7 @@ const useProjectDetailState = () => {
   const fetchDeleteProject = async (projectId) => {
     const token = window.sessionStorage.getItem("accessToken");
     await axios.delete(
-      `https://egluuapi.codingnome.dev/projects/${projectId}`,
+      `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

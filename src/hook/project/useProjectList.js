@@ -7,7 +7,7 @@ export function useProjectListState() {
   const [projectList, setProjectList] = useState(staticProjectData);
 
   const getProjectList = async () => {
-    const res = await axios.get("https://egluuapi.codingnome.dev/projects");
+    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}projects`);
     return res.data._embedded.projectList;
   };
   return [projectList, { getProjectList, setProjectList }];

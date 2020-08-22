@@ -9,7 +9,7 @@ const useProjectCreateState = () => {
     const token = window.sessionStorage.getItem("accessToken");
     console.log(token);
     const res = await axios.post(
-      `https://egluuapi.codingnome.dev/projects`,
+      `${process.env.REACT_APP_BASE_URL}projects`,
       data,
       {
         headers: {
@@ -28,7 +28,7 @@ const useProjectCreateState = () => {
     imgData.append("image", data);
     imgData.append("type", "image/jpeg");
     const res = await axios.post(
-      `https://egluuapi.codingnome.dev/projects/image/${projectId}`,
+      `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
       imgData,
       {
         headers: {

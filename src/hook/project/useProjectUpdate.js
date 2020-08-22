@@ -5,20 +5,20 @@ import { useHistory } from "react-router-dom";
 const axios = require("axios");
 
 const useProjectUpdateState = () => {
-  const projectDetail = useSelector(state => state.project.projectDetail);
+  const projectDetail = useSelector((state) => state.project.projectDetail);
   const [project, setProject] = useState(projectDetail);
   const [img, setImg] = useState(projectDetail.img);
   const fetchPutUpdate = async (projectId, data) => {
     const token = window.sessionStorage.getItem("accessToken");
     const res = await axios.put(
-      `https://egluuapi.codingnome.dev/projects/${projectId}`,
+      `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
       data,
       {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json;charset=UTF-8",
-          Accept: "application/hal+json"
-        }
+          Accept: "application/hal+json",
+        },
       }
     );
     return res.data;
@@ -30,45 +30,45 @@ const useProjectUpdateState = () => {
     imgData.append("image", data);
     imgData.append("type", "image/jpeg");
     const res = await axios.post(
-      `https://egluuapi.codingnome.dev/projects/image/${projectId}`,
+      `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
       imgData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data;charset=UTF-8",
-          Accept: "application/hal+json"
-        }
+          Accept: "application/hal+json",
+        },
       }
     );
     return res.data;
   };
 
-  const inputProject = e => {
+  const inputProject = (e) => {
     const name = e.target.name;
     const targetValue = e.target.value;
 
-    setProject(value => {
+    setProject((value) => {
       return {
         ...value,
-        [name]: targetValue
+        [name]: targetValue,
       };
     });
   };
-  const inputDate = date => {
-    setProject(value => {
+  const inputDate = (date) => {
+    setProject((value) => {
       return {
         ...value,
-        endDate: date
+        endDate: date,
       };
     });
   };
 
-  const inputImg = data => {
+  const inputImg = (data) => {
     setImg(data);
   };
 
   const inputQuestion = (data, index) => {
-    setProject(value => {
+    setProject((value) => {
       const questions = value.questions.map((q, i) => {
         if (index === i) {
           return data;
@@ -78,40 +78,40 @@ const useProjectUpdateState = () => {
       });
       return {
         ...value,
-        questions: questions
+        questions: questions,
       };
     });
   };
 
   const addQuestion = () => {
-    setProject(value => {
+    setProject((value) => {
       const questions = value.questions.concat("");
       return {
         ...value,
-        questions: questions
+        questions: questions,
       };
     });
   };
-  const deleteQuestion = index => {
-    setProject(value => {
+  const deleteQuestion = (index) => {
+    setProject((value) => {
       const questions = value.questions.filter((q, i) => i !== index);
       return {
         ...value,
-        questions: questions
+        questions: questions,
       };
     });
   };
 
-  const inputProjectMember = e => {
+  const inputProjectMember = (e) => {
     const name = e.target.name;
     const memberValue = e.target.value;
-    setProject(value => {
+    setProject((value) => {
       return {
         ...value,
         needMember: {
           ...value.needMember,
-          [name]: memberValue
-        }
+          [name]: memberValue,
+        },
       };
     });
   };
@@ -127,8 +127,8 @@ const useProjectUpdateState = () => {
       inputDate,
       inputQuestion,
       addQuestion,
-      deleteQuestion
-    }
+      deleteQuestion,
+    },
   ];
 };
 
@@ -168,9 +168,9 @@ const projectApplicantDtoList = [
     role: "DEVELOPER",
     _links: {
       self: {
-        href: "https://api.eskiiimo.com/projects/1/apply/testApplicant1"
-      }
-    }
+        href: "https://api.eskiiimo.com/projects/1/apply/testApplicant1",
+      },
+    },
   },
   {
     userId: "testApplicant2",
@@ -179,10 +179,10 @@ const projectApplicantDtoList = [
     role: "DEVELOPER",
     _links: {
       self: {
-        href: "https://api.eskiiimo.com/projects/1/apply/testApplicant2"
-      }
-    }
-  }
+        href: "https://api.eskiiimo.com/projects/1/apply/testApplicant2",
+      },
+    },
+  },
 ];
 
 const recruitDtoList = [
@@ -195,9 +195,9 @@ const recruitDtoList = [
     projectName: "project1",
     _links: {
       self: {
-        href: "https://api.eskiiimo.com/profile/tester/recruit/11"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/tester/recruit/11",
+      },
+    },
   },
   {
     userName: "유저02",
@@ -208,8 +208,8 @@ const recruitDtoList = [
     projectName: "project1",
     _links: {
       self: {
-        href: "https://api.eskiiimo.com/profile/tester/recruit/11"
-      }
-    }
-  }
+        href: "https://api.eskiiimo.com/profile/tester/recruit/11",
+      },
+    },
+  },
 ];
