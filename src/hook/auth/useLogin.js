@@ -37,7 +37,7 @@ export function useLoginEffect(data, fulfilled, pending, rejected, error) {
     if (rejected) {
       if (error) {
         // 실패 이유 알림
-        alert(error.response.data);
+        alertAction.open(error.response.data);
 
         // 실패한 아이디는 내버려두고, 비밀번호만 초기화
         setState({

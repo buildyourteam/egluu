@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useAlert } from "../";
+
 const axios = require("axios");
 
 const useProjectCreateState = () => {
@@ -149,6 +151,8 @@ const useProjectCreateEffect = (
   createImgApi,
   projectImg
 ) => {
+  const [alertData, alertAction] = useAlert();
+
   useEffect(() => {
     if (fulfilled) {
       console.log(data.headers);
@@ -160,7 +164,7 @@ const useProjectCreateEffect = (
 
   useEffect(() => {
     if (rejected) {
-      alert("에러 발생");
+      alertAction.open(error.response.message);
       console.log(error);
     }
   }, [rejected]);

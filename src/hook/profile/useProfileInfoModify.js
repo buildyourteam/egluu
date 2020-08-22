@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useInfoApi, useImgApi } from "../api/profileApi";
 import { useRequest } from "../useRequest";
+import { useAlert } from "../";
+
 const useProfileInfoModify = (
   setModifying,
 
@@ -17,9 +19,9 @@ const useProfileInfoModify = (
       fulfilled: infoFulfilled,
       pending: infoPending,
       rejected: infoRejected,
-      error: infoError
+      error: infoError,
     },
-    { run: postInfoApi }
+    { run: postInfoApi },
   ] = useRequest(postInfo);
 
   const { postImg } = useImgApi();
@@ -30,16 +32,17 @@ const useProfileInfoModify = (
       fulfilled: imgFulfilled,
       pending: imgPending,
       rejected: imgRejected,
-      error: imgError
+      error: imgError,
     },
-    { run: postImgApi }
+    { run: postImgApi },
   ] = useRequest(postImg);
+  const [alertData, alertAction] = useAlert();
 
   useEffect(() => {
     if (imgFulfilled && infoFulfilled) {
       setImgState({
         imgUrl: `https://egluuapi.codingnome.dev/profile/image/${userId}`,
-        isImgChange: false
+        isImgChange: false,
       });
       setModifying();
       //console.log("둘다 ");
@@ -56,8 +59,7 @@ const useProfileInfoModify = (
   useEffect(() => {
     if (infoRejected) {
       if (infoError) {
-        alert(infoError);
-        console.log(infoError);
+        alertAction.open(infoError.response.message);
       }
     }
   }, [infoRejected]);
@@ -65,7 +67,7 @@ const useProfileInfoModify = (
   useEffect(() => {
     if (imgRejected) {
       if (imgError) {
-        alert(imgError);
+        alertAction.open(imgError.response.message);
         console.log(imgError);
       }
     }
