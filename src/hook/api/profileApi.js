@@ -26,8 +26,6 @@ export function useInfoApi() {
         },
       })
       .catch(async (error) => {
-        console.log(error.response.data.error === "007");
-
         if (error.response.data.error === "007") {
           token = await refreshToken();
           console.log(token);

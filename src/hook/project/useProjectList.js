@@ -1,13 +1,23 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setTemporary } from "../../reducers/temporary";
+import refreshToken from "../auth/refreshToken";
 const axios = require("axios");
 
 export function useProjectListState() {
   const [projectList, setProjectList] = useState(staticProjectData);
 
   const getProjectList = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}projects`);
+    let res = await axios
+      .get(`${process.env.REACT_APP_BASE_URL}projects`)
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          res = await axios.get(`${process.env.REACT_APP_BASE_URL}projects`);
+        } else {
+          throw error;
+        }
+      });
     return res.data._embedded.projectList;
   };
   return [projectList, { getProjectList, setProjectList }];
@@ -38,7 +48,6 @@ export function useProjectListEffect(
   useEffect(() => {
     if (rejected) {
       if (error) {
-        console.log(error);
         setProjectList([]);
       }
     }
