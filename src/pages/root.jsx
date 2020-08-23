@@ -30,6 +30,7 @@ export default function Root() {
     projectAction.setPage
   );
 
+
   const [people, peopleAction] = usePeopleListState();
   const [peopleListPromise, { run: getPeopleList }] = useRequest(
     peopleAction.getPeopleList

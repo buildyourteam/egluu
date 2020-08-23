@@ -10,6 +10,7 @@ import {
   ProjectCreate,
   ProjectUpdate,
 } from "./pages";
+import { AlertModal } from "./components";
 import { useLoginAuth } from "./hook/auth/useLogin";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/profile/:userId" component={Profile} />
       </Switch>
+      <AlertModal />
     </Router>
   );
 }

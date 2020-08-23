@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setTemporary } from "../../reducers/temporary";
+import { useAlert } from "../";
+
 const axios = require("axios");
 
 export function usePeopleListState() {
@@ -17,6 +19,7 @@ export function usePeopleListState() {
     );
     return res.data;
   };
+  const [alertData, alertAction] = useAlert();
 
   return [
     { peopleList, page },
@@ -44,7 +47,7 @@ export function usePeopleListEffect(
   useEffect(() => {
     if (peoplelistPromise.rejected) {
       if (peoplelistPromise.error) {
-        alert(peoplelistPromise.error);
+        alertAction.open(peoplelistPromise.error.data.message);
       }
     }
   }, [peoplelistPromise.rejected]);
@@ -63,7 +66,7 @@ export function usePeopleSaveEffect(
   useEffect(() => {
     console.log(fulfilled);
     if (fulfilled) {
-      alert("전송 성공!");
+      alertAction.open("전송 성공");
       // dispatch(setTemporary(data));
       dispatch(setTemporary(staticPeopleData));
     }
@@ -72,7 +75,7 @@ export function usePeopleSaveEffect(
   useEffect(() => {
     if (rejected) {
       if (error) {
-        alert(error.response);
+        alertAction.open(error.response.data.message);
         console.log(error);
       }
     }

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useAlert } from "../";
 import { useHistory } from "react-router-dom";
+
 const axios = require("axios");
 
 const useProjectDetailState = () => {
@@ -8,6 +10,7 @@ const useProjectDetailState = () => {
   const [project, setProject] = useState(projectDetail);
   const [apply, setApply] = useState([]);
   const [recruit, setRecruit] = useState(recruitDtoList);
+  const [alertData, alertAction] = useAlert();
   const [check, setCheck] = useState({
     apply: true,
     recruit: false,
@@ -27,7 +30,7 @@ const useProjectDetailState = () => {
       `https://egluuapi.codingnome.dev/projects/${projectId}`
     );
     const id = window.sessionStorage.getItem("id");
-    if (res.data.memberList[0].userName === id) {
+    if (res.data.memberList[0]._links.self.href === `/profile/${id}`) {
       await axios
         .get(res.data._links.apply.href, {
           headers: {
@@ -39,7 +42,9 @@ const useProjectDetailState = () => {
         .then((value) => {
           setApplyState(value.data._embedded.projectApplicantDtoList);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          alertAction.open(error.response.data.message);
+        });
     }
     res = res.data;
     return { res, resApply };
@@ -183,6 +188,8 @@ const useProjectDetailEffect = (
   projectAction,
   projectId
 ) => {
+  const [alertData, alertAction] = useAlert();
+
   useEffect(() => {
     fetchDetail(projectId);
   }, []);
@@ -201,11 +208,8 @@ const useProjectDetailEffect = (
 
   useEffect(() => {
     if (rejected) {
-      // alert('에러 발생');
-      // if (error.response.error === 101) {
-      //     console.log('지원자 없음');
-      //     projectAction.setApplyState([])
-      // }
+      alertAction.open(error.response.data.message);
+
       console.log(error);
     }
   }, [rejected]);
@@ -218,6 +222,8 @@ const useProjectRecruitEffect = (
   error,
   inputState
 ) => {
+  const [alertData, alertAction] = useAlert();
+
   useEffect(() => {
     if (fulfilled) {
       // inputDetail(data);
@@ -227,7 +233,7 @@ const useProjectRecruitEffect = (
 
   useEffect(() => {
     if (rejected) {
-      alert("에러 발생");
+      alertAction.open(error.response.data.message);
       console.log(error);
     }
   }, [rejected]);
