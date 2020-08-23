@@ -5,40 +5,52 @@ import { useAlert } from "../";
 
 const axios = require("axios");
 
-export function usePeopleListState(
-  data,
-  fulfilled,
-  pending,
-  rejected,
-  error,
-  getApi
-) {
+export function usePeopleListState() {
   const [peopleList, setPeopleList] = useState(staticPeopleData);
+  const [page, setPage] = useState({
+    number: 0,
+    size: 0,
+    totalElements: 0,
+    totalPages: 0,
+  });
+  const getPeopleList = async (pageNumber) => {
+    const res = await axios.get(
+      `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=6`
+    );
+    return res.data;
+  };
   const [alertData, alertAction] = useAlert();
 
+  return [
+    { peopleList, page },
+    { setPeopleList, getPeopleList, setPage },
+  ];
+}
+
+export function usePeopleListEffect(
+  peoplelistPromise,
+  getApi,
+  setPeopleList,
+  setPage
+) {
   useEffect(() => {
-    // if (fulfilled) setPeopleList(data);
-    if (fulfilled) setPeopleList(staticPeopleData); // 임시데이터
-  }, [fulfilled]);
+    if (peoplelistPromise.fulfilled) {
+      setPeopleList(peoplelistPromise.data._embedded.peopleList);
+      setPage(peoplelistPromise.data.page);
+    } // 임시데이터
+  }, [peoplelistPromise.fulfilled]);
 
   useEffect(() => {
-    // getApi();
+    getApi(0);
   }, []);
 
   useEffect(() => {
-    if (rejected) {
-      if (error) {
-        alertAction.open(error.data.message);
-        console.log(error);
+    if (peoplelistPromise.rejected) {
+      if (peoplelistPromise.error) {
+        alertAction.open(peoplelistPromise.error.data.message);
       }
     }
-  }, [rejected]);
-
-  const listRefresh = () => {
-    getApi();
-  };
-
-  return [peopleList, { listRefresh }];
+  }, [peoplelistPromise.rejected]);
 }
 
 export function usePeopleSaveEffect(

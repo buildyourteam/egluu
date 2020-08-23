@@ -9,13 +9,13 @@ import { Layout, ProjectBox } from "../../components";
 import { Row, Col } from "reactstrap";
 import Sort from "../../components/List/Sort";
 import { Button } from "reactstrap";
+import Pagination from "@material-ui/lab/Pagination";
 
 export default function ProjectList() {
   const [role, setRole] = useState("");
   const [region, setRegion] = useState("");
   const [stack, setStack] = useState("");
   const [search, setSearch] = useState("");
-
   const [projectList, projectListAction] = useProjectListState();
   const [
     {
@@ -33,7 +33,8 @@ export default function ProjectList() {
     getProjectListRejected,
     getProjectListError,
     getProjectListApi,
-    projectListAction.setProjectList
+    projectListAction.setProjectList,
+    projectListAction.setPage
   );
 
   return (
@@ -62,7 +63,7 @@ export default function ProjectList() {
       <h1>{stack}</h1>
       <h1>{search}</h1>
       <Row xs="12">
-        {projectList.map((value, index) => {
+        {projectList.projectList.map((value, index) => {
           return (
             <Col xs="3" key={index}>
               <ProjectBox
@@ -74,6 +75,15 @@ export default function ProjectList() {
           );
         })}
       </Row>
+      <div id="pagination_div">
+        <Pagination
+          id="pagination"
+          count={projectList.page.totalPages}
+          onChange={(e, page) => {
+            getProjectListApi(page - 1);
+          }}
+        />
+      </div>
     </Layout>
   );
 }

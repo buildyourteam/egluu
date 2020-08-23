@@ -1,1 +1,5 @@
-export { usePeopleListState, usePeopleSaveEffect } from './usePeopleList';
+export {
+  usePeopleListState,
+  usePeopleSaveEffect,
+  usePeopleListEffect,
+} from "./usePeopleList";
