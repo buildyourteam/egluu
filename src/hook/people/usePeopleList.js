@@ -3,39 +3,51 @@ import { useSelector, useDispatch } from "react-redux";
 import { setTemporary } from "../../reducers/temporary";
 const axios = require("axios");
 
-export function usePeopleListState(
-  data,
-  fulfilled,
-  pending,
-  rejected,
-  error,
-  getApi
-) {
+export function usePeopleListState() {
   const [peopleList, setPeopleList] = useState(staticPeopleData);
+  const [page, setPage] = useState({
+    number: 0,
+    size: 0,
+    totalElements: 0,
+    totalPages: 0,
+  });
+  const getPeopleList = async (pageNumber) => {
+    const res = await axios.get(
+      `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=6`
+    );
+    return res.data;
+  };
+
+  return [
+    { peopleList, page },
+    { setPeopleList, getPeopleList, setPage },
+  ];
+}
+
+export function usePeopleListEffect(
+  peoplelistPromise,
+  getApi,
+  setPeopleList,
+  setPage
+) {
+  useEffect(() => {
+    if (peoplelistPromise.fulfilled) {
+      setPeopleList(peoplelistPromise.data._embedded.peopleList);
+      setPage(peoplelistPromise.data.page);
+    } // 임시데이터
+  }, [peoplelistPromise.fulfilled]);
 
   useEffect(() => {
-    // if (fulfilled) setPeopleList(data);
-    if (fulfilled) setPeopleList(staticPeopleData); // 임시데이터
-  }, [fulfilled]);
-
-  useEffect(() => {
-    // getApi();
+    getApi(0);
   }, []);
 
   useEffect(() => {
-    if (rejected) {
-      if (error) {
-        alert(error);
-        console.log(error);
+    if (peoplelistPromise.rejected) {
+      if (peoplelistPromise.error) {
+        alert(peoplelistPromise.error);
       }
     }
-  }, [rejected]);
-
-  const listRefresh = () => {
-    getApi();
-  };
-
-  return [peopleList, { listRefresh }];
+  }, [peoplelistPromise.rejected]);
 }
 
 export function usePeopleSaveEffect(
@@ -76,12 +88,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser1"
+        href: "/profile/testUser1",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser1"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser1",
+      },
+    },
   },
   {
     userId: "testUser4",
@@ -91,12 +103,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser4"
+        href: "/profile/testUser4",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser4"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser4",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -106,12 +118,12 @@ const staticPeopleData = [
     level: 6,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -121,12 +133,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -136,12 +148,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -151,11 +163,11 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
-  }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
+  },
 ];

@@ -77,3 +77,12 @@
 .form-control {
   margin-bottom: 10px;
 }
+
+#pagination {
+  margin: 20px 0px;
+}
+
+#pagination_div {
+  display: flex;
+  justify-content: center;
+}

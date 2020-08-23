@@ -1,7 +1,11 @@
 export { useTemporaryApi } from "./useHook";
 export { useRequest } from "./useRequest";
 export { default as useMove } from "./usePageMove";
-export { usePeopleListState, usePeopleSaveEffect } from "./people";
+export {
+  usePeopleListState,
+  usePeopleSaveEffect,
+  usePeopleListEffect,
+} from "./people";
 export { useRegisterEffect } from "./auth/useRegister";
 export {
   useProjectListState,
@@ -15,4 +19,5 @@ export {
   useProjectUpdateEffect,
   useProjectApplyState,
   useProjectApplyEffect,
+  useDeadlineProjectListEffect,
 } from "./project";
