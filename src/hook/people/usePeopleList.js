@@ -15,7 +15,7 @@ export function usePeopleListState() {
   });
   const getPeopleList = async (pageNumber) => {
     const res = await axios.get(
-      `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=6`
+      `${process.env.REACT_APP_BASE_URL}people?page=${pageNumber}&size=6`
     );
     return res.data;
   };
