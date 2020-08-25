@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/egluu/static/css/main.9a09cfee.chunk.css",
+    "main.js": "/egluu/static/js/main.ecae4e64.chunk.js",
+    "main.js.map": "/egluu/static/js/main.ecae4e64.chunk.js.map",
+    "runtime-main.js": "/egluu/static/js/runtime-main.fd3febab.js",
+    "runtime-main.js.map": "/egluu/static/js/runtime-main.fd3febab.js.map",
+    "static/css/2.829c9cb5.chunk.css": "/egluu/static/css/2.829c9cb5.chunk.css",
+    "static/js/2.886d1dca.chunk.js": "/egluu/static/js/2.886d1dca.chunk.js",
+    "static/js/2.886d1dca.chunk.js.map": "/egluu/static/js/2.886d1dca.chunk.js.map",
+    "index.html": "/egluu/index.html",
+    "precache-manifest.d4b3b3a661b94f452db1b5a8cc98367c.js": "/egluu/precache-manifest.d4b3b3a661b94f452db1b5a8cc98367c.js",
+    "service-worker.js": "/egluu/service-worker.js",
+    "static/css/2.829c9cb5.chunk.css.map": "/egluu/static/css/2.829c9cb5.chunk.css.map",
+    "static/css/main.9a09cfee.chunk.css.map": "/egluu/static/css/main.9a09cfee.chunk.css.map",
+    "static/js/2.886d1dca.chunk.js.LICENSE.txt": "/egluu/static/js/2.886d1dca.chunk.js.LICENSE.txt",
+    "static/media/baseImg.png": "/egluu/static/media/baseImg.c40f4ed9.png",
+    "static/media/move.gif": "/egluu/static/media/move.272e1d7a.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.fd3febab.js",
+    "static/css/2.829c9cb5.chunk.css",
+    "static/js/2.886d1dca.chunk.js",
+    "static/css/main.9a09cfee.chunk.css",
+    "static/js/main.ecae4e64.chunk.js"
+  ]
+}
