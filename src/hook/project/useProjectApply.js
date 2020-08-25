@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import refreshToken from "../auth/refreshToken";
 
 const axios = require("axios");
 
@@ -10,36 +11,85 @@ export const useProjectApplyState = (api) => {
   const fetchGetApply = async () => {
     const token = window.sessionStorage.getItem("accessToken");
     const id = window.sessionStorage.getItem("id");
-    const res = await axios.get(`${api}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json",
-      },
-    });
+    let res = await axios
+      .get(`${api}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json;charset=UTF-8",
+          Accept: "application/hal+json",
+        },
+      })
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          res = await axios
+            .get(`${api}/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            })
+            .catch((error) => {
+              throw error;
+            });
+        } else {
+          throw error;
+        }
+      });
     return res.data;
   };
 
   const fetchPostApply = async (data, projectId) => {
     const token = window.sessionStorage.getItem("accessToken");
-    await axios.post(api, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json",
-      },
-    });
+    await axios
+      .post(api, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json;charset=UTF-8",
+          Accept: "application/hal+json",
+        },
+      })
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          await axios.post(api, data, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json;charset=UTF-8",
+              Accept: "application/hal+json",
+            },
+          });
+        } else {
+          throw error;
+        }
+      });
   };
 
   const fetchPutApply = async (data, projectId) => {
     const token = window.sessionStorage.getItem("accessToken");
-    await axios.put(api, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json;charset=UTF-8",
-        Accept: "application/hal+json",
-      },
-    });
+    await axios
+      .put(api, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json;charset=UTF-8",
+          Accept: "application/hal+json",
+        },
+      })
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          await axios.put(api, data, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json;charset=UTF-8",
+              Accept: "application/hal+json",
+            },
+          });
+        } else {
+          throw error;
+        }
+      });
   };
 
   const inputApply = (name, data) => {

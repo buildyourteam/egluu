@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import refreshToken from "../auth/refreshToken";
 import { useAlert } from "../";
 
 const axios = require("axios");
@@ -11,17 +12,32 @@ const useProjectUpdateState = () => {
   const [img, setImg] = useState(projectDetail.img);
   const fetchPutUpdate = async (projectId, data) => {
     const token = window.sessionStorage.getItem("accessToken");
-    const res = await axios.put(
-      `https://egluuapi.codingnome.dev/projects/${projectId}`,
-      data,
-      {
+    let res = await axios
+      .put(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json;charset=UTF-8",
           Accept: "application/hal+json",
         },
-      }
-    );
+      })
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          res = await axios.put(
+            `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
+            data,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            }
+          );
+        } else {
+          throw error;
+        }
+      });
     return res.data;
   };
 
@@ -30,17 +46,36 @@ const useProjectUpdateState = () => {
     const imgData = new FormData();
     imgData.append("image", data);
     imgData.append("type", "image/jpeg");
-    const res = await axios.post(
-      `https://egluuapi.codingnome.dev/projects/image/${projectId}`,
-      imgData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data;charset=UTF-8",
-          Accept: "application/hal+json",
-        },
-      }
-    );
+    let res = await axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
+        imgData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data;charset=UTF-8",
+            Accept: "application/hal+json",
+          },
+        }
+      )
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          res = await axios.post(
+            `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
+            imgData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            }
+          );
+        } else {
+          throw error;
+        }
+      });
     return res.data;
   };
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "../";
 import { useHistory } from "react-router-dom";
+import refreshToken from "../auth/refreshToken";
 
 const axios = require("axios");
 
@@ -26,12 +27,21 @@ const useProjectDetailState = () => {
   const fetchGetDetail = async (projectId) => {
     const token = window.sessionStorage.getItem("accessToken");
     let resApply;
-    let res = await axios.get(
-      `https://egluuapi.codingnome.dev/projects/${projectId}`
-    );
+    let res = await axios
+      .get(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`)
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          res = await axios.get(
+            `${process.env.REACT_APP_BASE_URL}projects/${projectId}`
+          );
+        } else {
+          throw error;
+        }
+      });
     const id = window.sessionStorage.getItem("id");
-    if (res.data.memberList[0]._links.self.href === `/profile/${id}`) {
-      await axios
+    if (res.data.memberList[0].userName === id) {
+      resApply = await axios
         .get(res.data._links.apply.href, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -42,8 +52,19 @@ const useProjectDetailState = () => {
         .then((value) => {
           setApplyState(value.data._embedded.projectApplicantDtoList);
         })
-        .catch((error) => {
-          alertAction.open(error.response.data.message);
+        .catch(async (error) => {
+          if (error.response.data.error === "007") {
+            token = await refreshToken();
+            resApply = await axios.get(res.data._links.apply.href, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            });
+          } else {
+            throw error;
+          }
         });
     }
     res = res.data;
@@ -52,16 +73,31 @@ const useProjectDetailState = () => {
 
   const fetchDeleteProject = async (projectId) => {
     const token = window.sessionStorage.getItem("accessToken");
-    await axios.delete(
-      `https://egluuapi.codingnome.dev/projects/${projectId}`,
-      {
+    await axios
+      .delete(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json;charset=UTF-8",
           Accept: "application/hal+json",
         },
-      }
-    );
+      })
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          await axios.delete(
+            `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            }
+          );
+        } else {
+          throw error;
+        }
+      });
     history.push("/projects");
   };
 

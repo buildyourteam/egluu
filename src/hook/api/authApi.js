@@ -2,9 +2,9 @@ import axios from "axios";
 import { useEffect } from "react";
 
 export function useRegisterApi() {
-  const postRegister = async data => {
+  const postRegister = async (data) => {
     const res = await axios.post(
-      `https://egluuapi.codingnome.dev/auth/signup`,
+      `${process.env.REACT_APP_BASE_URL}auth/signup`,
       data
     );
     console.log(res);
@@ -14,9 +14,9 @@ export function useRegisterApi() {
 }
 
 export function useLoginApi() {
-  const postLogin = async data => {
+  const postLogin = async (data) => {
     const res = await axios.post(
-      `https://egluuapi.codingnome.dev/auth/signin`,
+      `${process.env.REACT_APP_BASE_URL}auth/signin`,
       data
     );
     // console.log(res);

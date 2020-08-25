@@ -79,7 +79,7 @@ export default function ProjectDetail() {
 
   const handleClickUpdate = () => {
     const updateProject = {
-      img: [`https://egluuapi.codingnome.dev/projects/image/${url[2]}`],
+      img: [`${process.env.REACT_APP_BASE_URL}projects/image/${url[2]}`],
       ...project.project,
     };
     dispatch(setProject(updateProject));
@@ -149,7 +149,7 @@ export default function ProjectDetail() {
             <div className="half_div_left">
               <img
                 id="cover"
-                src={`https://egluuapi.codingnome.dev/projects/image/${url[2]}`}
+                src={`${process.env.REACT_APP_BASE_URL}projects/image/${url[2]}`}
                 alt="temp"
               />
             </div>

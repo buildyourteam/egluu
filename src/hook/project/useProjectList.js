@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setTemporary } from "../../reducers/temporary";
+import refreshToken from "../auth/refreshToken";
 const axios = require("axios");
 
 export function useProjectListState() {
@@ -19,10 +20,19 @@ export function useProjectListState() {
   };
 
   const getDeadLineProjectList = async (pageNumber) => {
+        let res = await axios
+      .get(`${process.env.REACT_APP_BASE_URL}projects/deadline?page=${pageNumber}&size=4&sort=endDate`)
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
     const res = await axios.get(
-      `https://egluuapi.codingnome.dev/projects/deadline?page=${pageNumber}&size=4&sort=endDate`
+      `${process.env.REACT_APP_BASE_URL}projects/deadline?page=${pageNumber}&size=4&sort=endDate`
     );
     return res.data;
+        } else {
+          throw error;
+        }
+      });
   };
 
   return [
@@ -58,7 +68,6 @@ export function useProjectListEffect(
   useEffect(() => {
     if (rejected) {
       if (error) {
-        console.log(error);
         setProjectList([]);
       }
     }

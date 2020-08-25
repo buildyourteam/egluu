@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useInfoApi, useImgApi } from "../api/profileApi";
 import { useRequest } from "../useRequest";
+import refreshToken from "../auth/refreshToken";
 import { useAlert } from "../";
 
 const useProfileInfoModify = (
@@ -41,7 +42,7 @@ const useProfileInfoModify = (
   useEffect(() => {
     if (imgFulfilled && infoFulfilled) {
       setImgState({
-        imgUrl: `https://egluuapi.codingnome.dev/profile/image/${userId}`,
+        imgUrl: `${process.env.REACT_APP_BASE_URL}profile/image/${userId}`,
         isImgChange: false,
       });
       setModifying();
