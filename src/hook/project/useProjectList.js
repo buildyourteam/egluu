@@ -14,25 +14,16 @@ export function useProjectListState() {
   });
   const getProjectList = async (pageNumber) => {
     const res = await axios.get(
-      `https://egluuapi.codingnome.dev/projects?page=${pageNumber}&size=10`
+      `${process.env.REACT_APP_BASE_URL}projects?page=${pageNumber}&size=10`
     );
     return res.data;
   };
 
   const getDeadLineProjectList = async (pageNumber) => {
-        let res = await axios
-      .get(`${process.env.REACT_APP_BASE_URL}projects/deadline?page=${pageNumber}&size=4&sort=endDate`)
-      .catch(async (error) => {
-        if (error.response.data.error === "007") {
-          token = await refreshToken();
-    const res = await axios.get(
+    let res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}projects/deadline?page=${pageNumber}&size=4&sort=endDate`
     );
     return res.data;
-        } else {
-          throw error;
-        }
-      });
   };
 
   return [

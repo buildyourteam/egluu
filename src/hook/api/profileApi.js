@@ -14,10 +14,7 @@ export function useInfoApi() {
 
   // post info api
   const postInfo = async (userId, data) => {
-    // token = await refreshToken();
     let token = window.sessionStorage.getItem("accessToken");
-    //console.log(token);
-    //console.log(userId);
     const res = await axios
       .put(`${process.env.REACT_APP_BASE_URL}profile/${userId}`, data, {
         headers: {

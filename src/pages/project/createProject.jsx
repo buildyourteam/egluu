@@ -72,8 +72,9 @@ export default function ProjectCreate() {
 
   useEffect(() => {
     if (getImgFulfilled) {
-      const projectId = resProject.data._links.createdProject.href.split("/");
-      history.push(`/projectDetail/${projectId[2]}`);
+      console.log("이미지업로드완료");
+      const projectId = resProject.headers.location.split("/");
+      history.push(`/projectDetail/${projectId[4]}`);
     }
   }, [getImgFulfilled]);
 

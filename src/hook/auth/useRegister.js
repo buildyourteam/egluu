@@ -18,7 +18,7 @@ export function useRegisterEffect(data, fulfilled, pending, rejected, error) {
   useEffect(() => {
     if (rejected) {
       if (error) {
-        alertAction.open(error.response.data);
+        alertAction.open(error.response.data.message);
         // console.log(error);
       }
     }

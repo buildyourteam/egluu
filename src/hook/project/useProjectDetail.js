@@ -25,8 +25,11 @@ const useProjectDetailState = () => {
   });
   const [teamReader, setTeamReader] = useState(false);
   const fetchGetDetail = async (projectId) => {
-    const token = window.sessionStorage.getItem("accessToken");
-    let resApply;
+    let token = window.sessionStorage.getItem("accessToken");
+    let resApply = {
+      apply: {},
+      recruit: {},
+    };
     let res = await axios
       .get(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`)
       .catch(async (error) => {
@@ -38,10 +41,14 @@ const useProjectDetailState = () => {
         } else {
           throw error;
         }
+      })
+      .catch((error) => {
+        throw error;
       });
     const id = window.sessionStorage.getItem("id");
-    if (res.data.memberList[0].userName === id) {
-      resApply = await axios
+    if (res.data.memberList[0]._links.self.href === `/profile/${id}`) {
+      token = await refreshToken();
+      await axios
         .get(res.data._links.apply.href, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -50,21 +57,35 @@ const useProjectDetailState = () => {
           },
         })
         .then((value) => {
-          setApplyState(value.data._embedded.projectApplicantDtoList);
+          try {
+            setApplyState(value.data._embedded.projectApplicantDtoList);
+          } catch {
+            setApplyState([]);
+          }
         })
         .catch(async (error) => {
-          if (error.response.data.error === "007") {
-            token = await refreshToken();
-            resApply = await axios.get(res.data._links.apply.href, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json;charset=UTF-8",
-                Accept: "application/hal+json",
-              },
-            });
-          } else {
-            throw error;
+          throw error;
+        });
+      await axios
+        .get(
+          `${process.env.REACT_APP_BASE_URL}/projects/${projectId}/recruits`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json;charset=UTF-8",
+              Accept: "application/hal+json",
+            },
           }
+        )
+        .then((value) => {
+          try {
+            setRecruitState(value.data._embedded.recruitDtoList);
+          } catch {
+            setRecruitState([]);
+          }
+        })
+        .catch((error) => {
+          throw error;
         });
     }
     res = res.data;
@@ -72,7 +93,7 @@ const useProjectDetailState = () => {
   };
 
   const fetchDeleteProject = async (projectId) => {
-    const token = window.sessionStorage.getItem("accessToken");
+    let token = window.sessionStorage.getItem("accessToken");
     await axios
       .delete(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`, {
         headers: {
@@ -84,16 +105,17 @@ const useProjectDetailState = () => {
       .catch(async (error) => {
         if (error.response.data.error === "007") {
           token = await refreshToken();
-          await axios.delete(
-            `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
-            {
+          await axios
+            .delete(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`, {
               headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json;charset=UTF-8",
                 Accept: "application/hal+json",
               },
-            }
-          );
+            })
+            .catch((error) => {
+              throw error;
+            });
         } else {
           throw error;
         }
@@ -236,14 +258,13 @@ const useProjectDetailEffect = (
       const id = window.sessionStorage.getItem("id");
       if (data.res.memberList[0]._links.self.href === `/profile/${id}`) {
         projectAction.checkSwitch("reader", true);
-        if (data.resApply !== undefined)
-          projectAction.setApplyState(data.resApply);
       }
     }
   }, [fulfilled]);
 
   useEffect(() => {
     if (rejected) {
+      console.log(error.response);
       alertAction.open(error.response.data.message);
 
       console.log(error);
