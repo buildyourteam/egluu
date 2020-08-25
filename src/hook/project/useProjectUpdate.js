@@ -11,7 +11,7 @@ const useProjectUpdateState = () => {
   const [project, setProject] = useState(projectDetail);
   const [img, setImg] = useState(projectDetail.img);
   const fetchPutUpdate = async (projectId, data) => {
-    const token = window.sessionStorage.getItem("accessToken");
+    let token = window.sessionStorage.getItem("accessToken");
     let res = await axios
       .put(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`, data, {
         headers: {
@@ -23,17 +23,21 @@ const useProjectUpdateState = () => {
       .catch(async (error) => {
         if (error.response.data.error === "007") {
           token = await refreshToken();
-          res = await axios.put(
-            `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
-            data,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json;charset=UTF-8",
-                Accept: "application/hal+json",
-              },
-            }
-          );
+          res = await axios
+            .put(
+              `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
+              data,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json;charset=UTF-8",
+                  Accept: "application/hal+json",
+                },
+              }
+            )
+            .catch((error) => {
+              throw error;
+            });
         } else {
           throw error;
         }
@@ -42,7 +46,7 @@ const useProjectUpdateState = () => {
   };
 
   const fetchImg = async (projectId, data) => {
-    const token = window.sessionStorage.getItem("accessToken");
+    let token = window.sessionStorage.getItem("accessToken");
     const imgData = new FormData();
     imgData.append("image", data);
     imgData.append("type", "image/jpeg");
@@ -61,17 +65,21 @@ const useProjectUpdateState = () => {
       .catch(async (error) => {
         if (error.response.data.error === "007") {
           token = await refreshToken();
-          res = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
-            imgData,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/form-data;charset=UTF-8",
-                Accept: "application/hal+json",
-              },
-            }
-          );
+          res = await axios
+            .post(
+              `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
+              imgData,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "multipart/form-data;charset=UTF-8",
+                  Accept: "application/hal+json",
+                },
+              }
+            )
+            .catch((error) => {
+              throw error;
+            });
         } else {
           throw error;
         }

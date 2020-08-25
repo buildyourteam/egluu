@@ -320,51 +320,58 @@ export default function ProjectDetail() {
                   />
                 }
               />
-              {project.check.recruit && (
-                <div>
-                  <List dense>
-                    <ListItem>
-                      <ListItemText
-                        primary={`이름 : ${
-                          project.recruit[project.pagination.recruit].userName
-                        }`}
-                        secondary="Secondary text"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary={`역할 : ${
-                          project.recruit[project.pagination.recruit].role
-                        }`}
-                        secondary="Secondary text"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary={`자기소개 : ${
-                          project.recruit[project.pagination.recruit]
-                            .selfDescription
-                        }`}
-                        secondary="Secondary text"
-                      />
-                    </ListItem>
-                  </List>
-                  <Button
-                    disabled={project.pagination.recruit === 0}
-                    onClick={() => projectAction.clickPagination("recruit", -1)}
-                  >
-                    이전
-                  </Button>
-                  <Button
-                    disabled={
-                      project.recruit.length - project.pagination.recruit < 2
-                    }
-                    onClick={() => projectAction.clickPagination("recruit", 1)}
-                  >
-                    다음
-                  </Button>
-                </div>
-              )}
+              {project.check.recruit &&
+                (project.apply.length === 0 ? (
+                  <div>요청이 없습니다 </div>
+                ) : (
+                  <div>
+                    <List dense>
+                      <ListItem>
+                        <ListItemText
+                          primary={`이름 : ${
+                            project.recruit[project.pagination.recruit].userName
+                          }`}
+                          secondary="Secondary text"
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          primary={`역할 : ${
+                            project.recruit[project.pagination.recruit].role
+                          }`}
+                          secondary="Secondary text"
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          primary={`자기소개 : ${
+                            project.recruit[project.pagination.recruit]
+                              .selfDescription
+                          }`}
+                          secondary="Secondary text"
+                        />
+                      </ListItem>
+                    </List>
+                    <Button
+                      disabled={project.pagination.recruit === 0}
+                      onClick={() =>
+                        projectAction.clickPagination("recruit", -1)
+                      }
+                    >
+                      이전
+                    </Button>
+                    <Button
+                      disabled={
+                        project.recruit.length - project.pagination.recruit < 2
+                      }
+                      onClick={() =>
+                        projectAction.clickPagination("recruit", 1)
+                      }
+                    >
+                      다음
+                    </Button>
+                  </div>
+                ))}
             </div>
           )}
         </div>

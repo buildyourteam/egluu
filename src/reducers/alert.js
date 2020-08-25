@@ -9,6 +9,7 @@ const alertRedux = createSlice({
   reducers: {
     openAlert(state, action) {
       state.isOpen = true;
+      console.log(action.payload);
       state.sentence = action.payload;
     },
     closeAlert(state, action) {

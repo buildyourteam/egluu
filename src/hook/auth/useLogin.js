@@ -36,8 +36,9 @@ export function useLoginEffect(data, fulfilled, pending, rejected, error) {
   useEffect(() => {
     if (rejected) {
       if (error) {
+        console.log(error.response.a);
         // 실패 이유 알림
-        alertAction.open(error.response.data);
+        alertAction.open(error.response.data.message);
 
         // 실패한 아이디는 내버려두고, 비밀번호만 초기화
         setState({

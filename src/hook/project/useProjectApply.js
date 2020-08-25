@@ -53,13 +53,17 @@ export const useProjectApplyState = (api) => {
       .catch(async (error) => {
         if (error.response.data.error === "007") {
           token = await refreshToken();
-          await axios.post(api, data, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json;charset=UTF-8",
-              Accept: "application/hal+json",
-            },
-          });
+          await axios
+            .post(api, data, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            })
+            .catch((error) => {
+              throw error;
+            });
         } else {
           throw error;
         }
@@ -79,13 +83,17 @@ export const useProjectApplyState = (api) => {
       .catch(async (error) => {
         if (error.response.data.error === "007") {
           token = await refreshToken();
-          await axios.put(api, data, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json;charset=UTF-8",
-              Accept: "application/hal+json",
-            },
-          });
+          await axios
+            .put(api, data, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            })
+            .catch((error) => {
+              throw error;
+            });
         } else {
           throw error;
         }

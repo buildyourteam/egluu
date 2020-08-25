@@ -6,8 +6,6 @@ import { useAlert } from "../../hook";
 
 const CenterModal = (props) => {
   const { modalFlag, close } = props;
-  console.log(modalFlag);
-  console.log(close);
 
   return (
     <div>

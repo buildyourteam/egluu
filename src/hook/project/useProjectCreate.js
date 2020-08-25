@@ -9,7 +9,7 @@ const useProjectCreateState = () => {
   const [project, setProject] = useState(projectDetail);
   const [img, setImg] = useState("");
   const fetchPostCreate = async (data) => {
-    const token = window.sessionStorage.getItem("accessToken");
+    let token = window.sessionStorage.getItem("accessToken");
     let res = await axios
       .post(`${process.env.REACT_APP_BASE_URL}projects`, data, {
         headers: {
@@ -22,20 +22,19 @@ const useProjectCreateState = () => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = refreshToken();
-          res = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}projects`,
-            data,
-            {
+          token = await refreshToken();
+          res = await axios
+            .post(`${process.env.REACT_APP_BASE_URL}projects`, data, {
               headers: {
                 "Access-Control-Expose-Headers": "Location",
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json;charset=UTF-8",
                 Accept: "application/hal+json",
               },
-            }
-          );
-          console.log(res);
+            })
+            .catch((error) => {
+              throw error;
+            });
         } else {
           throw error;
         }
@@ -44,7 +43,7 @@ const useProjectCreateState = () => {
   };
 
   const fetchImg = async (projectId, data) => {
-    const token = window.sessionStorage.getItem("accessToken");
+    let token = window.sessionStorage.getItem("accessToken");
     const imgData = new FormData();
     imgData.append("image", data);
     imgData.append("type", "image/jpeg");
@@ -61,22 +60,25 @@ const useProjectCreateState = () => {
           },
         }
       )
-      .then((value) => (res = value))
       .catch(async (error) => {
         if (error.response.data.error === "007") {
           token = await refreshToken();
-          res = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
-            imgData,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/form-data;charset=UTF-8",
-                Accept: "application/hal+json",
-                "Access-Control-Expose-Headers": "*",
-              },
-            }
-          );
+          res = await axios
+            .post(
+              `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
+              imgData,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "multipart/form-data;charset=UTF-8",
+                  Accept: "application/hal+json",
+                  "Access-Control-Expose-Headers": "*",
+                },
+              }
+            )
+            .catch((error) => {
+              throw error;
+            });
         } else {
           throw error;
         }
@@ -195,10 +197,8 @@ const useProjectCreateEffect = (
 
   useEffect(() => {
     if (fulfilled) {
-      console.log(data.headers);
-      console.log(data);
-      const projectId = data._links.createdProject.href.split("/");
-      createImgApi(projectId[2], projectImg);
+      const projectId = data.headers.location.split("/");
+      createImgApi(projectId[4], projectImg);
     }
   }, [fulfilled]);
 
