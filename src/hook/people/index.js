@@ -1,5 +1,5 @@
 export {
   usePeopleListState,
-  usePeopleSaveEffect,
   usePeopleListEffect,
+  useWantedPeopleListEffect
 } from "./usePeopleList";

@@ -3,8 +3,8 @@ export { useRequest } from "./useRequest";
 export { default as useMove } from "./usePageMove";
 export {
   usePeopleListState,
-  usePeopleSaveEffect,
   usePeopleListEffect,
+  useWantedPeopleListEffect
 } from "./people";
 export { useRegisterEffect } from "./auth/useRegister";
 export {
@@ -19,6 +19,6 @@ export {
   useProjectUpdateEffect,
   useProjectApplyState,
   useProjectApplyEffect,
-  useDeadlineProjectListEffect,
+  useDeadlineProjectListEffect
 } from "./project";
 export { default as useAlert } from "./useAlert";

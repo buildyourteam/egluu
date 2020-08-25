@@ -9,6 +9,7 @@ import {
   ProjectDetail,
   ProjectCreate,
   ProjectUpdate,
+  PeopleList
 } from "./pages";
 import { AlertModal } from "./components";
 import { useLoginAuth } from "./hook/auth/useLogin";
@@ -20,6 +21,8 @@ function App() {
       <Switch>
         <Route exact path="/" component={Root} />
         <Route path="/projects" component={ProjectList} />
+        <Route path="/peoples" component={PeopleList} />
+
         <Route path="/createProject" component={ProjectCreate} />
         <Route path="/projectDetail/:id" component={ProjectDetail} />
         <Route path="/projectUpdate/:id" component={ProjectUpdate} />
