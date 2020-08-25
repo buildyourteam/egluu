@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setTemporary } from "../../reducers/temporary";
 import { useAlert } from "../";
-
 const axios = require("axios");
 
 export function usePeopleListState() {
@@ -11,9 +10,15 @@ export function usePeopleListState() {
     number: 0,
     size: 0,
     totalElements: 0,
-    totalPages: 0,
+    totalPages: 0
   });
-  const getPeopleList = async (pageNumber) => {
+  const getPeopleList = async pageNumber => {
+    const res = await axios.get(
+      `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=10`
+    );
+    return res.data;
+  };
+  const getWantedPeopleList = async pageNumber => {
     const res = await axios.get(
       `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=6`
     );
@@ -23,11 +28,42 @@ export function usePeopleListState() {
 
   return [
     { peopleList, page },
-    { setPeopleList, getPeopleList, setPage },
+    { setPeopleList, getPeopleList, getWantedPeopleList, setPage }
   ];
 }
 
 export function usePeopleListEffect(
+  data,
+  fulfilled,
+  rejected,
+  error,
+  getApi,
+  setPeopleList,
+  setPage
+) {
+  useEffect(() => {
+    if (fulfilled) {
+      if (data !== undefined) {
+        setPeopleList(data._embedded.peopleList);
+        setPage(data.page);
+      }
+    }
+  }, [fulfilled]);
+
+  useEffect(() => {
+    getApi(0);
+  }, []);
+
+  useEffect(() => {
+    if (rejected) {
+      if (error) {
+        setPeopleList([]);
+      }
+    }
+  }, [rejected]);
+}
+
+export function useWantedPeopleListEffect(
   peoplelistPromise,
   getApi,
   setPeopleList,
@@ -53,35 +89,6 @@ export function usePeopleListEffect(
   }, [peoplelistPromise.rejected]);
 }
 
-export function usePeopleSaveEffect(
-  data,
-  fulfilled,
-  pending,
-  rejected,
-  error,
-  posApi
-) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(fulfilled);
-    if (fulfilled) {
-      alertAction.open("전송 성공");
-      // dispatch(setTemporary(data));
-      dispatch(setTemporary(staticPeopleData));
-    }
-  }, [fulfilled]);
-
-  useEffect(() => {
-    if (rejected) {
-      if (error) {
-        alertAction.open(error.response.data.message);
-        console.log(error);
-      }
-    }
-  }, [rejected]);
-}
-
 const staticPeopleData = [
   {
     userId: "testUser1",
@@ -91,12 +98,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser1",
+        href: "/profile/testUser1"
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser1",
-      },
-    },
+        href: "https://api.eskiiimo.com/profile/image/testUser1"
+      }
+    }
   },
   {
     userId: "testUser4",
@@ -106,12 +113,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser4",
+        href: "/profile/testUser4"
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser4",
-      },
-    },
+        href: "https://api.eskiiimo.com/profile/image/testUser4"
+      }
+    }
   },
   {
     userId: "testUser7",
@@ -121,12 +128,12 @@ const staticPeopleData = [
     level: 6,
     _links: {
       self: {
-        href: "/profile/testUser7",
+        href: "/profile/testUser7"
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7",
-      },
-    },
+        href: "https://api.eskiiimo.com/profile/image/testUser7"
+      }
+    }
   },
   {
     userId: "testUser7",
@@ -136,12 +143,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7",
+        href: "/profile/testUser7"
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7",
-      },
-    },
+        href: "https://api.eskiiimo.com/profile/image/testUser7"
+      }
+    }
   },
   {
     userId: "testUser7",
@@ -151,12 +158,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7",
+        href: "/profile/testUser7"
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7",
-      },
-    },
+        href: "https://api.eskiiimo.com/profile/image/testUser7"
+      }
+    }
   },
   {
     userId: "testUser7",
@@ -166,11 +173,11 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7",
+        href: "/profile/testUser7"
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7",
-      },
-    },
-  },
+        href: "https://api.eskiiimo.com/profile/image/testUser7"
+      }
+    }
+  }
 ];

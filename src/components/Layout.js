@@ -72,7 +72,7 @@ export default function Layout({ children }) {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/people">
+              <NavLink tag={Link} to="/peoples">
                 사용자 목록보기
               </NavLink>
             </NavItem>

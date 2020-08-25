@@ -2,10 +2,10 @@ import React from "react";
 import { Row, Col } from "reactstrap";
 import {
   useDeadlineProjectListEffect,
-  usePeopleListEffect,
+  useWantedPeopleListEffect,
   usePeopleListState,
   useProjectListState,
-  useRequest,
+  useRequest
 } from "../hook";
 import {
   Button,
@@ -13,7 +13,7 @@ import {
   Jumbotron,
   SubtitleHeader,
   ProjectBox,
-  PeopleBox,
+  PeopleBox
 } from "../components";
 import Pagination from "@material-ui/lab/Pagination";
 import "./main.css";
@@ -30,12 +30,11 @@ export default function Root() {
     projectAction.setPage
   );
 
-
   const [people, peopleAction] = usePeopleListState();
   const [peopleListPromise, { run: getPeopleList }] = useRequest(
-    peopleAction.getPeopleList
+    peopleAction.getWantedPeopleList
   );
-  usePeopleListEffect(
+  useWantedPeopleListEffect(
     peopleListPromise,
     getPeopleList,
     peopleAction.setPeopleList,
