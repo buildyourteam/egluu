@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import refreshToken from "../auth/refreshToken";
+import { useAlert } from "../";
+
 const axios = require("axios");
 
 const useProjectCreateState = () => {
@@ -15,6 +17,7 @@ const useProjectCreateState = () => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json;charset=UTF-8",
           Accept: "application/hal+json",
+          "Access-Control-Expose-Headers": "Location",
         },
       })
       .catch(async (error) => {
@@ -188,6 +191,8 @@ const useProjectCreateEffect = (
   createImgApi,
   projectImg
 ) => {
+  const [alertData, alertAction] = useAlert();
+
   useEffect(() => {
     if (fulfilled) {
       console.log(data.headers);
@@ -199,7 +204,7 @@ const useProjectCreateEffect = (
 
   useEffect(() => {
     if (rejected) {
-      alert("에러 발생");
+      alertAction.open(error.response.data.message);
       console.log(error);
     }
   }, [rejected]);

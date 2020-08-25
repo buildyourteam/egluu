@@ -6,21 +6,39 @@ const axios = require("axios");
 
 export function useProjectListState() {
   const [projectList, setProjectList] = useState(staticProjectData);
+  const [page, setPage] = useState({
+    number: 0,
+    size: 0,
+    totalElements: 0,
+    totalPages: 0,
+  });
+  const getProjectList = async (pageNumber) => {
+    const res = await axios.get(
+      `https://egluuapi.codingnome.dev/projects?page=${pageNumber}&size=10`
+    );
+    return res.data;
+  };
 
-  const getProjectList = async () => {
-    let res = await axios
-      .get(`${process.env.REACT_APP_BASE_URL}projects`)
+  const getDeadLineProjectList = async (pageNumber) => {
+        let res = await axios
+      .get(`${process.env.REACT_APP_BASE_URL}projects/deadline?page=${pageNumber}&size=4&sort=endDate`)
       .catch(async (error) => {
         if (error.response.data.error === "007") {
           token = await refreshToken();
-          res = await axios.get(`${process.env.REACT_APP_BASE_URL}projects`);
+    const res = await axios.get(
+      `${process.env.REACT_APP_BASE_URL}projects/deadline?page=${pageNumber}&size=4&sort=endDate`
+    );
+    return res.data;
         } else {
           throw error;
         }
       });
-    return res.data._embedded.projectList;
   };
-  return [projectList, { getProjectList, setProjectList }];
+
+  return [
+    { projectList, page },
+    { getProjectList, setProjectList, getDeadLineProjectList, setPage },
+  ];
 }
 
 export function useProjectListEffect(
@@ -29,20 +47,22 @@ export function useProjectListEffect(
   rejected,
   error,
   getApi,
-  setProjectList
+  setProjectList,
+  setPage
 ) {
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (fulfilled) {
       if (data !== undefined) {
-        setProjectList(data);
+        setProjectList(data._embedded.projectList);
+        setPage(data.page);
       }
     }
   }, [fulfilled]);
 
   useEffect(() => {
-    getApi();
+    getApi(0);
   }, []);
 
   useEffect(() => {
@@ -52,6 +72,36 @@ export function useProjectListEffect(
       }
     }
   }, [rejected]);
+}
+
+export function useDeadlineProjectListEffect(
+  projectlistPromise,
+  getApi,
+  setProjectList,
+  setPage
+) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (projectlistPromise.fulfilled) {
+      if (projectlistPromise.data !== undefined) {
+        setProjectList(projectlistPromise.data._embedded.projectList);
+        setPage(projectlistPromise.data.page);
+      }
+    }
+  }, [projectlistPromise.fulfilled]);
+
+  useEffect(() => {
+    getApi(0);
+  }, []);
+
+  useEffect(() => {
+    if (projectlistPromise.rejected) {
+      if (projectlistPromise.error) {
+        setProjectList([]);
+      }
+    }
+  }, [projectlistPromise.rejected]);
 }
 
 const staticProjectData = [

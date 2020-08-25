@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useInfoApi, useImgApi } from "../api/profileApi";
 import { useRequest } from "../useRequest";
 import refreshToken from "../auth/refreshToken";
+import { useAlert } from "../";
+
 const useProfileInfoModify = (
   setModifying,
 
@@ -35,6 +37,7 @@ const useProfileInfoModify = (
     },
     { run: postImgApi },
   ] = useRequest(postImg);
+  const [alertData, alertAction] = useAlert();
 
   useEffect(() => {
     if (imgFulfilled && infoFulfilled) {
@@ -57,8 +60,7 @@ const useProfileInfoModify = (
   useEffect(() => {
     if (infoRejected) {
       if (infoError) {
-        alert(infoError);
-        console.log(infoError);
+        alertAction.open(infoError.response.data.message);
       }
     }
   }, [infoRejected]);
@@ -66,7 +68,7 @@ const useProfileInfoModify = (
   useEffect(() => {
     if (imgRejected) {
       if (imgError) {
-        alert(imgError);
+        alertAction.open(imgError.response.data.message);
         console.log(imgError);
       }
     }

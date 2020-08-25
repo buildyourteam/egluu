@@ -1,4 +1,8 @@
-export { useProjectListState, useProjectListEffect } from "./useProjectList";
+export {
+  useProjectListState,
+  useProjectListEffect,
+  useDeadlineProjectListEffect,
+} from "./useProjectList";
 export {
   useProjectDetailState,
   useProjectDetailEffect,

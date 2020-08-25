@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import refreshToken from "../auth/refreshToken";
+import { useAlert } from "../";
 
 const axios = require("axios");
 
@@ -177,6 +178,8 @@ const useProjectUpdateEffect = (
   projectId
 ) => {
   const history = useHistory();
+  const [alertData, alertAction] = useAlert();
+
   useEffect(() => {
     if (fulfilled) {
       console.log(typeof projectImg);
@@ -187,7 +190,7 @@ const useProjectUpdateEffect = (
 
   useEffect(() => {
     if (rejected) {
-      alert("에러 발생");
+      alertAction.open(error.response.data.message);
       console.log(error);
     }
   }, [rejected]);
