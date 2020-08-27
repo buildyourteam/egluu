@@ -13,9 +13,9 @@ import {
   NavItem,
   NavLink,
   NavbarText,
-  Button
+  Button,
 } from "reactstrap";
-
+import "./Layout.css";
 import "./component.css";
 
 export default function Layout({ children }) {
@@ -26,8 +26,8 @@ export default function Layout({ children }) {
   const history = useHistory();
 
   // 레이아웃 바에서 로그인 여부를 확인하고, 유저 아이디를 띄울 변수
-  const userId = useSelector(state => state.login.userId);
-  const isToken = useSelector(state => state.login.isToken);
+  const userId = useSelector((state) => state.login.userId);
+  const isToken = useSelector((state) => state.login.isToken);
 
   // 레이아웃에서 userId클릭하면 이동할 본인 프로필페이지 주소
   const profileUrl = `/profile/${userId}`;
@@ -46,7 +46,7 @@ export default function Layout({ children }) {
     // 리덕스 초기화 데이터
     const reduxData = {
       isToken: false,
-      userId: null
+      userId: null,
     };
 
     // 액션 디스패치
@@ -58,7 +58,7 @@ export default function Layout({ children }) {
 
   return (
     <>
-      <Navbar color="" light expand="md" style={{ margin: "0 20vw 0 20vw" }}>
+      <Navbar color="" light expand="md" className="nav_header">
         <NavbarBrand tag={Link} to="/">
           Egluu
           {/* <img src={logo} alt="menubar" id="menu-img" width="100" /> */}
@@ -106,10 +106,10 @@ export default function Layout({ children }) {
       </Navbar>
 
       <main>
-        <div style={{ margin: "0 20vw 0 20vw" }}>{children}</div>
+        <div className="nav_body">{children}</div>
       </main>
 
-      <footer style={{ margin: "0 20vw 0 20vw" }}>
+      <footer className="nav_footer">
         <hr />
         <div className="container-fluid text-center text-md-left">
           <div className="row">
