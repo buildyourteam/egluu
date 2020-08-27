@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   useProjectListState,
   useProjectListEffect,
-  useRequest,
+  useRequest
 } from "../../hook";
 import { Link } from "react-router-dom";
 import { Layout, ProjectBox } from "../../components";
@@ -19,9 +19,9 @@ export default function ProjectList() {
       fulfilled: getProjectListFulfilled,
       pending: getProjectListPending,
       rejected: getProjectListRejected,
-      error: getProjectListError,
+      error: getProjectListError
     },
-    { run: getProjectListApi },
+    { run: getProjectListApi }
   ] = useRequest(projectListAction.getProjectList);
   useProjectListEffect(
     resProjectList,

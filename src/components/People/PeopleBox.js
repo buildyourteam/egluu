@@ -41,7 +41,8 @@ export default function PeopleBox(props) {
               </Row>
             </div>
 
-            <CardText>
+            <CardText id="card-text">
+              {data.stack === null && " "}
               {data.stacks.map(value => {
                 return "#" + value + " ";
               })}

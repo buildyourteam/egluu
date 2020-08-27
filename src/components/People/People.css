@@ -10,6 +10,15 @@
   padding-left: 0px;
 }
 
+#PeopleBoxCard {
+  height: 180px;
+  margin: 15px 0px;
+}
+
+#card-text {
+  height: 10px;
+}
+
 #PeopleBoxCard .card-text {
   font-size: 10px;
 }
