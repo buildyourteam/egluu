@@ -9,21 +9,21 @@ import {
   OutlinedInput,
   Grid,
   makeStyles,
-  Button
+  Button,
 } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120
+    minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   search: {
     margin: theme.spacing(1),
-    width: "30ch"
-  }
+    width: "30ch",
+  },
 }));
 export default function Sort({
   role,
@@ -33,9 +33,10 @@ export default function Sort({
   stack,
   setStack,
   search,
-  setSearch
+  setSearch,
+  getApi,
 }) {
-  const handleChange = event => {
+  const handleChange = (event) => {
     if (event.target.name === "role") {
       setRole(event.target.value);
     } else if (event.target.name === "region") {
@@ -45,7 +46,15 @@ export default function Sort({
     }
   };
 
-  const handleChangeSearch = event => {
+  const getPage = async (role, region, stack) => {
+    let params = "";
+    if (role !== "") params += `&role=${role}`;
+    if (region !== "") params += `&region=${region}`;
+    if (stack !== "") params += `&stack=${stack}`;
+    await getApi(0, params);
+  };
+
+  const handleChangeSearch = (event) => {
     setSearch(event.target.value);
   };
   const classes = useStyles();
@@ -116,7 +125,7 @@ export default function Sort({
               label="Search"
             />
           </FormControl>
-          <Button>search</Button>
+          <Button onClick={() => getPage(role, region, stack)}>search</Button>
         </Grid>
       </Grid>
     </>

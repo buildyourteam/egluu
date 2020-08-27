@@ -19,9 +19,9 @@ export default function PeopleList() {
       fulfilled: getPeopleListFulfilled,
       pending: getPeopleListPending,
       rejected: getPeopleListRejected,
-      error: getPeopleListError
+      error: getPeopleListError,
     },
-    { run: getPeopleListApi }
+    { run: getPeopleListApi },
   ] = useRequest(peopleListAction.getPeopleList);
   usePeopleListEffect(
     resPeopleList,
@@ -45,6 +45,7 @@ export default function PeopleList() {
         setStack={setStack}
         search={search}
         setSearch={setSearch}
+        getApi={getPeopleListApi}
       />
       <hr />
 
@@ -62,7 +63,12 @@ export default function PeopleList() {
           id="pagination"
           count={peopleList.page.totalPages}
           onChange={(e, page) => {
-            getPeopleListApi(page - 1);
+            let params = "";
+            if (peopleList.role !== "") params += `&role=${peopleList.role}`;
+            if (peopleList.region !== "")
+              params += `&region=${peopleList.region}`;
+            if (peopleList.stack !== "") params += `&stack=${peopleList.stack}`;
+            getPeopleListApi(page - 1, params);
           }}
         />
       </div>

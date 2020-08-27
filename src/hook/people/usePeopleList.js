@@ -10,15 +10,19 @@ export function usePeopleListState() {
     number: 0,
     size: 0,
     totalElements: 0,
-    totalPages: 0
+    totalPages: 0,
   });
-  const getPeopleList = async pageNumber => {
+  const [role, setRole] = useState("");
+  const [region, setRegion] = useState("");
+  const [stack, setStack] = useState("");
+  const [search, setSearch] = useState("");
+  const getPeopleList = async (pageNumber, params) => {
     const res = await axios.get(
-      `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=10`
+      `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=10${params}`
     );
     return res.data;
   };
-  const getWantedPeopleList = async pageNumber => {
+  const getWantedPeopleList = async (pageNumber) => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}people?page=${pageNumber}&size=6`
     );
@@ -27,8 +31,8 @@ export function usePeopleListState() {
   const [alertData, alertAction] = useAlert();
 
   return [
-    { peopleList, page },
-    { setPeopleList, getPeopleList, getWantedPeopleList, setPage }
+    { peopleList, role, region, search, page, stack },
+    { setPeopleList, getPeopleList, getWantedPeopleList, setPage },
   ];
 }
 
@@ -51,7 +55,7 @@ export function usePeopleListEffect(
   }, [fulfilled]);
 
   useEffect(() => {
-    getApi(0);
+    getApi(0, "");
   }, []);
 
   useEffect(() => {
@@ -98,12 +102,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser1"
+        href: "/profile/testUser1",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser1"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser1",
+      },
+    },
   },
   {
     userId: "testUser4",
@@ -113,12 +117,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser4"
+        href: "/profile/testUser4",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser4"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser4",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -128,12 +132,12 @@ const staticPeopleData = [
     level: 6,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -143,12 +147,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -158,12 +162,12 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
   },
   {
     userId: "testUser7",
@@ -173,11 +177,11 @@ const staticPeopleData = [
     level: 1,
     _links: {
       self: {
-        href: "/profile/testUser7"
+        href: "/profile/testUser7",
       },
       profileImage: {
-        href: "https://api.eskiiimo.com/profile/image/testUser7"
-      }
-    }
-  }
+        href: "https://api.eskiiimo.com/profile/image/testUser7",
+      },
+    },
+  },
 ];
