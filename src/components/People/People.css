@@ -9,7 +9,13 @@
   padding-right: 0px;
   padding-left: 0px;
 }
+.col-8 {
+  padding-right: 0px;
+}
 
+.col-4 {
+  padding-left: 0px;
+}
 #PeopleBoxCard {
   height: 180px;
   margin: 15px 0px;
@@ -24,5 +30,5 @@
 }
 
 .level {
-  padding: 1px 5px 1px 5px;
+  padding: 1px 10px;
 }

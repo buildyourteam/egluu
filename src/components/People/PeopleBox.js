@@ -27,16 +27,21 @@ export default function PeopleBox(props) {
         style={{ textDecoration: "none" }}
       >
         <Card>
-          <CardImg top width="100%" src={sampleimg} alt="Card image cap" />
+          <CardImg
+            top
+            width="100%"
+            src={`${process.env.REACT_APP_BASE_URL}profile/image/${data.userId}`}
+            alt="Card image cap"
+          />
           <CardBody>
             <div>
               <Row xs="12">
-                <Col xs="9">
+                <Col xs="8">
                   {/* <CardTitle>{data.userName}</CardTitle> */}
                   <CardSubtitle>{data.userId}</CardSubtitle>
                 </Col>
-                <Col xs="3">
-                  <Level data={data.level} />
+                <Col xs="4">
+                  <Level data={data.grade} />
                 </Col>
               </Row>
             </div>
