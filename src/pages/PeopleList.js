@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { usePeopleListState, usePeopleListEffect, useRequest } from "../hook";
 import PeopleBox from "../components/People/PeopleBox";
 import { Row, Col } from "reactstrap";
-import Sort from "../components/List/Sort";
+import { PeopleSort } from "../components/List/Sort";
 import Pagination from "@material-ui/lab/Pagination";
 import { Layout } from "../components";
 
@@ -19,9 +19,9 @@ export default function PeopleList() {
       fulfilled: getPeopleListFulfilled,
       pending: getPeopleListPending,
       rejected: getPeopleListRejected,
-      error: getPeopleListError
+      error: getPeopleListError,
     },
-    { run: getPeopleListApi }
+    { run: getPeopleListApi },
   ] = useRequest(peopleListAction.getPeopleList);
   usePeopleListEffect(
     resPeopleList,
@@ -36,7 +36,7 @@ export default function PeopleList() {
   return (
     <Layout>
       <hr />
-      <Sort
+      <PeopleSort
         role={role}
         setRole={setRole}
         region={region}
@@ -45,24 +45,31 @@ export default function PeopleList() {
         setStack={setStack}
         search={search}
         setSearch={setSearch}
+        getApi={getPeopleListApi}
       />
       <hr />
 
       <Row xs="12">
-        {peopleList.peopleList.map((value, index) => {
-          return (
-            <Col xs="2" key={index}>
-              <PeopleBox url={`/profile/${value.userId}`} data={value} />
-            </Col>
-          );
-        })}
+        {peopleList.peopleList.length !== 0 &&
+          peopleList.peopleList.map((value, index) => {
+            return (
+              <Col xs="2" key={index}>
+                <PeopleBox url={`/profile/${value.userId}`} data={value} />
+              </Col>
+            );
+          })}
       </Row>
       <div id="pagination_div">
         <Pagination
           id="pagination"
           count={peopleList.page.totalPages}
           onChange={(e, page) => {
-            getPeopleListApi(page - 1);
+            let params = "";
+            if (peopleList.role !== "") params += `&role=${peopleList.role}`;
+            if (peopleList.region !== "")
+              params += `&region=${peopleList.region}`;
+            if (peopleList.stack !== "") params += `&stack=${peopleList.stack}`;
+            getPeopleListApi(page - 1, params);
           }}
         />
       </div>

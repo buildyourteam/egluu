@@ -12,9 +12,13 @@ export function useProjectListState() {
     totalElements: 0,
     totalPages: 0,
   });
-  const getProjectList = async (pageNumber) => {
+  const [role, setRole] = useState("");
+  const [region, setRegion] = useState("");
+  const [stack, setStack] = useState("");
+  const [search, setSearch] = useState("");
+  const getProjectList = async (pageNumber, sort) => {
     const res = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}projects?page=${pageNumber}&size=10`
+      `${process.env.REACT_APP_BASE_URL}projects?page=${pageNumber}&size=10${sort}`
     );
     return res.data;
   };
@@ -27,8 +31,17 @@ export function useProjectListState() {
   };
 
   return [
-    { projectList, page },
-    { getProjectList, setProjectList, getDeadLineProjectList, setPage },
+    { projectList, role, region, search, page, stack },
+    {
+      getProjectList,
+      setProjectList,
+      getDeadLineProjectList,
+      setPage,
+      setRegion,
+      setRole,
+      setStack,
+      setSearch,
+    },
   ];
 }
 
@@ -45,15 +58,23 @@ export function useProjectListEffect(
 
   useEffect(() => {
     if (fulfilled) {
-      if (data !== undefined) {
+      if ("_embedded" in data) {
         setProjectList(data._embedded.projectList);
         setPage(data.page);
+      } else {
+        setProjectList([]);
+        setPage({
+          number: 0,
+          size: 0,
+          totalElements: 0,
+          totalPages: 0,
+        });
       }
     }
   }, [fulfilled]);
 
   useEffect(() => {
-    getApi(0);
+    getApi(0, "");
   }, []);
 
   useEffect(() => {
@@ -83,7 +104,7 @@ export function useDeadlineProjectListEffect(
   }, [projectlistPromise.fulfilled]);
 
   useEffect(() => {
-    getApi(0);
+    getApi(0, "");
   }, []);
 
   useEffect(() => {
