@@ -108,14 +108,37 @@ export default function Layout({ children }) {
       <main>
         <div style={{ margin: "0 20vw 0 20vw" }}>{children}</div>
       </main>
-      <footer>
-        <div style={{ margin: "0 20vw 0 20vw" }}>
-          <p>Copyright © Igo Corp. All Rights Reserved.</p>
-          <p> Team I go </p>
-          <p>
-            Address : 서울특별시 동작구 상도동 상도로 369 숭실대학교 정보과학관
-          </p>
+
+      <footer style={{ margin: "0 20vw 0 20vw" }}>
+        <hr />
+        <div className="container-fluid text-center text-md-left">
+          <div className="row">
+            <div className="col-md-6 mt-md-0 mt-3">
+              <h4 className="text-uppercase">Egluu</h4>
+              <br />
+              <p>Simple Team Building Platform</p> © 2020 Copyright:
+              <a href="https://egluuapi.codingnome.dev/">
+                https://egluuapi.codingnome.dev/
+              </a>
+            </div>
+            <hr className="clearfix w-100 d-md-none pb-3" />
+            <div className="col-md-2 mb-md-0 mb-2"></div>
+            <div className="col-md-3 mb-md-0 mb-3">
+              <h5 className="text-uppercase">Links</h5>
+              <br />
+              <ul className="list-unstyled">
+                <li>
+                  <a href="#!">Instagram</a>
+                </li>
+                <br />
+                <li>
+                  <a href="#!">Github</a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+        <br />
       </footer>
     </>
   );
