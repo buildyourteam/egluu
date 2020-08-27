@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     width: "30ch",
   },
 }));
-export default function Sort({
+export function ProjectSort({
   role,
   setRole,
   region,
@@ -72,10 +72,10 @@ export default function Sort({
               <MenuItem value="" disabled>
                 역할
               </MenuItem>
-              <MenuItem value="developer">developer</MenuItem>
-              <MenuItem value="designer">designer</MenuItem>
-              <MenuItem value="director">director</MenuItem>
-              <MenuItem value="etc.">etc.</MenuItem>
+              <MenuItem value="DEVELOPER">developer</MenuItem>
+              <MenuItem value="DESIGNER">designer</MenuItem>
+              <MenuItem value="PLANNER">director</MenuItem>
+              <MenuItem value="ETC">etc.</MenuItem>
             </Select>
             <FormHelperText>role</FormHelperText>
           </FormControl>
@@ -91,9 +91,9 @@ export default function Sort({
               <MenuItem value="" disabled>
                 지역
               </MenuItem>
-              <MenuItem value="서울">서울</MenuItem>
-              <MenuItem value="경기">경기</MenuItem>
-              <MenuItem value="부산">부산</MenuItem>
+              <MenuItem value="Seoul">서울</MenuItem>
+              <MenuItem value="Gunggi">경기</MenuItem>
+              <MenuItem value="Busan">부산</MenuItem>
             </Select>
             <FormHelperText>region</FormHelperText>
           </FormControl>
@@ -112,6 +112,114 @@ export default function Sort({
               <MenuItem value="ReactJS">ReactJS</MenuItem>
               <MenuItem value="SPRINGBOOT">SPRINGBOOT</MenuItem>
               <MenuItem value="PHP">PHP</MenuItem>
+            </Select>
+            <FormHelperText>stack</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6} sm={6}>
+          <FormControl variant="outlined" className={classes.search}>
+            <InputLabel>Search</InputLabel>
+            <OutlinedInput
+              value={search}
+              onChange={handleChangeSearch}
+              label="Search"
+            />
+          </FormControl>
+          <Button onClick={() => getPage(role, region, stack)}>search</Button>
+        </Grid>
+      </Grid>
+    </>
+  );
+}
+
+export function PeopleSort({
+  role,
+  setRole,
+  region,
+  setRegion,
+  stack,
+  setStack,
+  search,
+  setSearch,
+  getApi,
+}) {
+  const handleChange = (event) => {
+    if (event.target.name === "role") {
+      setRole(event.target.value);
+    } else if (event.target.name === "region") {
+      setRegion(event.target.value);
+    } else {
+      setStack(event.target.value);
+    }
+  };
+
+  const getPage = async (role, region, stack) => {
+    let params = "";
+    if (role !== "") params += `&role=${role}`;
+    if (region !== "") params += `&region=${region}`;
+    if (stack !== "") params += `&stack=${stack}`;
+    await getApi(0, params);
+  };
+
+  const handleChangeSearch = (event) => {
+    setSearch(event.target.value);
+  };
+  const classes = useStyles();
+  return (
+    <>
+      <Grid container spacing={1}>
+        <Grid item xs={6} sm={2}>
+          <FormControl className={classes.formControl}>
+            <Select
+              name="role"
+              value={role}
+              onChange={handleChange}
+              displayEmpty
+            >
+              <MenuItem value="" disabled>
+                역할
+              </MenuItem>
+              <MenuItem value="LEADER">leader</MenuItem>
+              <MenuItem value="DEVELOPER">developer</MenuItem>
+              <MenuItem value="DESIGNER">designer</MenuItem>
+              <MenuItem value="PLANNER">director</MenuItem>
+              <MenuItem value="ETC">etc.</MenuItem>
+            </Select>
+            <FormHelperText>role</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6} sm={2}>
+          <FormControl className={classes.formControl}>
+            <Select
+              name="region"
+              value={region}
+              onChange={handleChange}
+              displayEmpty
+            >
+              <MenuItem value="" disabled>
+                레벨
+              </MenuItem>
+              <MenuItem value="0">0</MenuItem>
+              <MenuItem value="1">1</MenuItem>
+              <MenuItem value="2">2</MenuItem>
+            </Select>
+            <FormHelperText>region</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6} sm={2}>
+          <FormControl className={classes.formControl}>
+            <Select
+              name="stack"
+              value={stack}
+              onChange={handleChange}
+              displayEmpty
+            >
+              <MenuItem value="" disabled>
+                지역
+              </MenuItem>
+              <MenuItem value="Seoul">서울</MenuItem>
+              <MenuItem value="Gunggi">경기</MenuItem>
+              <MenuItem value="Busan">부산</MenuItem>
             </Select>
             <FormHelperText>stack</FormHelperText>
           </FormControl>

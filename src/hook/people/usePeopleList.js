@@ -47,9 +47,17 @@ export function usePeopleListEffect(
 ) {
   useEffect(() => {
     if (fulfilled) {
-      if (data !== undefined) {
+      if ("_embedded" in data) {
         setPeopleList(data._embedded.peopleList);
         setPage(data.page);
+      } else {
+        setPeopleList([]);
+        setPage({
+          number: 0,
+          size: 0,
+          totalElements: 0,
+          totalPages: 0,
+        });
       }
     }
   }, [fulfilled]);

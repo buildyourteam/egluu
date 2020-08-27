@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { usePeopleListState, usePeopleListEffect, useRequest } from "../hook";
 import PeopleBox from "../components/People/PeopleBox";
 import { Row, Col } from "reactstrap";
-import Sort from "../components/List/Sort";
+import { PeopleSort } from "../components/List/Sort";
 import Pagination from "@material-ui/lab/Pagination";
 import { Layout } from "../components";
 
@@ -36,7 +36,7 @@ export default function PeopleList() {
   return (
     <Layout>
       <hr />
-      <Sort
+      <PeopleSort
         role={role}
         setRole={setRole}
         region={region}
@@ -50,13 +50,14 @@ export default function PeopleList() {
       <hr />
 
       <Row xs="12">
-        {peopleList.peopleList.map((value, index) => {
-          return (
-            <Col xs="2" key={index}>
-              <PeopleBox url={`/profile/${value.userId}`} data={value} />
-            </Col>
-          );
-        })}
+        {peopleList.peopleList.length !== 0 &&
+          peopleList.peopleList.map((value, index) => {
+            return (
+              <Col xs="2" key={index}>
+                <PeopleBox url={`/profile/${value.userId}`} data={value} />
+              </Col>
+            );
+          })}
       </Row>
       <div id="pagination_div">
         <Pagination

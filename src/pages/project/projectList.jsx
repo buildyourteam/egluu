@@ -7,7 +7,7 @@ import {
 import { Link } from "react-router-dom";
 import { Layout, ProjectBox } from "../../components";
 import { Row, Col } from "reactstrap";
-import Sort from "../../components/List/Sort";
+import { ProjectSort } from "../../components/List/Sort";
 import { Button } from "reactstrap";
 import Pagination from "@material-ui/lab/Pagination";
 
@@ -36,7 +36,7 @@ export default function ProjectList() {
   return (
     <Layout>
       <hr />
-      <Sort
+      <ProjectSort
         role={projectList.role}
         setRole={projectListAction.setRole}
         region={projectList.region}

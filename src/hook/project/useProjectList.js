@@ -58,9 +58,17 @@ export function useProjectListEffect(
 
   useEffect(() => {
     if (fulfilled) {
-      if (data !== undefined) {
+      if ("_embedded" in data) {
         setProjectList(data._embedded.projectList);
         setPage(data.page);
+      } else {
+        setProjectList([]);
+        setPage({
+          number: 0,
+          size: 0,
+          totalElements: 0,
+          totalPages: 0,
+        });
       }
     }
   }, [fulfilled]);
