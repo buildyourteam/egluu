@@ -4,5 +4,9 @@ import "./People.css";
 export default function Level(props) {
   const data = props.data;
 
-  return <Button className="level">{data}</Button>;
+  return (
+    <Button color="info" className="level">
+      {data}
+    </Button>
+  );
 }
