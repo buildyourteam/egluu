@@ -7,3 +7,22 @@
 #ProjectBoxCard .card-title {
   font-size: 20px;
 }
+
+#team_dday .col-9 {
+  padding-right: 0px;
+}
+#team_dday .col-3 {
+  padding-left: 0px;
+}
+#member-count .card-text {
+  padding-top: 10px;
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.card-subtitle {
+  color: #6c757d;
+}
+.card-title {
+  margin-bottom: 9px;
+}
