@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   FormControl,
   InputLabel,
@@ -116,8 +115,12 @@ export function ProjectSort({
             <FormHelperText>stack</FormHelperText>
           </FormControl>
         </Grid>
-        <Grid item xs={6} sm={6}>
-          <FormControl variant="outlined" className={classes.search}>
+        <Grid item xs={5} style={{ display: "flex" }}>
+          <FormControl
+            style={{ width: "100%" }}
+            variant="outlined"
+            className={classes.search}
+          >
             <InputLabel>Search</InputLabel>
             <OutlinedInput
               value={search}
@@ -125,7 +128,14 @@ export function ProjectSort({
               label="Search"
             />
           </FormControl>
-          <Button onClick={() => getPage(role, region, stack)}>search</Button>
+        </Grid>
+        <Grid item xs={1} style={{ display: "flex" }}>
+          <Button
+            style={{ height: "auto" }}
+            onClick={() => getPage(role, region, stack)}
+          >
+            search
+          </Button>
         </Grid>
       </Grid>
     </>
@@ -224,8 +234,12 @@ export function PeopleSort({
             <FormHelperText>stack</FormHelperText>
           </FormControl>
         </Grid>
-        <Grid item xs={6} sm={6}>
-          <FormControl variant="outlined" className={classes.search}>
+        <Grid item xs={5} style={{ display: "flex" }}>
+          <FormControl
+            variant="outlined"
+            style={{ width: "100%" }}
+            className={classes.search}
+          >
             <InputLabel>Search</InputLabel>
             <OutlinedInput
               value={search}
@@ -233,6 +247,8 @@ export function PeopleSort({
               label="Search"
             />
           </FormControl>
+        </Grid>
+        <Grid item xs={1} style={{ display: "flex" }}>
           <Button onClick={() => getPage(role, region, stack)}>search</Button>
         </Grid>
       </Grid>
