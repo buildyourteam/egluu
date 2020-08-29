@@ -199,6 +199,178 @@ export const useProjectApplyEffect = (
   return "";
 };
 
+export const useProjectDetailApplyState = (api) => {
+  const [apply, setApply] = useState(projectApply);
+
+  const fetchGetApply = async () => {
+    const token = window.sessionStorage.getItem("accessToken");
+    const id = window.sessionStorage.getItem("id");
+    let res = await axios
+      .get(`${api}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json;charset=UTF-8",
+          Accept: "application/hal+json",
+        },
+      })
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          res = await axios
+            .get(`${api}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            })
+            .catch((error) => {
+              throw error;
+            });
+        } else {
+          throw error;
+        }
+      });
+    return res.data;
+  };
+
+  const fetchPutApply = async () => {
+    const token = window.sessionStorage.getItem("accessToken");
+    await axios
+      .put(
+        api,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json;charset=UTF-8",
+            Accept: "application/hal+json",
+          },
+        }
+      )
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          await axios
+            .put(api, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            })
+            .catch((error) => {
+              throw error;
+            });
+        } else {
+          throw error;
+        }
+      });
+  };
+
+  const fetchDeleteApply = async () => {
+    const token = window.sessionStorage.getItem("accessToken");
+    await axios
+      .delete(api, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json;charset=UTF-8",
+          Accept: "application/hal+json",
+        },
+      })
+      .catch(async (error) => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          await axios
+            .delete(api, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/hal+json",
+              },
+            })
+            .catch((error) => {
+              throw error;
+            });
+        } else {
+          throw error;
+        }
+      });
+  };
+
+  return [
+    { apply },
+    {
+      fetchDeleteApply,
+      setApply,
+      fetchGetApply,
+      fetchPutApply,
+    },
+  ];
+};
+
+export const useProjectDetailApplyEffect = (
+  open,
+  getApply,
+  apply,
+  applyGetRes,
+  applyPutRes,
+  applyDeleteRes,
+  applySet,
+  userId,
+  close,
+  applyAction
+) => {
+  const history = useHistory();
+  useEffect(() => {
+    if (open) {
+      getApply();
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (applyGetRes.fulfilled) {
+      applyAction.setApply(applyGetRes.data);
+    }
+  }, [applyGetRes.fulfilled]);
+
+  useEffect(() => {
+    if (applyPutRes.fulfilled) {
+      applySet((value) => {
+        const filterData = value.map((apply) => {
+          if (apply.userId === userId) {
+            return {
+              ...apply,
+              state: "ACCEPT",
+            };
+          } else {
+            return apply;
+          }
+        });
+        return filterData;
+      });
+      close();
+    }
+  }, [applyPutRes.fulfilled]);
+
+  useEffect(() => {
+    if (applyDeleteRes.fulfilled) {
+      applySet((value) => {
+        const filterData = value.map((apply) => {
+          if (apply.userId === userId) {
+            return {
+              ...apply,
+              state: "REJECT",
+            };
+          }
+        });
+        return filterData;
+      });
+      close();
+    }
+  }, [applyDeleteRes.fulfilled]);
+};
+
 const projectApply = {
   answers: [],
   introduction: "",
