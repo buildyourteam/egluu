@@ -7,6 +7,8 @@ import {
   useRequest,
   useProjectApplyState,
   useProjectApplyEffect,
+  useProjectDetailApplyState,
+  useProjectDetailApplyEffect,
 } from "../../hook";
 import {
   Layout,
@@ -88,6 +90,8 @@ export default function ProjectDetail() {
   const handleClickDelete = () => {
     projectAction.fetchDeleteProject(projectId);
   };
+
+  console.log(project.apply);
   return (
     <Layout>
       {getProjectPending ? (
@@ -261,13 +265,24 @@ export default function ProjectDetail() {
                   <div>지원자가 없습니다 </div>
                 ) : (
                   <div>
-                    <List dense>
+                    <List
+                      dense
+                      style={{
+                        backgroundColor:
+                          project.apply[project.pagination.apply].state ===
+                          "REJECT"
+                            ? "#eeeeee"
+                            : project.apply[project.pagination.apply].state ===
+                              "ACCEPT"
+                            ? "rgb(212, 237, 218, 0.3)"
+                            : "#ffffff",
+                      }}
+                    >
                       <ListItem>
                         <ListItemText
                           primary={`이름 : ${
                             project.apply[project.pagination.apply].userName
                           }`}
-                          secondary="Secondary text"
                         />
                       </ListItem>
                       <ListItem>
@@ -275,35 +290,49 @@ export default function ProjectDetail() {
                           primary={`역할 : ${
                             project.apply[project.pagination.apply].role
                           }`}
-                          secondary="Secondary text"
                         />
                       </ListItem>
-                      <Button
-                        onClick={() => {
-                          history.push(
-                            `/profile/${
-                              project.apply[project.pagination.apply].userId
-                            }`
-                          );
-                        }}
-                      >
+                      <Button onClick={projectAction.openDetailApply}>
                         상세보기
                       </Button>
+                      <Button
+                        disabled={project.pagination.apply === 0}
+                        onClick={() =>
+                          projectAction.clickPagination("apply", -1)
+                        }
+                      >
+                        이전
+                      </Button>
+                      <Button
+                        disabled={
+                          project.apply.length - project.pagination.apply < 2
+                        }
+                        onClick={() =>
+                          projectAction.clickPagination("apply", 1)
+                        }
+                      >
+                        다음
+                      </Button>
                     </List>
-                    <Button
-                      disabled={project.pagination.apply === 0}
-                      onClick={() => projectAction.clickPagination("apply", -1)}
+                    <CenterModal
+                      header="지원자 상세 정보"
+                      modalFlag={project.check.applyDetail}
+                      close={projectAction.closeDetailApply}
                     >
-                      이전
-                    </Button>
-                    <Button
-                      disabled={
-                        project.apply.length - project.pagination.apply < 2
-                      }
-                      onClick={() => projectAction.clickPagination("apply", 1)}
-                    >
-                      다음
-                    </Button>
+                      <ApplyDetailProject
+                        open={project.check.applyDetail}
+                        close={projectAction.closeDetailApply}
+                        applyApi={
+                          project.apply[project.pagination.apply]._links.self
+                            .href
+                        }
+                        applySet={projectAction.setApplyState}
+                        userId={project.apply[project.pagination.apply].userId}
+                        setPagination={() =>
+                          projectAction.clickPagination("apply", 0)
+                        }
+                      />
+                    </CenterModal>
                   </div>
                 ))}
               <br />
@@ -321,7 +350,7 @@ export default function ProjectDetail() {
                 }
               />
               {project.check.recruit &&
-                (project.apply.length === 0 ? (
+                (project.recruit.length === 0 ? (
                   <div>요청이 없습니다 </div>
                 ) : (
                   <div>
@@ -331,7 +360,6 @@ export default function ProjectDetail() {
                           primary={`이름 : ${
                             project.recruit[project.pagination.recruit].userName
                           }`}
-                          secondary="Secondary text"
                         />
                       </ListItem>
                       <ListItem>
@@ -339,16 +367,21 @@ export default function ProjectDetail() {
                           primary={`역할 : ${
                             project.recruit[project.pagination.recruit].role
                           }`}
-                          secondary="Secondary text"
                         />
                       </ListItem>
                       <ListItem>
                         <ListItemText
                           primary={`자기소개 : ${
                             project.recruit[project.pagination.recruit]
-                              .selfDescription
+                              .introduction
                           }`}
-                          secondary="Secondary text"
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          primary={`상태 : ${
+                            project.recruit[project.pagination.recruit].state
+                          }`}
                         />
                       </ListItem>
                     </List>
@@ -474,6 +507,75 @@ const ApplyProject = (props) => {
               지원하기
             </Button>
           )}
+        </div>
+      </div>
+      <div style={{ height: "12px" }} />
+    </div>
+  );
+};
+
+const ApplyDetailProject = (props) => {
+  const { open, close, applyApi, applySet, userId, setPagination } = props;
+  const [apply, applyAction] = useProjectDetailApplyState(applyApi);
+  console.log(applyAction);
+  const [applyGetRes, { run: getApply }] = useRequest(
+    applyAction.fetchGetApply
+  );
+  const [applyPutRes, { run: putApply }] = useRequest(
+    applyAction.fetchPutApply
+  );
+  const [applyDeleteRes, { run: deleteApply }] = useRequest(
+    applyAction.fetchDeleteApply
+  );
+
+  useProjectDetailApplyEffect(
+    open,
+    getApply,
+    apply,
+    applyGetRes,
+    applyPutRes,
+    applyDeleteRes,
+    applySet,
+    userId,
+    close,
+    applyAction,
+    setPagination
+  );
+  return (
+    <div id="drawer_root">
+      <div style={{ height: "12px" }} />
+      {apply.apply.answers.map((a, i) => (
+        <div>
+          <Typography variant="h6">
+            {i + 1}번 질문 : {apply.apply.questions[i]}
+          </Typography>
+          <Typography variant="h6">{a}</Typography>
+          <div style={{ height: "12px" }} />
+        </div>
+      ))}
+      <Label for="exampleEmail" style={{ marginBottom: "0px" }}>
+        자기 소개
+      </Label>
+      <Typography variant="h6">{apply.apply.introduction}</Typography>
+      <div style={{ height: "12px" }} />
+      <Typography variant="h6">지원 분야 : {apply.apply.role}</Typography>
+      <div style={{ height: "12px" }} />
+      <div className="full_div">
+        <div id="button">
+          <Button
+            onClick={() => {
+              putApply();
+            }}
+          >
+            수락
+          </Button>
+          <Button
+            onClick={() => {
+              deleteApply();
+            }}
+          >
+            거절
+          </Button>
         </div>
       </div>
       <div style={{ height: "12px" }} />

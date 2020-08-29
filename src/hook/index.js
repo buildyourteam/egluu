@@ -4,7 +4,7 @@ export { default as useMove } from "./usePageMove";
 export {
   usePeopleListState,
   usePeopleListEffect,
-  useWantedPeopleListEffect
+  useWantedPeopleListEffect,
 } from "./people";
 export { useRegisterEffect } from "./auth/useRegister";
 export {
@@ -19,6 +19,8 @@ export {
   useProjectUpdateEffect,
   useProjectApplyState,
   useProjectApplyEffect,
-  useDeadlineProjectListEffect
+  useDeadlineProjectListEffect,
+  useProjectDetailApplyState,
+  useProjectDetailApplyEffect,
 } from "./project";
 export { default as useAlert } from "./useAlert";

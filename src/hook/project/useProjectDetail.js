@@ -18,6 +18,7 @@ const useProjectDetailState = () => {
     reader: false,
     applyModal: false,
     delete: false,
+    applyDetail: false,
   });
   const [pagination, setPagination] = useState({
     apply: 0,
@@ -123,6 +124,26 @@ const useProjectDetailState = () => {
     history.push("/projects");
   };
 
+  const fetchPutApply = async (userId) => {
+    let token = window.sessionStorage.getItem("accessToken");
+    token = await refreshToken();
+    await axios
+      .put(project._links.apply.href, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json;charset=UTF-8",
+          Accept: "application/hal+json",
+        },
+      })
+      .then(() => {
+        const deleteMember = apply.filter((member) => member.userId !== userId);
+        setApplyState(deleteMember);
+      })
+      .catch(async (error) => {
+        throw error;
+      });
+  };
+
   const setProjectState = (data) => {
     setProject(data);
   };
@@ -198,6 +219,24 @@ const useProjectDetailState = () => {
     });
   };
 
+  const openDetailApply = (e) => {
+    setCheck((value) => {
+      return {
+        ...value,
+        applyDetail: true,
+      };
+    });
+  };
+
+  const closeDetailApply = (e) => {
+    setCheck((value) => {
+      return {
+        ...value,
+        applyDetail: false,
+      };
+    });
+  };
+
   const openDelete = (e) => {
     setCheck((value) => {
       return {
@@ -233,6 +272,8 @@ const useProjectDetailState = () => {
       closeApply,
       openDelete,
       closeDelete,
+      openDetailApply,
+      closeDetailApply,
     },
   ];
 };

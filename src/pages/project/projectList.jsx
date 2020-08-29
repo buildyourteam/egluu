@@ -8,8 +8,9 @@ import { Link } from "react-router-dom";
 import { Layout, ProjectBox } from "../../components";
 import { Row, Col } from "reactstrap";
 import { ProjectSort } from "../../components/List/Sort";
-import { Button } from "reactstrap";
+import { Button, Alert } from "reactstrap";
 import Pagination from "@material-ui/lab/Pagination";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function ProjectList() {
   const [projectList, projectListAction] = useProjectListState();
@@ -32,6 +33,7 @@ export default function ProjectList() {
     projectListAction.setProjectList,
     projectListAction.setPage
   );
+  const isToken = useSelector((state) => state.login.isToken);
 
   return (
     <Layout>
@@ -47,14 +49,15 @@ export default function ProjectList() {
         setSearch={projectListAction.setSearch}
         getApi={getProjectListApi}
       />
-      <div className="full_div">
-        <div id="button">
-          <Link to="/createProject">
-            <Button>프로젝트 생성</Button>
-          </Link>
-        </div>
-      </div>
+
       <hr />
+      {isToken && (
+        <Alert color="success">
+          프로젝트 생성을 원하신다면 <Link to="/createProject">여기</Link>를
+          눌러주세요.
+        </Alert>
+      )}
+
       <Row xs="12">
         {projectList.projectList.map((value, index) => {
           return (

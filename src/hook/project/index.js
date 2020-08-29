@@ -16,4 +16,9 @@ export {
   useProjectUpdateState,
   useProjectUpdateEffect,
 } from "./useProjectUpdate";
-export { useProjectApplyState, useProjectApplyEffect } from "./useProjectApply";
+export {
+  useProjectApplyState,
+  useProjectApplyEffect,
+  useProjectDetailApplyState,
+  useProjectDetailApplyEffect,
+} from "./useProjectApply";
