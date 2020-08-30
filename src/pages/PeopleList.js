@@ -7,11 +7,6 @@ import Pagination from "@material-ui/lab/Pagination";
 import { Layout } from "../components";
 
 export default function PeopleList() {
-  const [role, setRole] = useState("");
-  const [grade, setGrade] = useState("");
-  const [region, setRegion] = useState("");
-  const [search, setSearch] = useState("");
-
   const [peopleList, peopleListAction] = usePeopleListState();
   const [
     {
@@ -37,14 +32,14 @@ export default function PeopleList() {
     <Layout>
       <hr />
       <PeopleSort
-        role={role}
-        setRole={setRole}
-        grade={grade}
-        setGrade={setGrade}
-        region={region}
-        setRegion={setRegion}
-        search={search}
-        setSearch={setSearch}
+        role={peopleList.role}
+        setRole={peopleList.setRole}
+        grade={peopleList.grade}
+        setGrade={peopleList.setGrade}
+        region={peopleList.region}
+        setRegion={peopleList.setRegion}
+        search={peopleList.search}
+        setSearch={peopleList.setSearch}
         getApi={getPeopleListApi}
       />
       <hr />
