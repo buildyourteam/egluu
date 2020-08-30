@@ -5,7 +5,7 @@ import {
   useWantedPeopleListEffect,
   usePeopleListState,
   useProjectListState,
-  useRequest
+  useRequest,
 } from "../hook";
 import {
   Button,
@@ -13,7 +13,7 @@ import {
   Jumbotron,
   SubtitleHeader,
   ProjectBox,
-  PeopleBox
+  PeopleBox,
 } from "../components";
 import Pagination from "@material-ui/lab/Pagination";
 import "./main.css";
@@ -50,7 +50,10 @@ export default function Root() {
           {project.projectList.map((value, index) => {
             return (
               <Col xs="3" key={index}>
-                <ProjectBox data={value} />
+                <ProjectBox
+                  data={value}
+                  url={`/projectDetail/${value.projectId}`}
+                />
               </Col>
             );
           })}
@@ -69,7 +72,7 @@ export default function Root() {
           {people.peopleList.map((value, index) => {
             return (
               <Col xs="2" key={index}>
-                <PeopleBox data={value} />
+                <PeopleBox data={value} url={`/profile/${value.userId}`} />
               </Col>
             );
           })}

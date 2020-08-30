@@ -13,7 +13,7 @@ import ModifyRunningProjects from "./ModifyPlanProjects";
 const RunningProjects = ({ userId }) => {
   const dispatch = useDispatch();
 
-  const myId = useSelector(state => state.login.userId);
+  const myId = useSelector((state) => state.login.userId);
 
   const [hiding, setHiding] = useState(false);
   const [list, setList] = useState([]);
@@ -22,13 +22,13 @@ const RunningProjects = ({ userId }) => {
     if (hiding) {
       setHiding(false);
       const reduxData = {
-        isHideChange: true
+        isHideChange: true,
       };
       dispatch(setHideChange(reduxData));
     } else {
       setHiding(true);
       const reduxData = {
-        isHideChange: false
+        isHideChange: false,
       };
       dispatch(setHideChange(reduxData));
     }
@@ -41,9 +41,9 @@ const RunningProjects = ({ userId }) => {
       fulfilled: getProjectFulfilled,
       pending: getProjectPending,
       rejected: getProjectRejected,
-      error: getProjectError
+      error: getProjectError,
     },
-    { run: getProjectApi }
+    { run: getProjectApi },
   ] = useRequest(getProject);
 
   useProfileProject(
@@ -68,7 +68,10 @@ const RunningProjects = ({ userId }) => {
         <Row xs="3">
           {list.map((value, index) => (
             <Col key={index}>
-              <ProjectBox data={value} />
+              <ProjectBox
+                data={value}
+                url={`/projectDetail/${value.projectId}`}
+              />
             </Col>
           ))}
         </Row>

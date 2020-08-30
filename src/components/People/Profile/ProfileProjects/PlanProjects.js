@@ -14,7 +14,7 @@ import ModifyPlanProjects from "./ModifyPlanProjects";
 const PlanProjects = ({ userId }) => {
   const dispatch = useDispatch();
 
-  const myId = useSelector(state => state.login.userId);
+  const myId = useSelector((state) => state.login.userId);
 
   const [hiding, setHiding] = useState(false);
   const [list, setList] = useState([]);
@@ -23,13 +23,13 @@ const PlanProjects = ({ userId }) => {
     if (hiding) {
       setHiding(false);
       const reduxData = {
-        isHideChange: true
+        isHideChange: true,
       };
       dispatch(setHideChange(reduxData));
     } else {
       setHiding(true);
       const reduxData = {
-        isHideChange: false
+        isHideChange: false,
       };
       dispatch(setHideChange(reduxData));
     }
@@ -43,9 +43,9 @@ const PlanProjects = ({ userId }) => {
       fulfilled: getProjectFulfilled,
       pending: getProjectPending,
       rejected: getProjectRejected,
-      error: getProjectError
+      error: getProjectError,
     },
-    { run: getProjectApi }
+    { run: getProjectApi },
   ] = useRequest(getProject);
 
   useProfileProject(
@@ -71,7 +71,10 @@ const PlanProjects = ({ userId }) => {
         <Row xs="3">
           {list.map((value, index) => (
             <Col key={index}>
-              <ProjectBox data={value} />
+              <ProjectBox
+                data={value}
+                url={`/projectDetail/${value.projectId}`}
+              />
             </Col>
           ))}
         </Row>

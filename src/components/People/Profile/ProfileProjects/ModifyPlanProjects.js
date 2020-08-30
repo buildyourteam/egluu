@@ -4,7 +4,7 @@ import { useRequest } from "../../../../hook/useRequest";
 import ProjectBox from "../../../Project/ProjectBox";
 import {
   usePlanProjectApi,
-  useHideProjectApi
+  useHideProjectApi,
 } from "../../../../hook/api/profileApi";
 import useProfileProjectModify from "../../../../hook/profile/useProfileProjectModify";
 import "./profileProject.css";
@@ -19,9 +19,9 @@ const ModifyPlanProjects = ({ list, setList, userId }) => {
       fulfilled: getProjectFulfilled,
       pending: getProjectPending,
       rejected: getProjectRejected,
-      error: getProjectError
+      error: getProjectError,
     },
-    { run: getHideProjectApi }
+    { run: getHideProjectApi },
   ] = useRequest(getHideProject);
 
   const [
@@ -30,9 +30,9 @@ const ModifyPlanProjects = ({ list, setList, userId }) => {
       fulfilled: hideProjectFulfilled,
       pending: hideProjectPending,
       rejected: hideProjectRejected,
-      error: hideProjectError
+      error: hideProjectError,
     },
-    { run: hideProjectApi }
+    { run: hideProjectApi },
   ] = useRequest(hideProject);
 
   const [
@@ -41,9 +41,9 @@ const ModifyPlanProjects = ({ list, setList, userId }) => {
       fulfilled: displayProjectFulfilled,
       pending: displayProjectPending,
       rejected: displayProjectRejected,
-      error: displayProjectError
+      error: displayProjectError,
     },
-    { run: displayProjectApi }
+    { run: displayProjectApi },
   ] = useRequest(displayProject);
 
   useProfileProjectModify(
@@ -72,11 +72,11 @@ const ModifyPlanProjects = ({ list, setList, userId }) => {
     setHideList
   );
 
-  const handleHide = id => {
+  const handleHide = (id) => {
     hideProjectApi(userId, id);
   };
 
-  const handleDisplay = id => {
+  const handleDisplay = (id) => {
     displayProjectApi(userId, id);
   };
 
@@ -92,7 +92,10 @@ const ModifyPlanProjects = ({ list, setList, userId }) => {
               >
                 Hide
               </Button>
-              <ProjectBox data={value} />
+              <ProjectBox
+                data={value}
+                url={`/projectDetail/${value.projectId}`}
+              />
             </Col>
           ))}
         </Row>
@@ -108,7 +111,10 @@ const ModifyPlanProjects = ({ list, setList, userId }) => {
               >
                 Display
               </Button>
-              <ProjectBox data={value} />
+              <ProjectBox
+                data={value}
+                url={`/projectDetail/${value.projectId}`}
+              />
             </Col>
           ))}
         </Row>
