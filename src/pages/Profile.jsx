@@ -97,8 +97,15 @@ const Profile = () => {
               {myId &&
                 (userId === myId ? (
                   <>
-                    <Button onClick={modifyToggle}>Modify</Button>
-                    <Button onClick={invitationToggle}>See Invitations</Button>
+                    <Button id="modify-button" onClick={modifyToggle}>
+                      Modify
+                    </Button>
+                    <Button
+                      id="see-invitation-button"
+                      onClick={invitationToggle}
+                    >
+                      See Invitations
+                    </Button>
                   </>
                 ) : (
                   <>
