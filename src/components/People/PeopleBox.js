@@ -16,6 +16,8 @@ import Badge from "@material-ui/core/Badge";
 import Level from "./Level";
 import "./People.css";
 import { Link } from "react-router-dom";
+import { useImage } from "../../hook/profile/useImage";
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
@@ -37,7 +39,8 @@ const useStyles = makeStyles(theme => ({
 export default function PeopleBox(props) {
   const classes = useStyles();
   const data = props.data;
-
+  const [imgState, setImgState] = useState("");
+  const imgPending = useImage(imgState, setImgState, data.userId);
   return (
     <div id="PeopleBoxCard" className={classes.card}>
       <Link
@@ -48,12 +51,23 @@ export default function PeopleBox(props) {
       >
         <Badge badgeContent={String(data.grade)} className={classes.root}>
           <Card>
-            <CardImg
+            {/* <CardImg
               top
               width="100%"
               src={`${process.env.REACT_APP_BASE_URL}profile/image/${data.userId}`}
               alt="Card image cap"
-            />
+            /> */}
+            {imgPending ? (
+              <p>로딩중...</p>
+            ) : (
+              <div className="people-img">
+                <img
+                  src={imgState.imgUrl}
+                  width="100%"
+                  object-fit="contain"
+                ></img>
+              </div>
+            )}
             <CardBody>
               <div id="card-title">
                 <CardTitle>{data.userId}</CardTitle>
@@ -61,13 +75,18 @@ export default function PeopleBox(props) {
 
               <CardText id="card-text">
                 {data.stack === null && " "}
-                {data.stacks.map(value => {
+                {/* {data.stacks.map(value => {
                   return (
                     <Stack color="secondary" pill>
                       # {value}{" "}
                     </Stack>
                   );
-                })}
+                })} */}
+                {data.stacks[0] && (
+                  <Stack color="secondary" pill>
+                    # {data.stacks[0]}{" "}
+                  </Stack>
+                )}
               </CardText>
             </CardBody>
           </Card>

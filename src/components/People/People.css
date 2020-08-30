@@ -39,3 +39,16 @@
 .badge {
   font-size: 100%;
 }
+.people-img img {
+  display: block;
+  /* width: 225px; */
+  height: 140px;
+  object-fit: cover;
+}
+.people-img {
+  display: block;
+  overflow: hidden;
+  object-fit: contain;
+  width: auto;
+  /* height: 220px; */
+}
