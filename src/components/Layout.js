@@ -80,7 +80,7 @@ export default function Layout({ children }) {
               <>
                 <NavItem className="ml-auto">
                   <NavLink tag={Link} to={profileUrl}>
-                    {userId} 님 환영해~
+                    {userId} 님
                   </NavLink>
                 </NavItem>
                 <NavItem>
