@@ -147,8 +147,8 @@ export function PeopleSort({
   setRole,
   region,
   setRegion,
-  stack,
-  setStack,
+  grade,
+  setGrade,
   search,
   setSearch,
   getApi,
@@ -159,15 +159,15 @@ export function PeopleSort({
     } else if (event.target.name === "region") {
       setRegion(event.target.value);
     } else {
-      setStack(event.target.value);
+      setGrade(event.target.value);
     }
   };
 
-  const getPage = async (role, region, stack) => {
+  const getPage = async (role, region, grade) => {
     let params = "";
     if (role !== "") params += `&role=${role}`;
     if (region !== "") params += `&region=${region}`;
-    if (stack !== "") params += `&stack=${stack}`;
+    if (grade !== "") params += `&grade=${grade}`;
     await getApi(0, params);
   };
 
@@ -201,8 +201,8 @@ export function PeopleSort({
         <Grid item xs={6} sm={2}>
           <FormControl className={classes.formControl}>
             <Select
-              name="region"
-              value={region}
+              name="grade"
+              value={grade}
               onChange={handleChange}
               displayEmpty
             >
@@ -213,25 +213,25 @@ export function PeopleSort({
               <MenuItem value="1">1</MenuItem>
               <MenuItem value="2">2</MenuItem>
             </Select>
-            <FormHelperText>region</FormHelperText>
+            <FormHelperText>grade</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={6} sm={2}>
           <FormControl className={classes.formControl}>
             <Select
-              name="stack"
-              value={stack}
+              name="region"
+              value={region}
               onChange={handleChange}
               displayEmpty
             >
               <MenuItem value="" disabled>
                 지역
               </MenuItem>
-              <MenuItem value="Seoul">서울</MenuItem>
-              <MenuItem value="Gunggi">경기</MenuItem>
+              <MenuItem value="SEOUL">서울</MenuItem>
+              <MenuItem value="GYEONGGI">경기</MenuItem>
               <MenuItem value="Busan">부산</MenuItem>
             </Select>
-            <FormHelperText>stack</FormHelperText>
+            <FormHelperText>region</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={5} style={{ display: "flex" }}>
@@ -249,7 +249,7 @@ export function PeopleSort({
           </FormControl>
         </Grid>
         <Grid item xs={1} style={{ display: "flex" }}>
-          <Button onClick={() => getPage(role, region, stack)}>search</Button>
+          <Button onClick={() => getPage(role, region, grade)}>search</Button>
         </Grid>
       </Grid>
     </>

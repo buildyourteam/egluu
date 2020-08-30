@@ -8,8 +8,8 @@ import { Layout } from "../components";
 
 export default function PeopleList() {
   const [role, setRole] = useState("");
+  const [grade, setGrade] = useState("");
   const [region, setRegion] = useState("");
-  const [stack, setStack] = useState("");
   const [search, setSearch] = useState("");
 
   const [peopleList, peopleListAction] = usePeopleListState();
@@ -39,10 +39,10 @@ export default function PeopleList() {
       <PeopleSort
         role={role}
         setRole={setRole}
+        grade={grade}
+        setGrade={setGrade}
         region={region}
         setRegion={setRegion}
-        stack={stack}
-        setStack={setStack}
         search={search}
         setSearch={setSearch}
         getApi={getPeopleListApi}
@@ -66,9 +66,9 @@ export default function PeopleList() {
           onChange={(e, page) => {
             let params = "";
             if (peopleList.role !== "") params += `&role=${peopleList.role}`;
+            if (peopleList.grade !== "") params += `&grade=${peopleList.grade}`;
             if (peopleList.region !== "")
               params += `&region=${peopleList.region}`;
-            if (peopleList.stack !== "") params += `&stack=${peopleList.stack}`;
             getPeopleListApi(page - 1, params);
           }}
         />
