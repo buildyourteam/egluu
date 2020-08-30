@@ -9,7 +9,7 @@ import {
   CardSubtitle,
   Row,
   Col,
-  Progress,
+  Progress
 } from "reactstrap";
 import sampleimg from "../icon/baseImg.png";
 import "./Project.css";
@@ -53,9 +53,9 @@ export default function ProjectBox(props) {
     <div id="ProjectBoxCard">
       <Link
         to={{
-          pathname: `${props.url}`,
+          pathname: `${props.url}`
         }}
-        style={{ textDecoration: "none" }}
+        style={{ textDecoration: "none", color: "#000000" }}
       >
         <Card>
           <CardImg
@@ -66,28 +66,34 @@ export default function ProjectBox(props) {
           />
           <CardBody>
             <CardTitle>{staticProjectData.projectName}</CardTitle>
-            <CardSubtitle>{staticProjectData.teamName}</CardSubtitle>
-            <CardText>D-{dday}</CardText>
-            <Row xs="12">
+            <Row xs="12" id="team_dday">
+              <Col xs="9">
+                <CardSubtitle>{staticProjectData.teamName}</CardSubtitle>
+              </Col>
+              <Col xs="3">
+                <CardSubtitle>D-{dday}</CardSubtitle>
+              </Col>
+            </Row>
+            <Row xs="12" id="member-count">
               <Col xs="6">
-                <Progress color="success" value={developerPercent}>
+                <CardText>developer</CardText>
+                <Progress color="#007bff" value={developerPercent}>
                   {developerPercent}
                 </Progress>
-                <CardText>developer</CardText>
-                <Progress color="success" value={plannerPercent}>
+                <CardText>planner </CardText>
+                <Progress color="#007bff" value={plannerPercent}>
                   {plannerPercent}
                 </Progress>
-                <CardText>planner </CardText>
               </Col>
               <Col xs="6">
-                <Progress color="success" value={designerPercent}>
+                <CardText>designer</CardText>
+                <Progress color="#007bff" value={designerPercent}>
                   {designerPercent}
                 </Progress>
-                <CardText>designer</CardText>
-                <Progress color="success" value={etcPercent}>
+                <CardText>etc</CardText>
+                <Progress color="#007bff" value={etcPercent}>
                   {etcPercent}
                 </Progress>
-                <CardText>etc</CardText>
               </Col>
             </Row>
           </CardBody>

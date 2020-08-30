@@ -1,11 +1,14 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 
 .card-body {
-  padding: 10px 10px 10px 9px;
+  padding: 8px 8px 8px 8px;
+}
+#card-title {
+  font-size: 19px;
+  padding: 0px 2px 0px 0px;
 }
 
 #PeopleBoxCard .col-3 {
-  /* background-color: black; */
   padding-right: 0px;
   padding-left: 0px;
 }
@@ -27,8 +30,12 @@
 
 #PeopleBoxCard .card-text {
   font-size: 10px;
+  align-items: flex-end;
 }
 
 .level {
   padding: 1px 10px;
+}
+.badge {
+  font-size: 100%;
 }
