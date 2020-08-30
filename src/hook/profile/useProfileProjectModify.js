@@ -29,12 +29,19 @@ const useProfileProjectModify = (
   useEffect(() => {
     getHideProjectApi(userId);
   }, []);
+  console.log(getProjectFulfilled);
+  console.log(getProjectRejected);
+  console.log(getProjectError);
+  console.log(resGetProject);
 
   // 불러오기 성공시 , 불러온 내부에 프로젝트 데이터가 있으면 숨김 state에 저장
   useEffect(() => {
     if (getProjectFulfilled) {
-      if (resGetProject.page.totalElements) {
-        setHideList(resGetProject._embedded.projectList);
+      console.log(resGetProject);
+      if (resGetProject) {
+        if (resGetProject.page.totalElements) {
+          setHideList(resGetProject._embedded.projectList);
+        }
       }
     }
   }, [getProjectFulfilled]);

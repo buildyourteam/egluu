@@ -8,7 +8,7 @@ import "../Profile.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setHideChange } from "../../../../reducers/profile";
 
-import ModifyRunningProjects from "./ModifyPlanProjects";
+import ModifyRunningProjects from "./ModifyRunningProjects";
 
 const RunningProjects = ({ userId }) => {
   const dispatch = useDispatch();

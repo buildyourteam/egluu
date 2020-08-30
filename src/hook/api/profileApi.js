@@ -5,7 +5,7 @@ import refreshToken from "../auth/refreshToken";
 // Profile Page 좌측 Info창에서 사용되는 api
 export function useInfoApi() {
   // get info api
-  const getInfo = async (userId) => {
+  const getInfo = async userId => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}`
     );
@@ -14,18 +14,15 @@ export function useInfoApi() {
 
   // post info api
   const postInfo = async (userId, data) => {
-    // token = await refreshToken();
     let token = window.sessionStorage.getItem("accessToken");
-    //console.log(token);
-    //console.log(userId);
     const res = await axios
       .put(`${process.env.REACT_APP_BASE_URL}profile/${userId}`, data, {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       })
-      .catch(async (error) => {
+      .catch(async error => {
         if (error.response.data.error === "007") {
           token = await refreshToken();
           console.log(token);
@@ -33,10 +30,10 @@ export function useInfoApi() {
             .put(`${process.env.REACT_APP_BASE_URL}profile/${userId}`, data, {
               headers: {
                 "Content-type": "application/json;charset=UTF-8",
-                Authorization: `Bearer ${token}`,
-              },
+                Authorization: `Bearer ${token}`
+              }
             })
-            .catch((error) => {
+            .catch(error => {
               throw error;
             });
           return res;
@@ -50,39 +47,52 @@ export function useInfoApi() {
 }
 export function useImgApi() {
   // get Img api
-  const getImg = async (userId) => {
+  const getImg = async userId => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/image/${userId}`
     );
-    //const res = await axios.get(`https://apis.tracker.delivery/carriers`);
-    //console.log(res);
     return res.data;
   };
 
   const postImg = async (userId, data) => {
-    const token = window.sessionStorage.getItem("accessToken");
-    //console.log(token);
-    //console.log(userId);
+    let token = window.sessionStorage.getItem("accessToken");
     let image = new FormData();
     image.append("image", data.imgUrl);
-    const res = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}profile/image/${userId}`,
-      image,
-      {
+    const res = await axios
+      .post(`${process.env.REACT_APP_BASE_URL}profile/image/${userId}`, image, {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(res);
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .catch(async error => {
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          const res = await axios
+            .post(
+              `${process.env.REACT_APP_BASE_URL}profile/image/${userId}`,
+              image,
+              {
+                headers: {
+                  "Content-type": "application/json;charset=UTF-8",
+                  Authorization: `Bearer ${token}`
+                }
+              }
+            )
+            .catch(error => {
+              throw error;
+            });
+          return res;
+        } else {
+          throw error;
+        }
+      });
     return res;
   };
   return { getImg, postImg };
 }
 export function useRunningProjectApi() {
-  const getProject = async (userId) => {
-    //const res = await axios.get(`${process.env.REACT_APP_BASE_URL}${userId}`);
+  const getProject = async userId => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/running?page=0&size=10&sort=projectName%2CDESC`
     );
@@ -90,17 +100,48 @@ export function useRunningProjectApi() {
     return res.data;
   };
   // 숨긴 프로젝트 목록 가져오기
-  const getHideProject = async (userId) => {
-    const token = window.sessionStorage.getItem("accessToken");
-    const res = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}profile/${userId}/running/hidden?page=0&size=10&sort=projectName%2CDESC`,
-      {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  const getHideProject = async userId => {
+    let token = window.sessionStorage.getItem("accessToken");
+    let res = await axios
+      .get(
+        `${process.env.REACT_APP_BASE_URL}profile/${userId}/running/hidden?page=0&size=10&sort=projectName%2CDESC`,
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      .catch(async error => {
+        console.log("12");
+        if (error.response.data.error === "007") {
+          token = await refreshToken();
+          res = await axios
+            .get(
+              `${process.env.REACT_APP_BASE_URL}profile/${userId}/running/hidden?page=0&size=10&sort=projectName%2CDESC`,
+              {
+                headers: {
+                  "Content-type": "application/json;charset=UTF-8",
+                  Authorization: `Bearer ${token}`
+                }
+              }
+            )
+            .then(value => {
+              console.log(value);
+              // res = value;
+              throw value;
+            })
+            .catch(error => {
+              throw error;
+            });
+          // return res.data;
+        } else {
+          throw error;
+        }
+        console.log(res);
+        return res.data;
+      });
+    console.log(res);
     return res.data;
   };
 
@@ -108,8 +149,7 @@ export function useRunningProjectApi() {
 }
 export function useEndedProjectApi() {
   // 종료된 프로젝트 목록 가져오기
-  const getProject = async (userId) => {
-    //const res = await axios.get(`${process.env.REACT_APP_BASE_URL}${userId}`);
+  const getProject = async userId => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/ended?page=0&size=10&sort=projectName%2CDESC`
     );
@@ -117,15 +157,15 @@ export function useEndedProjectApi() {
   };
 
   // 숨긴 프로젝트 목록 가져오기
-  const getHideProject = async (userId) => {
+  const getHideProject = async userId => {
     const token = window.sessionStorage.getItem("accessToken");
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/ended/hidden?page=0&size=10&sort=projectName%2CDESC`,
       {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     return res.data;
@@ -134,7 +174,7 @@ export function useEndedProjectApi() {
   return { getProject, getHideProject };
 }
 export function usePlanProjectApi() {
-  const getProject = async (userId) => {
+  const getProject = async userId => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/plan?page=0&size=10&sort=projectName%2CDESC`
     );
@@ -143,41 +183,41 @@ export function usePlanProjectApi() {
   };
 
   // 숨긴 프로젝트 목록 가져오기
-  const getHideProject = async (userId) => {
+  const getHideProject = async userId => {
     const token = window.sessionStorage.getItem("accessToken");
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/plan/hidden?page=0&size=10&sort=projectName%2CDESC`,
       {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     return res.data;
   };
 
   // 모든 (planned) 프로젝트 목록 가져오기 (recruit modal에서 프로젝트 선택용)
-  const getAllPlannedProject = async (myId) => {
+  const getAllPlannedProject = async myId => {
     const token = window.sessionStorage.getItem("accessToken");
 
     // 헤더
     const header = {
       "Content-type": "application/json;charset=UTF-8",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
 
     // 일반 plan과 숨겨진 plan 가져오기
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${myId}/plan`,
       {
-        headers: header,
+        headers: header
       }
     );
     const res2 = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${myId}/plan/hidden`,
       {
-        headers: header,
+        headers: header
       }
     );
 
@@ -204,8 +244,8 @@ export function useHideProjectApi() {
       {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     return { res, projectId };
@@ -219,8 +259,8 @@ export function useHideProjectApi() {
       {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     return { res, projectId };
@@ -237,8 +277,8 @@ export function useSendRecruitPeopleApi() {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
           Accept: "application/hal+json",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     return res;
@@ -246,15 +286,15 @@ export function useSendRecruitPeopleApi() {
   return { postRecruit };
 }
 export function useInvitationListApi() {
-  const getInvitationList = async (userId) => {
+  const getInvitationList = async userId => {
     const token = window.sessionStorage.getItem("accessToken");
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/recruit`,
       {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     // console.log(res);
@@ -270,8 +310,8 @@ export function useInvitationDetailApi() {
       {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     console.log(res);
@@ -286,8 +326,8 @@ export function useInvitationDetailApi() {
       {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       }
     );
     return res.data;
@@ -298,8 +338,8 @@ export function useInvitationDetailApi() {
     const res = await axios.delete(`profile/${userId}/recruit/${pid}`, {
       headers: {
         "Content-type": "application/json;charset=UTF-8",
-        Authorization: `Bearer ${token}`,
-      },
+        Authorization: `Bearer ${token}`
+      }
     });
     return res.data;
   };
