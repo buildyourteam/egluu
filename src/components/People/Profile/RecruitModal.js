@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import {
-  usePlanProjectApi,
-  useSendRecruitPeopleApi
-} from "../../../hook/api/profileApi";
+import { planProjectApi, sendRecruitPeopleApi } from "../../../hook/api";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
@@ -19,14 +16,14 @@ const RecruitModal = ({ modal, toggle, userId }) => {
   const [recruitState, setRecruitState] = useState({
     introduction: "",
     role: "",
-    projectId: ""
+    projectId: "",
   });
 
   const [nestedModal, setNestedModal] = useState(false);
   const [closeAll, setCloseAll] = useState(false);
   const [nestedMessage, setNestedMessage] = useState({
     status: false,
-    message: ""
+    message: "",
   });
 
   // 내부 모달 띄우기
@@ -44,15 +41,15 @@ const RecruitModal = ({ modal, toggle, userId }) => {
       setRecruitState({
         introduction: "",
         role: "",
-        projectId: ""
+        projectId: "",
       });
     } else {
       setCloseAll(false);
     }
   };
 
-  const { getAllPlannedProject } = usePlanProjectApi();
-  const { postRecruit } = useSendRecruitPeopleApi();
+  const { getAllPlannedProject } = planProjectApi();
+  const { postRecruit } = sendRecruitPeopleApi();
 
   const [
     {
@@ -60,9 +57,9 @@ const RecruitModal = ({ modal, toggle, userId }) => {
       fulfilled: getProjectFulfilled,
       pending: getProjectPending,
       rejected: getProjectRejected,
-      error: getProjectError
+      error: getProjectError,
     },
-    { run: getProjectApi }
+    { run: getProjectApi },
   ] = useRequest(getAllPlannedProject);
 
   const [
@@ -71,9 +68,9 @@ const RecruitModal = ({ modal, toggle, userId }) => {
       fulfilled: postRecruitFulfilled,
       pending: postRecruitPending,
       rejected: postRecruitRejected,
-      error: postRecruitError
+      error: postRecruitError,
     },
-    { run: postRecruitApi }
+    { run: postRecruitApi },
   ] = useRequest(postRecruit);
 
   const { plannedProjects } = useProfileRecruit(
@@ -89,13 +86,13 @@ const RecruitModal = ({ modal, toggle, userId }) => {
     postRecruitError,
 
     toggleNested,
-    setNestedMessage
+    setNestedMessage,
   );
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setRecruitState({
       ...recruitState,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 

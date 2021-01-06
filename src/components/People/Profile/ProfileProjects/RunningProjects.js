@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Row, Col, Button } from "reactstrap";
 import { useRequest } from "../../../../hook/useRequest";
 import ProjectBox from "../../../Project/ProjectBox";
-import { useRunningProjectApi } from "../../../../hook/api/profileApi";
+import { runningProjectApi } from "../../../../hook/api";
 import useProfileProject from "../../../../hook/profile/useProfileProject";
 import "../Profile.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,7 +33,7 @@ const RunningProjects = ({ userId }) => {
       dispatch(setHideChange(reduxData));
     }
   };
-  const { getProject } = useRunningProjectApi();
+  const { getProject } = runningProjectApi();
 
   const [
     {
@@ -56,7 +56,7 @@ const RunningProjects = ({ userId }) => {
     setList,
     hiding,
 
-    userId
+    userId,
   );
   return (
     <div className="insideTab">

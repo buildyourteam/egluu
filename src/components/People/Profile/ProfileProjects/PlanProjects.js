@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Row, Col, Button } from "reactstrap";
 import { useRequest } from "../../../../hook/useRequest";
 import ProjectBox from "../../../Project/ProjectBox";
-import { usePlanProjectApi } from "../../../../hook/api/profileApi";
+import { planProjectApi } from "../../../../hook/api";
 // 잠시 ended 훅을 공유해서 써보자
 import useProfileProject from "../../../../hook/profile/useProfileProject";
 import "../Profile.css";
@@ -35,7 +35,7 @@ const PlanProjects = ({ userId }) => {
     }
   };
 
-  const { getProject } = usePlanProjectApi();
+  const { getProject } = planProjectApi();
 
   const [
     {
@@ -58,7 +58,7 @@ const PlanProjects = ({ userId }) => {
     setList,
     hiding,
 
-    userId
+    userId,
   );
 
   return (

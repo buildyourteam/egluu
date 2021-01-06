@@ -2,17 +2,14 @@ import React, { useState } from "react";
 import { Row, Col, Button } from "reactstrap";
 import { useRequest } from "../../../../hook/useRequest";
 import ProjectBox from "../../../Project/ProjectBox";
-import {
-  useEndedProjectApi,
-  useHideProjectApi,
-} from "../../../../hook/api/profileApi";
+import { endedProjectApi, hideProjectApi } from "../../../../hook/api";
 import useProfileProjectModify from "../../../../hook/profile/useProfileProjectModify";
 import "./profileProject.css";
 
 const ModifyEndedProjects = ({ list, setList, userId }) => {
   const [hideList, setHideList] = useState([]);
-  const { getHideProject } = useEndedProjectApi();
-  const { hideProject, displayProject } = useHideProjectApi();
+  const { getHideProject } = endedProjectApi();
+  const { hideProject, displayProject } = hideProjectApi();
 
   const [
     {
@@ -70,7 +67,7 @@ const ModifyEndedProjects = ({ list, setList, userId }) => {
     setList,
 
     hideList,
-    setHideList
+    setHideList,
   );
 
   const handleHide = (id) => {

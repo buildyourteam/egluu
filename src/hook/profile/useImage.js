@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import { useImgApi } from "../api/profileApi";
+import { imgApi } from "../api";
 import { useRequest } from "../useRequest";
 export const useImage = (
   imgState,
   setImgState,
 
-  userId
+  userId,
 ) => {
-  const { getImg } = useImgApi();
+  const { getImg } = imgApi();
 
   const [
     { data, fulfilled, pending, rejected, error },

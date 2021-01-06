@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 import { useRequest } from "../useRequest";
-import { useInvitationListApi } from "../api/profileApi";
-import { useInvitationDetailApi } from "../api/profileApi";
+import { invitationListApi } from "../api";
+import { invitationDetailApi } from "../api";
 
-export const useInvitationEffect = userId => {
+export const useInvitationEffect = (userId) => {
   const [invitationList, setInvitationList] = useState([]);
   const [noList, setNoList] = useState({ isError: false, errorMessage: "" });
 
-  const noticeNoList = message => {
+  const noticeNoList = (message) => {
     setNoList({
       isError: true,
-      errorMessage: message
+      errorMessage: message,
     });
   };
 
-  const { getInvitationList } = useInvitationListApi();
+  const { getInvitationList } = invitationListApi();
 
   const [
     { data, error, pending, fulfilled, rejected },
-    { run: getInvitationListApi }
+    { run: getInvitationListApi },
   ] = useRequest(getInvitationList);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export const useInvitationDetailEffect = (userId, pid, toggleNested) => {
     introduction: "",
     role: "",
     projectName: "",
-    state: ""
+    state: "",
   });
   const [activityName, setActivityName] = useState("");
 
@@ -71,12 +71,12 @@ export const useInvitationDetailEffect = (userId, pid, toggleNested) => {
   const {
     getInvitationDetail,
     putInvitationAccept,
-    deleteInvitationReject
-  } = useInvitationDetailApi();
+    deleteInvitationReject,
+  } = invitationDetailApi();
 
   const [
     { data, error, pending, fulfilled, rejected },
-    { run: getInvitationDetailApi }
+    { run: getInvitationDetailApi },
   ] = useRequest(getInvitationDetail);
 
   const [
@@ -85,9 +85,9 @@ export const useInvitationDetailEffect = (userId, pid, toggleNested) => {
       error: putError,
       pending: putPending,
       fulfilled: putFulfilled,
-      reject: putRejected
+      reject: putRejected,
     },
-    { run: putInvitationAcceptApi }
+    { run: putInvitationAcceptApi },
   ] = useRequest(putInvitationAccept);
 
   const [
@@ -96,9 +96,9 @@ export const useInvitationDetailEffect = (userId, pid, toggleNested) => {
       error: deleteError,
       pending: deletePending,
       fulfilled: deleteFulfilled,
-      reject: deleteRejected
+      reject: deleteRejected,
     },
-    { run: deleteInvitationRejectApi }
+    { run: deleteInvitationRejectApi },
   ] = useRequest(deleteInvitationReject);
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export const useInvitationDetailEffect = (userId, pid, toggleNested) => {
         introduction: data.introduction,
         projectName: data.projectName,
         role: data.role,
-        state: data.state
+        state: data.state,
       });
     }
   }, [fulfilled]);
@@ -134,11 +134,11 @@ export const useInvitationDetailEffect = (userId, pid, toggleNested) => {
   return [
     {
       invitaionDetail,
-      activityName
+      activityName,
     },
     {
       handleAccept,
-      handleReject
-    }
+      handleReject,
+    },
   ];
 };

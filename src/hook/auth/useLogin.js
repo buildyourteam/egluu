@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../reducers/login";
 import { useAlert } from "../";
+
 export function useLoginEffect(data, fulfilled, pending, rejected, error) {
   // 로그인 정보 state
   const [state, setState] = useState({

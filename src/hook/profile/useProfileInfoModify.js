@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useInfoApi, useImgApi } from "../api/profileApi";
+import { infoApi, imgApi } from "../api";
 import { useRequest } from "../useRequest";
 import refreshToken from "../auth/refreshToken";
 import { useAlert } from "../";
@@ -10,9 +10,9 @@ const useProfileInfoModify = (
   imgState,
   setImgState,
 
-  userId
+  userId,
 ) => {
-  const { postInfo } = useInfoApi();
+  const { postInfo } = infoApi();
 
   const [
     {
@@ -25,7 +25,7 @@ const useProfileInfoModify = (
     { run: postInfoApi },
   ] = useRequest(postInfo);
 
-  const { postImg } = useImgApi();
+  const { postImg } = imgApi();
 
   const [
     {

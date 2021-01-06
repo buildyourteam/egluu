@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useInfoApi } from "../../hook/api/profileApi";
+import { infoApi } from "../../hook/api";
 import { useRequest } from "../useRequest";
 import { useAlert } from "../";
 
 const useProfileInfo = (setInfo, userId) => {
   // info 정보 get 하는 api
-  const { getInfo } = useInfoApi();
+  const { getInfo } = infoApi();
   const [alertData, alertAction] = useAlert();
 
   // info get의 상태변수와 데이터 및 액션 디스패쳐

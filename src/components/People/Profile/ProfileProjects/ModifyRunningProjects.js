@@ -2,17 +2,14 @@ import React, { useState } from "react";
 import { Row, Col, Button } from "reactstrap";
 import { useRequest } from "../../../../hook/useRequest";
 import ProjectBox from "../../../Project/ProjectBox";
-import {
-  useRunningProjectApi,
-  useHideProjectApi,
-} from "../../../../hook/api/profileApi";
+import { runningProjectApi, hideProjectApi } from "../../../../hook/api";
 import useProfileProjectModify from "../../../../hook/profile/useProfileProjectModify";
 import "./profileProject.css";
 
 const ModifyRunningProjects = ({ list, setList, userId }) => {
   const [hideList, setHideList] = useState([]);
-  const { getHideProject } = useRunningProjectApi();
-  const { hideProject, displayProject } = useHideProjectApi();
+  const { getHideProject } = runningProjectApi();
+  const { hideProject, displayProject } = hideProjectApi();
   const [
     {
       data: resGetProject,
@@ -69,7 +66,7 @@ const ModifyRunningProjects = ({ list, setList, userId }) => {
     setList,
 
     hideList,
-    setHideList
+    setHideList,
   );
 
   const handleHide = (id) => {

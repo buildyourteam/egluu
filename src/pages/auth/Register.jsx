@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import { Layout } from "../../components";
 import { useRequest } from "../../hook";
-import { useRegisterApi } from "../../hook/api/authApi";
+import { registerApi } from "../../hook/api";
 import { useRegisterEffect } from "../../hook/auth/useRegister";
 import "./Login.css";
 
@@ -23,23 +23,19 @@ const Register = () => {
     name: ""
   });
 
-  //1. api를 가져온다.
-  const { postRegister } = useRegisterApi();
-
-  //2. api와 상태변수들을 useRequest로 연동한다.
+  //1. api와 상태변수들을 useRequest로 연동한다.
   const [
     {
       data: resRegister,
       fulfilled: RegisterFulfilled,
       pending: RegisterPending,
       rejected: RegisterRejected,
-      error: RegisterError
+      error: RegisterError,
     },
-    //여기서 postRegisterApi는 액션 생성 함수
-    { run: postRegisterApi }
-  ] = useRequest(postRegister);
+    { run: postRegisterApi },
+  ] = useRequest(registerApi.postRegister);
 
-  //3.해당 hook에 상태변수들을 넣어준다.
+  //2.해당 hook에 상태변수들을 넣어준다.
   useRegisterEffect(
     resRegister,
     RegisterFulfilled,

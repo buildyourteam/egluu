@@ -10,7 +10,7 @@ export function useProjectListState() {
     number: 0,
     size: 0,
     totalElements: 0,
-    totalPages: 0
+    totalPages: 0,
   });
   const [role, setRole] = useState("");
   const [region, setRegion] = useState("");
@@ -18,14 +18,14 @@ export function useProjectListState() {
   const [search, setSearch] = useState("");
   const getProjectList = async (pageNumber, sort) => {
     const res = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}projects?page=${pageNumber}&size=8${sort}`
+      `${process.env.REACT_APP_BASE_URL}projects?page=${pageNumber}&size=8${sort}`,
     );
     return res.data;
   };
 
-  const getDeadLineProjectList = async pageNumber => {
+  const getDeadLineProjectList = async (pageNumber) => {
     let res = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}projects/deadline?page=${pageNumber}&size=4&sort=endDate`
+      `${process.env.REACT_APP_BASE_URL}projects/deadline?page=${pageNumber}&size=4&sort=endDate`,
     );
     return res.data;
   };
@@ -40,8 +40,8 @@ export function useProjectListState() {
       setRegion,
       setRole,
       setStack,
-      setSearch
-    }
+      setSearch,
+    },
   ];
 }
 
@@ -52,7 +52,7 @@ export function useProjectListEffect(
   error,
   getApi,
   setProjectList,
-  setPage
+  setPage,
 ) {
   const dispatch = useDispatch();
 
@@ -67,7 +67,7 @@ export function useProjectListEffect(
           number: 0,
           size: 0,
           totalElements: 0,
-          totalPages: 0
+          totalPages: 0,
         });
       }
     }
@@ -90,7 +90,7 @@ export function useDeadlineProjectListEffect(
   projectlistPromise,
   getApi,
   setProjectList,
-  setPage
+  setPage,
 ) {
   const dispatch = useDispatch();
 
@@ -130,15 +130,15 @@ const staticProjectData = [
       developer: 2,
       designer: 1,
       planner: 1,
-      etc: 2
+      etc: 2,
     },
     needMember: {
       developer: 2,
       designer: 2,
       planner: 3,
-      etc: 4
+      etc: 4,
     },
-    leaderId: null
+    leaderId: null,
   },
   {
     projectId: 16,
@@ -153,15 +153,15 @@ const staticProjectData = [
       developer: 2,
       designer: 1,
       planner: 1,
-      etc: 2
+      etc: 2,
     },
     needMember: {
       developer: 2,
       designer: 2,
       planner: 3,
-      etc: 4
+      etc: 4,
     },
-    leaderId: null
+    leaderId: null,
   },
   {
     projectId: 16,
@@ -176,15 +176,15 @@ const staticProjectData = [
       developer: 2,
       designer: 1,
       planner: 1,
-      etc: 2
+      etc: 2,
     },
     needMember: {
       developer: 2,
       designer: 2,
       planner: 3,
-      etc: 4
+      etc: 4,
     },
-    leaderId: null
+    leaderId: null,
   },
   {
     projectId: 16,
@@ -199,14 +199,14 @@ const staticProjectData = [
       developer: 2,
       designer: 1,
       planner: 1,
-      etc: 2
+      etc: 2,
     },
     needMember: {
       developer: 2,
       designer: 2,
       planner: 3,
-      etc: 4
+      etc: 4,
     },
-    leaderId: null
-  }
+    leaderId: null,
+  },
 ];
