@@ -1,42 +1,57 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setTemporary } from "../../reducers/temporary";
-import { useAlert } from "../";
+import { peopleListApi } from "../api";
+import { useRequest, useAlert } from "..";
 const axios = require("axios");
 
+type pageType = {
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+};
+
+type peopleListType = {
+  userId: String;
+  userName: String;
+  stacks: Array<String>;
+  area: String;
+  level: number;
+  _links: {
+    self: {
+      href: String;
+    };
+    profileImage: {
+      href: String;
+    };
+  };
+};
+
 export function usePeopleListState() {
-  const [peopleList, setPeopleList] = useState(staticPeopleData);
-  const [page, setPage] = useState({
-    number: 0,
-    size: 0,
-    totalElements: 0,
-    totalPages: 0,
-  });
+  const [peopleList, setPeopleList] = useState<peopleListType | []>([]);
+  const [page, setPage] = useState<pageType>();
   const [role, setRole] = useState("");
   const [region, setRegion] = useState("");
   const [grade, setGrade] = useState("");
   const [search, setSearch] = useState("");
-  const getPeopleList = async (pageNumber, params) => {
-    const res = await axios.get(
-      `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=12${params}`
-    );
-    return res.data;
+
+  const setPeopleListRenew = (data: peopleListType) => {
+    setPeopleList(() => {
+      return data;
+    });
   };
-  const getWantedPeopleList = async (pageNumber) => {
-    const res = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}people?page=${pageNumber}&size=6`
-    );
-    return res.data;
+
+  const setPageMove = (data: pageType) => {
+    setPage(() => {
+      return data;
+    });
   };
-  const [alertData, alertAction] = useAlert();
 
   return [
     { peopleList, role, region, search, page, grade },
     {
-      setPeopleList,
-      getPeopleList,
-      getWantedPeopleList,
-      setPage,
+      setPeopleListRenew,
+      setPageMove,
       setRole,
       setRegion,
       setSearch,
@@ -45,23 +60,18 @@ export function usePeopleListState() {
   ];
 }
 
-export function usePeopleListEffect(
-  data,
-  fulfilled,
-  rejected,
-  error,
-  getApi,
-  setPeopleList,
-  setPage
-) {
+export function usePeopleListEffect(setPeopleListRenew: any, setPageMove: any) {
+  const [peoplePromiseState, { run: getPeopleListFetch }] = useRequest(
+    peopleListApi.getPeopleList,
+  );
   useEffect(() => {
-    if (fulfilled) {
-      if ("_embedded" in data) {
-        setPeopleList(data._embedded.peopleList);
-        setPage(data.page);
+    if (peoplePromiseState.fulfilled) {
+      if ("_embedded" in peoplePromiseState.data) {
+        setPeopleListRenew(peoplePromiseState.data._embedded.peopleList);
+        setPageMove(peoplePromiseState.data.page);
       } else {
-        setPeopleList([]);
-        setPage({
+        setPeopleListRenew([]);
+        setPageMove({
           number: 0,
           size: 0,
           totalElements: 0,
@@ -69,27 +79,36 @@ export function usePeopleListEffect(
         });
       }
     }
-  }, [fulfilled]);
+  }, [peoplePromiseState.fulfilled]);
 
   useEffect(() => {
-    getApi(0, "");
+    setPageMove({
+      number: 0,
+      size: 0,
+      totalElements: 0,
+      totalPages: 0,
+    });
   }, []);
 
   useEffect(() => {
-    if (rejected) {
-      if (error) {
-        setPeopleList([]);
+    if (peoplePromiseState.rejected) {
+      if (peoplePromiseState.error) {
+        setPeopleListRenew([]);
       }
     }
-  }, [rejected]);
+  }, [peoplePromiseState.rejected]);
+
+  return { getPeopleListFetch };
 }
 
 export function useWantedPeopleListEffect(
-  peoplelistPromise,
-  getApi,
-  setPeopleList,
-  setPage
+  peoplelistPromise: any,
+  getApi: any,
+  setPeopleList: any,
+  setPage: any,
 ) {
+  const { alertAction } = useAlert();
+
   useEffect(() => {
     if (peoplelistPromise.fulfilled) {
       setPeopleList(peoplelistPromise.data._embedded.peopleList);

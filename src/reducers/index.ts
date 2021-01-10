@@ -5,10 +5,14 @@ import profileRedux from "./profile";
 import projectRedux from "./project";
 import alertRedux from "./alert";
 
-export default combineReducers({
+const rootReducer = combineReducers({
   temproray: temporaryRedux,
   login: loginRedux,
   profile: profileRedux,
   project: projectRedux,
   alert: alertRedux,
 });
+
+export default rootReducer;
+
+export type RootState = ReturnType<typeof rootReducer>;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import refreshToken from "../auth/refreshToken";
+import { loginApi } from "./";
 
 type info = {
   userId: String;
@@ -8,10 +8,13 @@ type info = {
   name: String;
 };
 
-// Profile Page 좌측 Info창에서 사용되는 api
-export function infoApi() {
+/**
+ * Profile Page 좌측 Info창에서 사용되는 api
+ */
+
+export function infoApi(): any {
   // get info api
-  const getInfo = async (userId: String) => {
+  const getInfo = async (userId: String): Promise<any> => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}`,
     );
@@ -19,8 +22,10 @@ export function infoApi() {
   };
 
   // post info api
-  const postInfo = async (userId: String, data: any) => {
-    let token = window.sessionStorage.getItem("accessToken");
+  const postInfo = async (userId: String, data: any): Promise<any> => {
+    let token: String | Promise<String> | null = window.sessionStorage.getItem(
+      "accessToken",
+    );
     const res = await axios
       .put(`${process.env.REACT_APP_BASE_URL}profile/${userId}`, data, {
         headers: {
@@ -30,7 +35,7 @@ export function infoApi() {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
           const res = await axios
             .put(`${process.env.REACT_APP_BASE_URL}profile/${userId}`, data, {
               headers: {
@@ -51,16 +56,21 @@ export function infoApi() {
 
   return { getInfo, postInfo };
 }
-export function imgApi() {
 
-    const getImg = async (userId: String) => {
+/**
+ * img 저장 api
+ */
+export function imgApi():any {
+  // 이미지 불러오기
+  const getImg = async (userId: String): Promise<any> => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/image/${userId}`,
     );
     return res.data;
   };
 
-  const postImg = async (userId: String, data: any) => {
+  // 이미지 저장
+  const postImg = async (userId: String, data: any): Promise<any> => {
     const token = window.sessionStorage.getItem("accessToken");
     let image = new FormData();
     image.append("image", data.imgUrl);
@@ -73,14 +83,18 @@ export function imgApi() {
           Authorization: `Bearer ${token}`,
         },
       },
-    );
-
+    )
     return res;
   };
+
   return { getImg, postImg };
 }
-export function runningProjectApi() {
-  const getProject = async (userId: String) => {
+
+/**
+ * 진행중인 프로젝트
+ */
+export function runningProjectApi(): any {
+  const getProject = async (userId: String): Promise<any> => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/running?page=0&size=10&sort=projectName%2CDESC`,
     );
@@ -88,7 +102,7 @@ export function runningProjectApi() {
   };
 
   // 숨긴 프로젝트 목록 가져오기
-  const getHideProject = async (userId: String) => {
+  const getHideProject = async (userId: String): Promise<any> => {
     const token = window.sessionStorage.getItem("accessToken");
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/running/hidden?page=0&size=10&sort=projectName%2CDESC`,
@@ -104,9 +118,9 @@ export function runningProjectApi() {
 
   return { getProject, getHideProject };
 }
-export function endedProjectApi() {
 
-    const getProject = async (userId: String) => {
+export function endedProjectApi() {
+  const getProject = async (userId: String) => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}profile/${userId}/ended?page=0&size=10&sort=projectName%2CDESC`,
     );
@@ -300,6 +314,6 @@ export function invitationDetailApi() {
     );
     return res.data;
   };
-  
+
   return { getInvitationDetail, putInvitationAccept, deleteInvitationReject };
 }

@@ -1,4 +1,5 @@
 export { registerApi, loginApi } from "./authApi";
+export { peopleListApi } from "./peopleApi";
 export {
   infoApi,
   imgApi,

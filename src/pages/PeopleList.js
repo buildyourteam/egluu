@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { usePeopleListState, usePeopleListEffect, useRequest } from "../hook";
+import { usePeopleListState, usePeopleListEffect } from "../hook";
 import PeopleBox from "../components/People/PeopleBox";
 import { Row, Col } from "reactstrap";
 import { PeopleSort } from "../components/List/Sort";
@@ -8,24 +8,9 @@ import { Layout } from "../components";
 
 export default function PeopleList() {
   const [peopleList, peopleListAction] = usePeopleListState();
-  const [
-    {
-      data: resPeopleList,
-      fulfilled: getPeopleListFulfilled,
-      pending: getPeopleListPending,
-      rejected: getPeopleListRejected,
-      error: getPeopleListError,
-    },
-    { run: getPeopleListApi },
-  ] = useRequest(peopleListAction.getPeopleList);
-  usePeopleListEffect(
-    resPeopleList,
-    getPeopleListFulfilled,
-    getPeopleListRejected,
-    getPeopleListError,
-    getPeopleListApi,
-    peopleListAction.setPeopleList,
-    peopleListAction.setPage
+  const { getPeopleListFetch } = usePeopleListEffect(
+    peopleListAction.setPeopleListRenew,
+    peopleListAction.setPage,
   );
 
   return (
@@ -64,7 +49,7 @@ export default function PeopleList() {
             if (peopleList.grade !== "") params += `&grade=${peopleList.grade}`;
             if (peopleList.region !== "")
               params += `&region=${peopleList.region}`;
-            getPeopleListApi(page - 1, params);
+            getPeopleListFetch(page - 1, params);
           }}
         />
       </div>

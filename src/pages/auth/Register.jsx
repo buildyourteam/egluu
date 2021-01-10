@@ -10,9 +10,7 @@ import {
   Col
 } from "reactstrap";
 import { Layout } from "../../components";
-import { useRequest } from "../../hook";
-import { registerApi } from "../../hook/api";
-import { useRegisterEffect } from "../../hook/auth/useRegister";
+import { useRegisterEffect } from "../../hook/auth";
 import "./Login.css";
 
 const Register = () => {
@@ -22,27 +20,7 @@ const Register = () => {
     password: "",
     name: ""
   });
-
-  //1. api와 상태변수들을 useRequest로 연동한다.
-  const [
-    {
-      data: resRegister,
-      fulfilled: RegisterFulfilled,
-      pending: RegisterPending,
-      rejected: RegisterRejected,
-      error: RegisterError,
-    },
-    { run: postRegisterApi },
-  ] = useRequest(registerApi.postRegister);
-
-  //2.해당 hook에 상태변수들을 넣어준다.
-  useRegisterEffect(
-    resRegister,
-    RegisterFulfilled,
-    RegisterPending,
-    RegisterRejected,
-    RegisterError
-  );
+  const { postRegisterFetch } = useRegisterEffect();
 
   const handleChange = e => {
     setState({
@@ -53,7 +31,7 @@ const Register = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    postRegisterApi(state);
+    postRegisterFetch(state);
     setState({ userId: "", userEmail: "", password: "", name: "" });
   };
 

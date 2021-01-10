@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { infoApi, imgApi } from "../api";
 import { useRequest } from "../useRequest";
-import refreshToken from "../auth/refreshToken";
 import { useAlert } from "../";
 
 const useProfileInfoModify = (
   setModifying,
-
   imgState,
   setImgState,
 

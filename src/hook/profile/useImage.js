@@ -28,7 +28,6 @@ export const useImage = (
   useEffect(() => {
     if (rejected) {
       if (error) {
-        // console.log(error.response.data);
         if (error.response.data.error === "302") {
           setImgState({
             ...imgState,

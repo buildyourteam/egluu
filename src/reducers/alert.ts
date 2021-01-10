@@ -12,7 +12,7 @@ const alertRedux = createSlice({
       console.log(action.payload);
       state.sentence = action.payload;
     },
-    closeAlert(state, action) {
+    closeAlert(state) {
       state.isOpen = false;
     },
   },

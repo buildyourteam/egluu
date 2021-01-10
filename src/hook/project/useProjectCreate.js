@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import refreshToken from "../auth/refreshToken";
+import { loginApi } from "../api";
 import { useAlert } from "../";
 
 const axios = require("axios");
@@ -22,7 +22,8 @@ const useProjectCreateState = () => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           res = await axios
             .post(`${process.env.REACT_APP_BASE_URL}projects`, data, {
               headers: {
@@ -58,11 +59,12 @@ const useProjectCreateState = () => {
             Accept: "application/hal+json",
             "Access-Control-Expose-Headers": "*",
           },
-        }
+        },
       )
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           res = await axios
             .post(
               `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
@@ -74,7 +76,7 @@ const useProjectCreateState = () => {
                   Accept: "application/hal+json",
                   "Access-Control-Expose-Headers": "*",
                 },
-              }
+              },
             )
             .catch((error) => {
               throw error;
@@ -191,7 +193,7 @@ const useProjectCreateEffect = (
   rejected,
   error,
   createImgApi,
-  projectImg
+  projectImg,
 ) => {
   const [alertData, alertAction] = useAlert();
 

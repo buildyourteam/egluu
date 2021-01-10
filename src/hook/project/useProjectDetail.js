@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "../";
 import { useHistory } from "react-router-dom";
-import refreshToken from "../auth/refreshToken";
+import { loginApi } from "../api";
 
 const axios = require("axios");
 
@@ -35,9 +35,10 @@ const useProjectDetailState = () => {
       .get(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`)
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           res = await axios.get(
-            `${process.env.REACT_APP_BASE_URL}projects/${projectId}`
+            `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
           );
         } else {
           throw error;
@@ -48,7 +49,8 @@ const useProjectDetailState = () => {
       });
     const id = window.sessionStorage.getItem("id");
     if (res.data.memberList[0]._links.self.href === `/profile/${id}`) {
-      token = await refreshToken();
+      token = await loginApi.refreshToken();
+
       await axios
         .get(res.data._links.apply.href, {
           headers: {
@@ -76,7 +78,7 @@ const useProjectDetailState = () => {
               "Content-Type": "application/json;charset=UTF-8",
               Accept: "application/hal+json",
             },
-          }
+          },
         )
         .then((value) => {
           try {
@@ -105,7 +107,8 @@ const useProjectDetailState = () => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           await axios
             .delete(`${process.env.REACT_APP_BASE_URL}projects/${projectId}`, {
               headers: {
@@ -126,7 +129,8 @@ const useProjectDetailState = () => {
 
   const fetchPutApply = async (userId) => {
     let token = window.sessionStorage.getItem("accessToken");
-    token = await refreshToken();
+    token = await loginApi.refreshToken();
+
     await axios
       .put(project._links.apply.href, {
         headers: {
@@ -285,7 +289,7 @@ const useProjectDetailEffect = (
   error,
   fetchDetail,
   projectAction,
-  projectId
+  projectId,
 ) => {
   const [alertData, alertAction] = useAlert();
 
@@ -318,7 +322,7 @@ const useProjectRecruitEffect = (
   fulfilled,
   rejected,
   error,
-  inputState
+  inputState,
 ) => {
   const [alertData, alertAction] = useAlert();
 
