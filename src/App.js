@@ -9,7 +9,8 @@ import {
   ProjectDetail,
   ProjectCreate,
   ProjectUpdate,
-  PeopleList
+  PeopleList,
+  LoginPage,
 } from "./pages";
 import { AlertModal } from "./components";
 import { useLoginAuth } from "./hook/auth/useLogin";
@@ -19,7 +20,8 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Root} />
+        <Route path="/login" component={LoginPage} />
+        {/* <Route exact path="/" component={Root} />
         <Route path="/projects" component={ProjectList} />
         <Route path="/peoples" component={PeopleList} />
         <Route path="/createProject" component={ProjectCreate} />
@@ -27,7 +29,7 @@ function App() {
         <Route path="/projectUpdate/:id" component={ProjectUpdate} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/profile/:userId" component={Profile} />
+        <Route path="/profile/:userId" component={Profile} /> */}
       </Switch>
       <AlertModal />
     </Router>

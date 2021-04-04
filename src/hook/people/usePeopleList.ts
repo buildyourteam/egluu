@@ -123,7 +123,7 @@ export function useWantedPeopleListEffect(
   useEffect(() => {
     if (peoplelistPromise.rejected) {
       if (peoplelistPromise.error) {
-        alertAction.open(peoplelistPromise.error.data.message);
+        // alertAction.open(peoplelistPromise.error.data.message);
       }
     }
   }, [peoplelistPromise.rejected]);

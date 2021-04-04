@@ -6,4 +6,5 @@ export { default as ProjectUpdate } from "./project/updateProject";
 export { default as Register } from "./auth/Register";
 export { default as Profile } from "./Profile";
 export { default as Login } from "./auth/Login";
+export { default as LoginPage } from "./auth/LoginTs";
 export { default as PeopleList } from "./PeopleList";

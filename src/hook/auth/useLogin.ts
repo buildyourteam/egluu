@@ -1,21 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../reducers/login";
 import { useAlert, useRequest } from "..";
 import { loginApi } from "../../hook/api";
 
 export function useLoginEffect() {
-  const { postLogin } = loginApi();
-  const [login, { run: postLoginApi }] = useRequest(postLogin);
-
-  // 로그인 정보 state
-  const [loginState, setLoginState] = useState({
-    userId: "",
-    password: "",
-  });
   const dispatch = useDispatch();
+  const userId = useRef("");  
   const { alertAction } = useAlert();
-  
+
+  const [
+    login, { run: postLoginApi },
+  ] = useRequest(loginApi.postLogin);
+
+  const onFinish = (values: any) => {
+    console.log("Success:", values);
+    userId.current = values.userId;
+    postLoginApi(values);
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
+
   // 로그인 성공 시 useEffect
   useEffect(() => {
     if (login.fulfilled) {
@@ -23,7 +30,7 @@ export function useLoginEffect() {
       const accessToken = login.data.accessToken;
       const refreshToken = login.data.refreshToken;
       // 세션스토리지에 아이디와 토큰 저장
-      window.sessionStorage.setItem("id", loginState.userId);
+      window.sessionStorage.setItem("id", userId.current);
       window.sessionStorage.setItem("accessToken", accessToken);
       window.sessionStorage.setItem("refreshToken", refreshToken);
       alertAction.open("로그인 성공");
@@ -31,7 +38,7 @@ export function useLoginEffect() {
       // 리덕스에 디스패치
       const reduxData = {
         isToken: true,
-        userId: loginState.userId,
+        userId: userId.current,
       };
       dispatch(setToken(reduxData));
     }
@@ -42,18 +49,13 @@ export function useLoginEffect() {
     if (login.rejected) {
       if (login.error) {
         // 실패 이유 알림
+        console.log(login.error);
         alertAction.open(login.error.response.data.message);
-        // 실패한 아이디는 내버려두고, 비밀번호만 초기화
-        setLoginState({
-          ...loginState,
-          password: "",
-        });
       }
     }
   }, [login.rejected]);
 
-  // login page에서 input값 관리에 사용할 수 있게 로그인 정보 state 리턴
-  return [{ loginState }, { setLoginState, postLoginApi }];
+  return [onFinish, onFinishFailed];
 }
 
 // 세션 스토리지에 아이디와 토큰이 있을 때, 리덕스에 토큰유무와 아이디를 저장
