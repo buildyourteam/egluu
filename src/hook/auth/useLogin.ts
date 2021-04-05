@@ -1,17 +1,25 @@
 import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../../reducers/login";
-import { useAlert, useRequest } from "..";
+import { useAlert, useMove, useRequest } from "..";
 import { loginApi } from "../../hook/api";
+
+export type RegisterLogin = {
+  userId: string;
+  password: string;
+};
 
 export function useLoginEffect() {
   const dispatch = useDispatch();
+  const isToken = useSelector((state: any) => state.login.isToken);
+
   const userId = useRef("");  
   const { alertAction } = useAlert();
-
   const [
     login, { run: postLoginApi },
-  ] = useRequest(loginApi.postLogin);
+  ] = useRequest(loginApi().postLogin);
+
+  useMove(isToken && login.fulfilled, "");
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
@@ -49,8 +57,7 @@ export function useLoginEffect() {
     if (login.rejected) {
       if (login.error) {
         // 실패 이유 알림
-        console.log(login.error);
-        alertAction.open(login.error.response.data.message);
+        // alertAction.open(login.error);
       }
     }
   }, [login.rejected]);

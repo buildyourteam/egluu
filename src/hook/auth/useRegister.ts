@@ -4,13 +4,29 @@ import { useAlert } from "..";
 import { useRequest } from "../";
 import { registerApi } from "../api";
 
+export type RegisterState = {
+  userId: String;
+  userEmail: String;
+  password: String;
+  name: String;
+};
+
 export function useRegisterEffect() {
   const history = useHistory();
   const { alertAction } = useAlert();
   const [
     registerPromiseState,
     { run: postRegisterFetch },
-  ] = useRequest(registerApi.postRegister);
+  ] = useRequest(registerApi().postRegister);
+
+  const onFinish = (values: any) => {
+    console.log("Success:", values);
+    postRegisterFetch(values);
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
 
   useEffect(() => {
     if (registerPromiseState.fulfilled) {
@@ -27,5 +43,5 @@ export function useRegisterEffect() {
     }
   }, [registerPromiseState.rejected]);
 
-  return { postRegisterFetch };
+  return [onFinish, onFinishFailed];
 }

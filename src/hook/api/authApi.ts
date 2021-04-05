@@ -30,7 +30,7 @@ export const registerApi: any = () => {
 /**
  * login 관련 api
  */
-export const loginApi: any = () => {
+export function loginApi(){
   // 로그인
   const postLogin = async (data: RegisterLogin): Promise<any> => {
     const res = await axios.post(

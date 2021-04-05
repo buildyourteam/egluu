@@ -11,6 +11,7 @@ import {
   ProjectUpdate,
   PeopleList,
   LoginPage,
+  RegisterPage,
 } from "./pages";
 import { AlertModal } from "./components";
 import { useLoginAuth } from "./hook/auth/useLogin";
@@ -21,6 +22,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
         {/* <Route exact path="/" component={Root} />
         <Route path="/projects" component={ProjectList} />
         <Route path="/peoples" component={PeopleList} />

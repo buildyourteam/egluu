@@ -35,7 +35,7 @@ export function infoApi(): any {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await loginApi.refreshToken();
+          token = await loginApi().refreshToken();
           const res = await axios
             .put(`${process.env.REACT_APP_BASE_URL}profile/${userId}`, data, {
               headers: {
