@@ -8,6 +8,14 @@ import { useLoginEffect } from "../../hook/auth";
 
 const { Title } = Typography;
 
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
+
 function LoginPage() {
   const [onFinish, onFinishFailed] = useLoginEffect();
   return (
@@ -15,13 +23,13 @@ function LoginPage() {
       <Title className="login_title">Login</Title>
       <div className="login_box">
         <Form
+          {...layout}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            label="userId"
+            label="UserId"
             name="userId"
-            className="login_input_form"
             rules={[{ required: true, message: "ID를 입력하셔야 합니다." }]}
           >
             <Input className="login_input" />
@@ -29,7 +37,6 @@ function LoginPage() {
           <Form.Item
             label="Password"
             name="password"
-            className="login_input_form"
             rules={[
               {
                 required: true,
@@ -40,7 +47,7 @@ function LoginPage() {
           >
             <Input type="password" className="login_input" />
           </Form.Item>
-          <Form.Item className="login_submit">
+          <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
               로그인
             </Button>

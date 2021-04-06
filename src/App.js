@@ -15,6 +15,7 @@ import {
 } from "./pages";
 import { AlertModal } from "./components";
 import { useLoginAuth } from "./hook/auth/useLogin";
+import "antd/dist/antd.css";
 
 function App() {
   useLoginAuth();

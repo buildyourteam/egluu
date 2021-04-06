@@ -5,34 +5,44 @@ import { useRegisterEffect } from "../../hook/auth";
 
 const { Title } = Typography;
 
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
+
 const RegisterPage = () => {
   const [onFinish, onFinishFailed] = useRegisterEffect();
 
   return (
     <Layout>
-      <Title className="login_title">Create your Account</Title>
+      <Title level={3} className="login_title">Create your Account</Title>
       <div className="login_box">
-        <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+        <Form
+          {...layout}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          name="register"
+        >
           <Form.Item
-            label="userId"
+            label="UserId"
             name="userId"
-            className="login_input_form"
             rules={[{ required: true, message: "ID를 입력하셔야 합니다." }]}
           >
             <Input className="login_input" />
           </Form.Item>
           <Form.Item
-            label="userEmail"
+            label="UserEmail"
             name="userEmail"
-            className="login_input_form"
             rules={[{ required: true, message: "Email을 입력하셔야 합니다." }]}
           >
             <Input className="login_input" />
           </Form.Item>
           <Form.Item
-            label="name"
+            label="Name"
             name="name"
-            className="login_input_form"
             rules={[{ required: true, message: "Name을 입력하셔야 합니다." }]}
           >
             <Input className="login_input" />
@@ -40,7 +50,6 @@ const RegisterPage = () => {
           <Form.Item
             label="Password"
             name="password"
-            className="login_input_form"
             rules={[
               {
                 required: true,
@@ -51,7 +60,7 @@ const RegisterPage = () => {
           >
             <Input type="password" className="login_input" />
           </Form.Item>
-          <Form.Item className="login_submit">
+          <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
               회원가입
             </Button>

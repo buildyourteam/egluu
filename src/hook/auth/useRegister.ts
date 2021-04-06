@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useAlert } from "..";
 import { useRequest } from "../";
@@ -14,10 +14,9 @@ export type RegisterState = {
 export function useRegisterEffect() {
   const history = useHistory();
   const { alertAction } = useAlert();
-  const [
-    registerPromiseState,
-    { run: postRegisterFetch },
-  ] = useRequest(registerApi().postRegister);
+  const [registerPromiseState, { run: postRegisterFetch }] = useRequest(
+    registerApi().postRegister,
+  );
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
