@@ -1,8 +1,6 @@
 import { Button, Form, Input, Typography } from "antd";
 import React from "react";
 import { Layout } from "../../components";
-import { useRequest, useMove } from "../../hook";
-import { useSelector, useDispatch } from "react-redux";
 import "./Login.css";
 import { useLoginEffect } from "../../hook/auth";
 
@@ -20,13 +18,11 @@ function LoginPage() {
   const [onFinish, onFinishFailed] = useLoginEffect();
   return (
     <Layout>
-      <Title className="login_title">Login</Title>
+      <Title level={3} className="login_title">
+        Login
+      </Title>
       <div className="login_box">
-        <Form
-          {...layout}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
+        <Form {...layout} onFinish={onFinish} onFinishFailed={onFinishFailed}>
           <Form.Item
             label="UserId"
             name="userId"

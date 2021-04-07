@@ -51,6 +51,7 @@ export function useRequest<R, P extends any[]>(
     // passArgs?: P;
   },
 ) {
+  console.log(asyncTask);
   // const {autoFirstRun = false, passArgs} = options || {};
   const [state, dispatch] = useReducer(reducer, {
     data: null,
@@ -67,6 +68,7 @@ export function useRequest<R, P extends any[]>(
       try {
         // then 패턴 데신에 await을 쓴 이유는 일반 함수일 경우에도 동작하도록
         const data = await asyncTask(...args);
+        console.log(data);
         dispatch({
           type: 'success',
           payload: data,

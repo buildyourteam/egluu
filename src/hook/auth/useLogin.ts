@@ -4,11 +4,6 @@ import { setToken } from "../../reducers/login";
 import { useAlert, useMove, useRequest } from "..";
 import { loginApi } from "../../hook/api";
 
-export type RegisterLogin = {
-  userId: string;
-  password: string;
-};
-
 export function useLoginEffect() {
   const dispatch = useDispatch();
   const isToken = useSelector((state: any) => state.login.isToken);
@@ -57,7 +52,7 @@ export function useLoginEffect() {
     if (login.rejected) {
       if (login.error) {
         // 실패 이유 알림
-        // alertAction.open(login.error);
+        alertAction.open(login.error.response.data.message);
       }
     }
   }, [login.rejected]);

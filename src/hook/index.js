@@ -1,15 +1,16 @@
 export { useTemporaryApi } from "./useHook";
 export { useRequest } from "./useRequest";
 export { default as useMove } from "./usePageMove";
-export {
-  usePeopleListState,
-  usePeopleListEffect,
-  useWantedPeopleListEffect,
-} from "./people";
+// export {
+//   usePeopleListState,
+//   usePeopleListEffect,
+//   useWantedPeopleListEffect,
+// } from "./profile";
 export { useRegisterEffect } from "./auth/useRegister";
 export {
   useProjectListState,
   useProjectListEffect,
+  useDeadlineProjectListEffect,
   useProjectDetailState,
   useProjectDetailEffect,
   useProjectRecruitEffect,
@@ -19,8 +20,8 @@ export {
   useProjectUpdateEffect,
   useProjectApplyState,
   useProjectApplyEffect,
-  useDeadlineProjectListEffect,
   useProjectDetailApplyState,
   useProjectDetailApplyEffect,
 } from "./project";
 export { default as useAlert } from "./useAlert";
+export { useProjectListStateTs, useProjectListEffectTs } from "./projectTs";
