@@ -93,7 +93,7 @@ export function useProjectListStateTs(): projectState {
 
   const getProjectList = async (
     pageNumber: number,
-    sort?: string,
+    sort:string = "",
   ): Promise<object> => {
     const res = await axios.get(
       `${process.env.REACT_APP_BASE_URL}projects?page=${pageNumber}&size=8${sort}`,

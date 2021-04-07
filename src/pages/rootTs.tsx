@@ -104,7 +104,9 @@ export default function Root() {
             onChange={(page, pageSize) =>
               projectAction.getDeadLineProjectListApi(page - 1)
             }
-            total={projectPage.page?.totalPages}
+            pageSize={8}
+            current={projectPage.page.number + 1}
+            total={projectPage.page.totalPages * 8}
           />
         </div>
         <Title level={3}>프로젝트를 찾는 사람들</Title>
@@ -131,7 +133,9 @@ export default function Root() {
             onChange={(page, pageSize) =>
               peopleAction.getWantedPeopleList(page - 1)
             }
-            total={projectPage.page?.totalPages}
+            pageSize={8}
+            current={peoplePage.page.number + 1}
+            total={peoplePage.page.totalPages * 8}
           />
         </div>
       </div>

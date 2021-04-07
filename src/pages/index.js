@@ -1,5 +1,6 @@
 export { default as Root } from "./rootTs";
-export { default as ProjectList } from "./project/projectList";
+// export { default as ProjectList } from "./project/projectList";
+export { default as ProjectList } from "./project/projectListTs";
 export { default as ProjectDetail } from "./project/projectDetail";
 export { default as ProjectCreate } from "./project/createProject";
 export { default as ProjectUpdate } from "./project/updateProject";

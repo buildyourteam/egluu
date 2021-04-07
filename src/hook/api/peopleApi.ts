@@ -14,7 +14,7 @@ type info = {
 export const peopleListApi: any = () => {
    
     // 사람 리스트
-  const getPeopleList = async (pageNumber: number, params?: Object[]): Promise<object> => {
+  const getPeopleList = async (pageNumber: number, params = ""): Promise<object> => {
     const res = await axios.get(
       `https://egluuapi.codingnome.dev/people?page=${pageNumber}&size=12${params}`,
     );
