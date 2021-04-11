@@ -41,7 +41,7 @@ export function loginApi(){
   };
   
   // 토큰 만료 시 refresh
-  const refreshToken = async (): Promise<String> => {
+  const refreshToken = async (): Promise<string> => {
     const token = window.sessionStorage.getItem("refreshToken");
     const res = await axios.post(
       `${process.env.REACT_APP_BASE_URL}auth/refresh`,

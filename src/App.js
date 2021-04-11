@@ -26,6 +26,7 @@ function App() {
         <Route path="/register" component={RegisterPage} />
         <Route exact path="/" component={Root} />
         <Route path="/projects" component={ProjectList} />
+        <Route path="/createProject" component={ProjectCreate} />
         {/* <Route exact path="/" component={Root} />
         <Route path="/projects" component={ProjectList} />
         <Route path="/peoples" component={PeopleList} />
