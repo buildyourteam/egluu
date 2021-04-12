@@ -124,7 +124,7 @@ const useProjectDetailState = () => {
           throw error;
         }
       });
-    history.push("/projects");
+    // history.push("/projects");
   };
 
   const fetchPutApply = async (userId) => {
@@ -260,7 +260,7 @@ const useProjectDetailState = () => {
   };
 
   return [
-    { project, check, apply, recruit, pagination },
+    { getProject, deleteProject, project, check, apply, recruit, pagination },
     {
       fetchGetDetail,
       inputProject,
@@ -278,6 +278,8 @@ const useProjectDetailState = () => {
       closeDelete,
       openDetailApply,
       closeDetailApply,
+      getProjectApi,
+      deleteProjectApi,
     },
   ];
 };

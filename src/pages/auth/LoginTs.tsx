@@ -15,7 +15,7 @@ const tailLayout = {
 };
 
 function LoginPage() {
-  const [onFinish, onFinishFailed] = useLoginEffect();
+  const {loading, onFinish, onFinishFailed} = useLoginEffect();
   return (
     <Layout>
       <Title level={3} className="login_title">
@@ -44,7 +44,7 @@ function LoginPage() {
             <Input type="password" className="login_input" />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loading}>
               로그인
             </Button>
           </Form.Item>

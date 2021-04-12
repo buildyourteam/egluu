@@ -3,7 +3,13 @@ import { useAlert, useMove } from "..";
 import { useRequest } from "../";
 import { registerApi } from "../api";
 
-export function useRegisterEffect() {
+type RegisterType = {
+  loading: boolean;
+  onFinish: (values: any) => void;
+  onFinishFailed: (errorInfo: any) => void;
+};
+
+export function useRegisterEffect(): RegisterType {
   const { alertAction } = useAlert();
   const [registerPromiseState, { run: postRegisterFetch }] = useRequest(
     registerApi().postRegister,
@@ -34,5 +40,5 @@ export function useRegisterEffect() {
     }
   }, [registerPromiseState.rejected]);
 
-  return [onFinish, onFinishFailed];
+  return { loading: registerPromiseState.pending, onFinish, onFinishFailed };
 }

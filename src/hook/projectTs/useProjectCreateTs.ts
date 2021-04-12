@@ -206,7 +206,7 @@ const useProjectCreateStateTS = (): CreateType => {
     });
   };
 
-  const inputProjectMember = (name: string, memberValue: string) => {
+  const inputProjectMember = (name: string, memberValue: string): void => {
     setProject((value) => {
       return {
         ...value,

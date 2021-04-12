@@ -4,15 +4,19 @@ import { setToken } from "../../reducers/login";
 import { useAlert, useMove, useRequest } from "..";
 import { loginApi } from "../../hook/api";
 
-export function useLoginEffect() {
+type LoginType = {
+  loading: boolean;
+  onFinish: (values: any) => void;
+  onFinishFailed: (errorInfo: any) => void;
+};
+
+export function useLoginEffect(): LoginType {
   const dispatch = useDispatch();
   const isToken = useSelector((state: any) => state.login.isToken);
 
-  const userId = useRef("");  
+  const userId = useRef("");
   const { alertAction } = useAlert();
-  const [
-    login, { run: postLoginApi },
-  ] = useRequest(loginApi().postLogin);
+  const [login, { run: postLoginApi }] = useRequest(loginApi().postLogin);
 
   useMove(isToken && login.fulfilled, "");
 
@@ -57,7 +61,7 @@ export function useLoginEffect() {
     }
   }, [login.rejected]);
 
-  return [onFinish, onFinishFailed];
+  return { loading: login.pending, onFinish, onFinishFailed };
 }
 
 // 세션 스토리지에 아이디와 토큰이 있을 때, 리덕스에 토큰유무와 아이디를 저장

@@ -14,7 +14,7 @@ const tailLayout = {
 };
 
 const RegisterPage = () => {
-  const [onFinish, onFinishFailed] = useRegisterEffect();
+  const {loading, onFinish, onFinishFailed} = useRegisterEffect();
 
   return (
     <Layout>
@@ -61,7 +61,7 @@ const RegisterPage = () => {
             <Input type="password" className="login_input" />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loading}>
               회원가입
             </Button>
           </Form.Item>
