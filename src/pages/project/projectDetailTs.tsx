@@ -59,9 +59,40 @@ export default function ProjectDetail() {
   const needList = [
       {
           title: "개발자",
-          
+          number: project.project.currentMember.developer
+      },
+            {
+          title: "디자이너",
+          number: project.project.currentMember.designer
+      },
+            {
+          title: "기획자",
+          number: project.project.currentMember.planner
+      },
+            {
+          title: "기타",
+          number: project.project.currentMember.etc
       }
   ]
+
+    const allList = [
+      {
+        title: "개발자",
+        number: project.project.needMember.developer,
+      },
+      {
+        title: "디자이너",
+        number: project.project.needMember.designer,
+      },
+      {
+        title: "기획자",
+        number: project.project.needMember.planner,
+      },
+      {
+        title: "기타",
+        number: project.project.needMember.etc,
+      },
+    ];
 
   return (
     <Layout>
@@ -137,21 +168,26 @@ export default function ProjectDetail() {
             </div>
             <Title level={1}>{project.project.projectName}</Title>
             <Title level={4}>{project.project.teamName}</Title>
-            <Title>마감일 : {project.project.endDate}</Title>
+            <Title level={5}>마감일 : {project.project.endDate}</Title>
             <div id="list">
               <div className="half_div_left">
-                  <List
-                  grid={{ gutter: 16, column: 4 }}
+                <List
+                  className="demo-loadmore-list"
+                  itemLayout="horizontal"
                   size="large"
-                  header={<div>현재 인원</div>}
+                  header={<div>모집 인원</div>}
                   bordered
                   dataSource={needList}
-                  renderItem={item => {
-                    <List.Item>
-                        <Card title={item.title}>{item.number}</Card>
-                    </List.Item>
+                  renderItem={(item) => {
+                    return (
+                    <List.Item key={item.title}>
+                        <List.Item.Meta title={<div>{item.title}</div>} />
+                        <div>{item.number}명</div>
+                      </List.Item>
+                    );
                   }}
-                <List>
+                />
+                {/* <List>
                   <ListItem divider>
                     <ListItemText primary="현재 인원" />
                   </ListItem>
@@ -185,10 +221,26 @@ export default function ProjectDetail() {
                       {project.project.currentMember.etc}
                     </ListItemSecondaryAction>
                   </ListItem>
-                </List>
+                </List> */}
               </div>
               <div className="half_div_right">
-                <List>
+                <List
+                  className="demo-loadmore-list"
+                  itemLayout="horizontal"
+                  size="large"
+                  header={<div>전체 인원</div>}
+                  bordered
+                  dataSource={allList}
+                  renderItem={(item) => {
+                    return (
+                      <List.Item key={item.title}>
+                        <List.Item.Meta title={<div>{item.title}</div>} />
+                        <div>{item.number}명</div>
+                      </List.Item>
+                    );
+                  }}
+                />
+                {/* <List>
                   <ListItem divider>
                     <ListItemText primary="모집 인원" />
                   </ListItem>
@@ -216,7 +268,7 @@ export default function ProjectDetail() {
                       {project.project.needMember.etc}
                     </ListItemSecondaryAction>
                   </ListItem>
-                </List>
+                </List> */}
               </div>
             </div>
           </div>
@@ -236,7 +288,7 @@ export default function ProjectDetail() {
               ) : (
                 <div>
                   <List
-                    dense
+                    itemLayout="vertical"
                     style={{
                       backgroundColor:
                         project.apply[project.pagination.apply].state ===
@@ -247,8 +299,25 @@ export default function ProjectDetail() {
                           ? "rgb(212, 237, 218, 0.3)"
                           : "#ffffff",
                     }}
+                    dataSource={project.apply}
+                    header={
+                      <div>
+                        <b>지원 현황</b>
+                      </div>
+                    }
+                    pagination={{
+                      onChange: (page) => {
+                        console.log(page);
+                      },
+                      pageSize: 1,
+                    }}
+                    renderItem={(item) => {
+                      return (
+                        <List.Item key={item.userName}>{item.role}</List.Item>
+                      );
+                    }}
                   >
-                    <ListItem>
+                    {/* <ListItem>
                       <ListItemText
                         primary={`이름 : ${
                           project.apply[project.pagination.apply].userName
@@ -261,7 +330,7 @@ export default function ProjectDetail() {
                           project.apply[project.pagination.apply].role
                         }`}
                       />
-                    </ListItem>
+                    </ListItem> */}
                     <Button onClick={projectAction.openDetailApply}>
                       상세보기
                     </Button>
@@ -285,33 +354,25 @@ export default function ProjectDetail() {
                     modalFlag={project.check.applyDetail}
                     close={projectAction.closeDetailApply}
                   >
-                    <ApplyDetailProject
+                    {/* <ApplyDetailProject
                       open={project.check.applyDetail}
                       close={projectAction.closeDetailApply}
                       applyApi={
                         project.apply[project.pagination.apply]._links.self.href
                       }
-                      applySet={projectAction.setApplyState}
+                      applySet={projectAction.setApply}
                       userId={project.apply[project.pagination.apply].userId}
                       setPagination={() =>
                         projectAction.clickPagination("apply", 0)
                       }
-                    />
+                    /> */}
                   </CenterModal>
                 </div>
               ))}
             <br />
-            <FormControlLabel
-              style={{ margin: "0px -20px 0px 0px", padding: "0px" }}
-              control={
-                <IOSSwitch
-                  name="recruit"
-                  checked={project.check.recruit}
-                  onChange={(e) =>
-                    projectAction.checkSwitch(e.target.name, e.target.checked)
-                  }
-                  value="recruit"
-                />
+            <Switch
+              onChange={(checked: boolean) =>
+                projectAction.checkSwitch("recruit", checked)
               }
             />
             {project.check.recruit &&
@@ -319,7 +380,31 @@ export default function ProjectDetail() {
                 <div>요청이 없습니다 </div>
               ) : (
                 <div>
-                  <List dense>
+                  <List
+                    itemLayout="vertical"
+                    size="large"
+                    header={<div>지원 상태</div>}
+                    bordered
+                    dataSource={project.recruit}
+                    pagination={{
+                      onChange: (page) => {
+                        console.log(page);
+                      },
+                      pageSize: 1,
+                    }}
+                    renderItem={(item) => {
+                      return (
+                        <List.Item>
+                          <Card title={item.userName}>
+                            <div>역할: {item.role}</div>
+                            <div>자기소개: {item.introduction}</div>
+                            <div>상태: {item.state}</div>
+                          </Card>
+                        </List.Item>
+                      );
+                    }}
+                  />
+                  {/* <List dense>
                     <ListItem>
                       <ListItemText
                         primary={`이름 : ${
@@ -349,7 +434,7 @@ export default function ProjectDetail() {
                         }`}
                       />
                     </ListItem>
-                  </List>
+                  </List> */}
                   <Button
                     disabled={project.pagination.recruit === 0}
                     onClick={() => projectAction.clickPagination("recruit", -1)}
@@ -373,172 +458,172 @@ export default function ProjectDetail() {
   );
 }
 
-const ApplyProject = (props: any) => {
-  const { questions, projectId, applyApi, detailGet, close } = props;
-  const [apply, applyAction] = useProjectApplyState(applyApi.apply.href);
-  const [applyRes, { run: postApply }] = useRequest(applyAction.fetchPostApply);
-  const [applyPutRes, { run: putApply }] = useRequest(
-    applyAction.fetchPutApply,
-  );
-  const [applyGetRes, { run: getApply }] = useRequest(
-    applyAction.fetchGetApply,
-  );
+// const ApplyProject = (props: any) => {
+//   const { questions, projectId, applyApi, detailGet, close } = props;
+//   const [apply, applyAction] = useProjectApplyState(applyApi.apply.href);
+//   const [applyRes, { run: postApply }] = useRequest(applyAction.fetchPostApply);
+//   const [applyPutRes, { run: putApply }] = useRequest(
+//     applyAction.fetchPutApply,
+//   );
+//   const [applyGetRes, { run: getApply }] = useRequest(
+//     applyAction.fetchGetApply,
+//   );
 
-  useProjectApplyEffect(
-    questions,
-    getApply,
-    apply,
-    applyAction,
-    applyRes,
-    applyGetRes,
-    applyPutRes,
-    detailGet,
-    applyApi.apply.href,
-    close,
-  );
+//   useProjectApplyEffect(
+//     questions,
+//     getApply,
+//     apply,
+//     applyAction,
+//     applyRes,
+//     applyGetRes,
+//     applyPutRes,
+//     detailGet,
+//     applyApi.apply.href,
+//     close,
+//   );
 
-  return (
-    <div id="drawer_root">
-      <div style={{ height: "12px" }} />
-      {apply.apply.answers.map((a, i) => (
-        <div>
-          <Typography variant="h6">
-            {i + 1}번 질문 : {questions[i]}
-          </Typography>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">답변</InputGroupAddon>
-            <Input
-              name="answer"
-              onChange={(e) => applyAction.inputAnswer(e.target.value, i)}
-              value={a}
-            />
-          </InputGroup>
-          <div style={{ height: "12px" }} />
-        </div>
-      ))}
-      <Label for="exampleEmail" style={{ marginBottom: "0px" }}>
-        자기 소개
-      </Label>
-      <BootstrapInput
-        multiline
-        name="introduction"
-        onChange={(e) => applyAction.inputApply(e.target.name, e.target.value)}
-        value={apply.apply.introduction}
-        fullWidth
-      />
-      <div style={{ height: "12px" }} />
-      <DropdownRole
-        style={{ width: "100%" }}
-        dropdownCaret="역할 선택"
-        action={applyAction.selectRole}
-        pick={apply.apply.role}
-      />
-      <div style={{ height: "12px" }} />
-      <div className="full_div">
-        <div id="button">
-          {apply.applied ? (
-            <Button
-              onClick={() => {
-                putApply(
-                  {
-                    answers: apply.apply.answers,
-                    introduction: apply.apply.introduction,
-                    role: apply.apply.role,
-                  },
-                  projectId,
-                );
-              }}
-            >
-              수정하기
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                postApply(
-                  {
-                    answers: apply.apply.answers,
-                    introduction: apply.apply.introduction,
-                    role: apply.apply.role,
-                  },
-                  projectId,
-                );
-              }}
-            >
-              지원하기
-            </Button>
-          )}
-        </div>
-      </div>
-      <div style={{ height: "12px" }} />
-    </div>
-  );
-};
+//   return (
+//     <div id="drawer_root">
+//       <div style={{ height: "12px" }} />
+//       {apply.apply.answers.map((a, i) => (
+//         <div>
+//           <Typography variant="h6">
+//             {i + 1}번 질문 : {questions[i]}
+//           </Typography>
+//           <InputGroup>
+//             <InputGroupAddon addonType="prepend">답변</InputGroupAddon>
+//             <Input
+//               name="answer"
+//               onChange={(e) => applyAction.inputAnswer(e.target.value, i)}
+//               value={a}
+//             />
+//           </InputGroup>
+//           <div style={{ height: "12px" }} />
+//         </div>
+//       ))}
+//       <Label for="exampleEmail" style={{ marginBottom: "0px" }}>
+//         자기 소개
+//       </Label>
+//       <BootstrapInput
+//         multiline
+//         name="introduction"
+//         onChange={(e) => applyAction.inputApply(e.target.name, e.target.value)}
+//         value={apply.apply.introduction}
+//         fullWidth
+//       />
+//       <div style={{ height: "12px" }} />
+//       <DropdownRole
+//         style={{ width: "100%" }}
+//         dropdownCaret="역할 선택"
+//         action={applyAction.selectRole}
+//         pick={apply.apply.role}
+//       />
+//       <div style={{ height: "12px" }} />
+//       <div className="full_div">
+//         <div id="button">
+//           {apply.applied ? (
+//             <Button
+//               onClick={() => {
+//                 putApply(
+//                   {
+//                     answers: apply.apply.answers,
+//                     introduction: apply.apply.introduction,
+//                     role: apply.apply.role,
+//                   },
+//                   projectId,
+//                 );
+//               }}
+//             >
+//               수정하기
+//             </Button>
+//           ) : (
+//             <Button
+//               onClick={() => {
+//                 postApply(
+//                   {
+//                     answers: apply.apply.answers,
+//                     introduction: apply.apply.introduction,
+//                     role: apply.apply.role,
+//                   },
+//                   projectId,
+//                 );
+//               }}
+//             >
+//               지원하기
+//             </Button>
+//           )}
+//         </div>
+//       </div>
+//       <div style={{ height: "12px" }} />
+//     </div>
+//   );
+// };
 
-const ApplyDetailProject = (props) => {
-  const { open, close, applyApi, applySet, userId, setPagination } = props;
-  const [apply, applyAction] = useProjectDetailApplyState(applyApi);
-  console.log(applyAction);
-  const [applyGetRes, { run: getApply }] = useRequest(
-    applyAction.fetchGetApply,
-  );
-  const [applyPutRes, { run: putApply }] = useRequest(
-    applyAction.fetchPutApply,
-  );
-  const [applyDeleteRes, { run: deleteApply }] = useRequest(
-    applyAction.fetchDeleteApply,
-  );
+// const ApplyDetailProject = (props) => {
+//   const { open, close, applyApi, applySet, userId, setPagination } = props;
+//   const [apply, applyAction] = useProjectDetailApplyState(applyApi);
+//   console.log(applyAction);
+//   const [applyGetRes, { run: getApply }] = useRequest(
+//     applyAction.fetchGetApply,
+//   );
+//   const [applyPutRes, { run: putApply }] = useRequest(
+//     applyAction.fetchPutApply,
+//   );
+//   const [applyDeleteRes, { run: deleteApply }] = useRequest(
+//     applyAction.fetchDeleteApply,
+//   );
 
-  useProjectDetailApplyEffect(
-    open,
-    getApply,
-    apply,
-    applyGetRes,
-    applyPutRes,
-    applyDeleteRes,
-    applySet,
-    userId,
-    close,
-    applyAction,
-    setPagination,
-  );
-  return (
-    <div id="drawer_root">
-      <div style={{ height: "12px" }} />
-      {apply.apply.answers.map((a, i) => (
-        <div>
-          <Typography variant="h6">
-            {i + 1}번 질문 : {apply.apply.questions[i]}
-          </Typography>
-          <Typography variant="h6">{a}</Typography>
-          <div style={{ height: "12px" }} />
-        </div>
-      ))}
-      <Label for="exampleEmail" style={{ marginBottom: "0px" }}>
-        자기 소개
-      </Label>
-      <Typography variant="h6">{apply.apply.introduction}</Typography>
-      <div style={{ height: "12px" }} />
-      <Typography variant="h6">지원 분야 : {apply.apply.role}</Typography>
-      <div style={{ height: "12px" }} />
-      <div className="full_div">
-        <div id="button">
-          <Button
-            onClick={() => {
-              putApply();
-            }}
-          >
-            수락
-          </Button>
-          <Button
-            onClick={() => {
-              deleteApply();
-            }}
-          >
-            거절
-          </Button>
-        </div>
-      </div>
-      <div style={{ height: "12px" }} />
-    </div>
-  );
-};
+//   useProjectDetailApplyEffect(
+//     open,
+//     getApply,
+//     apply,
+//     applyGetRes,
+//     applyPutRes,
+//     applyDeleteRes,
+//     applySet,
+//     userId,
+//     close,
+//     applyAction,
+//     setPagination,
+//   );
+//   return (
+//     <div id="drawer_root">
+//       <div style={{ height: "12px" }} />
+//       {apply.apply.answers.map((a, i) => (
+//         <div>
+//           <Typography variant="h6">
+//             {i + 1}번 질문 : {apply.apply.questions[i]}
+//           </Typography>
+//           <Typography variant="h6">{a}</Typography>
+//           <div style={{ height: "12px" }} />
+//         </div>
+//       ))}
+//       <Label for="exampleEmail" style={{ marginBottom: "0px" }}>
+//         자기 소개
+//       </Label>
+//       <Typography variant="h6">{apply.apply.introduction}</Typography>
+//       <div style={{ height: "12px" }} />
+//       <Typography variant="h6">지원 분야 : {apply.apply.role}</Typography>
+//       <div style={{ height: "12px" }} />
+//       <div className="full_div">
+//         <div id="button">
+//           <Button
+//             onClick={() => {
+//               putApply();
+//             }}
+//           >
+//             수락
+//           </Button>
+//           <Button
+//             onClick={() => {
+//               deleteApply();
+//             }}
+//           >
+//             거절
+//           </Button>
+//         </div>
+//       </div>
+//       <div style={{ height: "12px" }} />
+//     </div>
+//   );
+// };
