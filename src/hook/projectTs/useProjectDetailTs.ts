@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert, useRequest } from "../";
 import { useHistory } from "react-router-dom";
@@ -46,6 +46,8 @@ type RecruitDtoListType = {
   status: string;
   projectId: number;
   projectName: string;
+  introduction: string;
+  state: string;
   _links: {
     self: {
       href: string;
@@ -108,6 +110,7 @@ type ProjectDetailStateType = {
       closeDelete: () => void;
       openDetailApply: () => void;
       closeDetailApply: () => void;
+      setApply: Dispatch<SetStateAction<ApplyType[]>>;
     },
 }
 
@@ -130,7 +133,8 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
     recruit: 0,
   });
   const [teamReader, setTeamReader] = useState(false);
-  const fetchGetDetail = async (projectId: string): Promise<void> => {
+
+  const fetchGetDetail = async (projectId: string): Promise<any> => {
     let token = window.sessionStorage.getItem("accessToken");
     let resApply = {
       apply: {},
@@ -374,6 +378,7 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
       inputApply,
       inputRecruit,
       clickPagination,
+      setApply,
       openApply,
       closeApply,
       openDelete,
@@ -501,6 +506,8 @@ const recruitDtoList = [
     status: "",
     projectId: 0,
     projectName: "",
+    introduction: "",
+    state:"",
     _links: {
       self: {
         href: "",
