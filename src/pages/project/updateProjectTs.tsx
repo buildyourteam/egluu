@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useLocation } from "react-router-dom";
 import {
   Layout,
   ImgInput,
@@ -13,16 +14,40 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import { ko } from "date-fns/locale";
 import {
-  useProjectCreateEffectTs,
-  useProjectCreateStateTS,
+  useProjectUpdateStateTs,
+  useProjectUpdateEffectTs,
 } from "../../hook/projectTs";
-import { Button, Input } from "antd";
 import { useImageSave } from "../../hook/useImage";
+import { Button, Input } from "antd";
 
-export default function ProjectCreate() {
-  const { createState, createAction } = useProjectCreateStateTS();
-  useImageSave(createState.createImg, "/projectDetail");
-  useProjectCreateEffectTs(createState, createAction);
+export default function ProjectUpdate() {
+  const location = useLocation();
+  const url = location.pathname.split("/");
+  const projectId = url[2];
+  const { updateState, updateAction } = useProjectUpdateStateTs();
+
+  useProjectUpdateEffectTs(updateState, updateAction, url[2]);
+
+  useImageSave(updateState.updateImg, "projectDetail");
+  const handleClickUpdate = () => {
+    const updateData = {
+      projectName: updateState.project.projectName,
+      teamName: updateState.project.teamName,
+      endDate: updateState.project.endDate,
+      introduction: updateState.project.introduction,
+      state: updateState.project.state,
+      projectField: updateState.project.projectField,
+      applyCanFile: updateState.project.applyCanFile,
+      needMember: {
+        developer: updateState.project.needMember.developer,
+        designer: updateState.project.needMember.designer,
+        planner: updateState.project.needMember.planner,
+        etc: updateState.project.needMember.etc,
+      },
+      questions: updateState.project.questions,
+    };
+    updateAction.UpdateProjectApi(projectId, updateData);
+  };
 
   return (
     <Layout>
@@ -31,19 +56,19 @@ export default function ProjectCreate() {
           <div id="button">
             <Button
               loading={
-                createState.createProject.pending ||
-                createState.createImg.pending
+                updateState.updateImg.pending ||
+                updateState.updateProject.pending
               }
-              onClick={() => createAction.createProjectApi(createState.project)}
+              onClick={handleClickUpdate}
             >
-              Make Project
+              Update Project
             </Button>
           </div>
         </div>
         <div className="input_grid">
           <div className="half_div_left">
             <div className="input_img">
-              <ImgInput img={createState.img} saveImg={createAction.inputImg} />
+              <ImgInput img={updateState.img} saveImg={updateAction.setImg} />
             </div>
           </div>
           <div className="half_div_right">
@@ -51,21 +76,17 @@ export default function ProjectCreate() {
             <Input
               type="name"
               name="projectName"
-              placeholder="createState name"
-              value={createState.project.projectName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                createAction.inputProject(e.target.name, e.target.value)
-              }
+              placeholder="project name"
+              onChange={updateAction.inputProject}
+              value={updateState.project.projectName}
             />
             <label htmlFor="exampleEmail">Team Name</label>
             <Input
               type="name"
               name="teamName"
               placeholder="team name"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                createAction.inputProject(e.target.name, e.target.value)
-              }
-              value={createState.project.teamName}
+              onChange={updateAction.inputProject}
+              value={updateState.project.teamName}
             />
             <div className="half_div_left">
               <label htmlFor="exampleEmail">Recruit People</label>
@@ -78,9 +99,9 @@ export default function ProjectCreate() {
                 step="1"
                 name="developer"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  createAction.inputProjectMember(e.target.name, e.target.value)
+                  updateAction.inputProjectMember(e)
                 }
-                value={createState.project.needMember.developer}
+                value={updateState.project.needMember.developer}
               />
               <Input
                 addonBefore={<div style={{ width: "100px" }}>Designer</div>}
@@ -91,9 +112,9 @@ export default function ProjectCreate() {
                 step="1"
                 name="designer"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  createAction.inputProjectMember(e.target.name, e.target.value)
+                  updateAction.inputProjectMember(e)
                 }
-                value={createState.project.needMember.designer}
+                value={updateState.project.needMember.designer}
               />
               <Input
                 addonBefore={<div style={{ width: "100px" }}>Planner</div>}
@@ -104,9 +125,9 @@ export default function ProjectCreate() {
                 step="1"
                 name="planner"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  createAction.inputProjectMember(e.target.name, e.target.value)
+                  updateAction.inputProjectMember(e)
                 }
-                value={createState.project.needMember.planner}
+                value={updateState.project.needMember.planner}
               />
               <Input
                 addonBefore={<div style={{ width: "100px" }}>Etc</div>}
@@ -117,9 +138,9 @@ export default function ProjectCreate() {
                 step="1"
                 name="etc"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  createAction.inputProjectMember(e.target.name, e.target.value)
+                  updateAction.inputProjectMember(e)
                 }
-                value={createState.project.needMember.etc}
+                value={updateState.project.needMember.etc}
               />
             </div>
             <div className="half_div_right">
@@ -127,8 +148,8 @@ export default function ProjectCreate() {
               <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
                 <MuiDateTimePicker
                   name="endDate"
-                  value={createState.project.endDate}
-                  onChange={(date) => createAction.inputDate(date)}
+                  value={updateState.project.endDate}
+                  onChange={(date) => updateAction.inputDate(date)}
                   format="yy.MM.dd HH:mm"
                   placeholder="종료일"
                   variant="dialog"
@@ -138,32 +159,30 @@ export default function ProjectCreate() {
                   ampm
                 />
               </MuiPickersUtilsProvider>
-
               <label htmlFor="exampleEmail">Role</label>
               <DropdownField
                 style={{ width: "100%" }}
                 dropdownCaret="Role"
-                action={createAction.inputField}
-                pick={createState.project.projectField}
+                action={updateAction.inputField}
+                pick={updateState.project.projectField}
               />
             </div>
           </div>
         </div>
-        <div style={{ marginTop: "20px" }}>
-          <label htmlFor="exampleEmail">Introduction</label>
-          <BootstrapInput
-            multiline
-            type="name"
-            name="introduction"
-            placeholder="introduction"
-            value={createState.project.introduction}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              createAction.inputProject(e.target.name, e.target.value)
-            }
-            fullWidth
-          />
+        <div style={{marginTop: '20px'}}>
+          <div>
+            <label htmlFor="exampleEmail">Introduction</label>
+            <BootstrapInput
+              multiline
+              name="introduction"
+              placeholder="introduction"
+              value={updateState.project.introduction}
+              onChange={updateAction.inputProject}
+              fullWidth
+            />
+          </div>
           <label htmlFor="exampleEmail">Questions</label>
-          {createState.project.questions.map((value, index) => {
+          {updateState.project.questions.map((value: string, index: number) => {
             const questionString = `Question ${index + 1}`;
             return (
               <div>
@@ -172,7 +191,7 @@ export default function ProjectCreate() {
                   addonAfter={
                     <Button
                       color="secondary"
-                      onClick={() => createAction.deleteQuestion(index)}
+                      onClick={() => updateAction.deleteQuestion(index)}
                     >
                       delete
                     </Button>
@@ -180,18 +199,17 @@ export default function ProjectCreate() {
                   placeholder="question"
                   name="questions"
                   onChange={(e) =>
-                    createAction.inputQuestion(e.target.value, index)
+                    updateAction.inputQuestion(e.target.value, index)
                   }
                   value={value}
                 />
-                <div style={{ height: "12px" }} />
               </div>
             );
           })}
         </div>
         <div className="full_div">
           <div id="button">
-            <Button onClick={createAction.addQuestion}>Add Questions</Button>
+            <Button onClick={updateAction.addQuestion}>Add Questions</Button>
           </div>
         </div>
       </div>

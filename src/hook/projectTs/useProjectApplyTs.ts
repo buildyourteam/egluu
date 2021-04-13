@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useRequest } from "..";
+import { useRequest } from "../";
 import { loginApi } from "../api";
 import { RequestState } from "../useRequest";
 

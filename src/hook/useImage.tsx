@@ -12,7 +12,6 @@ export const useImageSave = (
 
   useEffect(() => {
     if (postImg.fulfilled) {
-        console.log(postImg.data);
       const projectId = postImg.data.fileName.split(".");
       history.push(`${nextUrl}/${projectId[0]}`);
     }

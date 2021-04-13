@@ -144,7 +144,7 @@ export default function ProjectDetail() {
             </div>
           )}
         </div>
-        <div>
+        <div className="input_grid">
           <div className="half_div_left">
             <img
               id="cover"

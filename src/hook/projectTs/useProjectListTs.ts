@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useRequest } from "..";
+import { useRequest } from "../";
 import { setTemporary } from "../../reducers/temporary";
 import { loginApi } from "../api";
 import { RequestState } from "../useRequest";

@@ -64,14 +64,6 @@ type checkType = {
   applyDetail: boolean;
 };
 
-// type ApplyTypeTmp = {
-//     res: Promise<void>;
-//     resApply: {
-//         apply: object;
-//         recruit: object;
-//     }
-// }
-
 type pagenationType = {
     apply: number,
     recruit: number,
