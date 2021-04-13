@@ -81,13 +81,16 @@ type ApplyType = {
     state: string;
     userName: string;
     role: string;
-    _links: string;
+    _links: {
+        self: {
+            href: string
+        }
+    };
     userId: string;
     href: string;
 }
 
-type ProjectDetailStateType = {
-    project: { 
+type ProjectType = { 
         getProject: RequestState;
         deleteProject: RequestState;
         project: ProjectDetailType;
@@ -96,7 +99,8 @@ type ProjectDetailStateType = {
         recruit: RecruitDtoListType[];
         pagination: pagenationType;
     };
-    projectAction: {
+
+type ProjectActionType = {
     getProjectApi: (projectId: string) => Promise<void>;
       deleteProjectApi: (projectId: string) => Promise<void>;
       inputProject: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -111,17 +115,22 @@ type ProjectDetailStateType = {
       openDetailApply: () => void;
       closeDetailApply: () => void;
       setApply: Dispatch<SetStateAction<ApplyType[]>>;
-    },
+      setProject: Dispatch<SetStateAction<ProjectDetailType>>;
+    }
+
+type ProjectDetailStateType = {
+    project: ProjectType;
+    projectAction: ProjectActionType;
 }
 
 const useProjectDetailStateTs = (): ProjectDetailStateType => {
   const history = useHistory();
   const [project, setProject] = useState<ProjectDetailType>(projectDetail);
   const [apply, setApply] = useState<ApplyType[]>([]);
-  const [recruit, setRecruit] = useState<RecruitDtoListType[]>(recruitDtoList);
+  const [recruit, setRecruit] = useState<RecruitDtoListType[]>([]);
   //   const [alertData, alertAction] = useAlert();
   const [check, setCheck] = useState<checkType>({
-    apply: true,
+    apply: false,
     recruit: false,
     reader: false,
     applyModal: false,
@@ -179,7 +188,7 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
         });
       await axios
         .get(
-          `${process.env.REACT_APP_BASE_URL}/projects/${projectId}/recruits`,
+          `${process.env.REACT_APP_BASE_URL}projects/${projectId}/recruits`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -239,26 +248,6 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
   const [deleteProject, { run: deleteProjectApi }] = useRequest(
     fetchDeleteProject,
   );
-
-  //   const fetchPutApply = async (userId: string) => {
-  //     let token = window.sessionStorage.getItem("accessToken");
-  //     token = await loginApi().refreshToken();
-  //     await axios
-  //       .put(project._links.apply.href, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json;charset=UTF-8",
-  //           Accept: "application/hal+json",
-  //         },
-  //       })
-  //       .then(() => {
-  //         const deleteMember = apply.filter((member) => member.userId !== userId);
-  //         setApply(deleteMember);
-  //       })
-  //       .catch(async (error: any) => {
-  //         throw error;
-  //       });
-  //   };
 
   const inputProject = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProject((value) => {
@@ -385,42 +374,42 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
       closeDelete,
       openDetailApply,
       closeDetailApply,
+      setProject
     },
   };
 };
 
-// const useProjectDetailEffect = (
-//   data,
-//   fulfilled,
-//   rejected,
-//   error,
-//   fetchDetail,
-//   projectAction,
-//   projectId,
-// ) => {
-// //   const [alertData, alertAction] = useAlert();
+const useProjectDetailEffectTs = (
+  project: ProjectType,
+  projectAction: ProjectActionType,
+  projectId: string,
+) => {
+  //   const [alertData, alertAction] = useAlert();
 
-//   useEffect(() => {
-//     fetchDetail(projectId);
-//   }, []);
+  useEffect(() => {
+    projectAction.getProjectApi(projectId);
+  }, []);
 
-//   useEffect(() => {
-//     if (fulfilled) {
-//       projectAction.setProjectState(data.res);
-//       const id = window.sessionStorage.getItem("id");
-//       if (data.res.memberList[0]._links.self.href === `/profile/${id}`) {
-//         projectAction.checkSwitch("reader", true);
-//       }
-//     }
-//   }, [fulfilled]);
+  useEffect(() => {
+    if (project.getProject.fulfilled) {
+      projectAction.setProject(project.getProject.data.res);
+      const id = window.sessionStorage.getItem("id");
+      if (
+        project.getProject.data.res.memberList[0]._links.self.href ===
+        `/profile/${id}`
+      ) {
+        projectAction.checkSwitch("reader", true);
+      }
+    }
+  }, [project.getProject.fulfilled]);
 
-//   useEffect(() => {
-//     if (rejected) {
-//       console.log(error.response);
-//     //   alertAction.open(error.response.data.message);
-//     }
-//   }, [rejected]);
-// };
+  useEffect(() => {
+    if (project.getProject.rejected) {
+      console.log(project.getProject.error.response);
+      //   alertAction.open(error.response.data.message);
+    }
+  }, [project.getProject.rejected]);
+};
 
 // const useProjectRecruitEffect = (
 //   data,
@@ -448,8 +437,8 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
 
 export {
   useProjectDetailStateTs,
-//   useProjectDetailEffect,
-//   useProjectRecruitEffect,
+  useProjectDetailEffectTs,
+  //   useProjectRecruitEffect,
 };
 
 const projectDetail = {
