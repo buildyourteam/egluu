@@ -1,0 +1,1 @@
+export { ImgInput2, ImgInput } from './inputImage';
