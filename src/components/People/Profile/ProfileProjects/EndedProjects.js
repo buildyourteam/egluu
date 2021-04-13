@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Row, Col, Button } from "reactstrap";
 import { useRequest } from "../../../../hook/useRequest";
 import ProjectBox from "../../../Project/ProjectBox";
-import { useEndedProjectApi } from "../../../../hook/api/profileApi";
+import { endedProjectApi } from "../../../../hook/api";
 import useProfileProject from "../../../../hook/profile/useProfileProject";
 import "./profileProject.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -34,7 +34,7 @@ const EndedProjects = ({ userId }) => {
     }
   };
 
-  const { getProject } = useEndedProjectApi();
+  const { getProject } = endedProjectApi();
 
   const [
     {
@@ -57,7 +57,7 @@ const EndedProjects = ({ userId }) => {
     setList,
     hiding,
 
-    userId
+    userId,
   );
 
   return (

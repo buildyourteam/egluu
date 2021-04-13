@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import ImageModify from "../ProfileImage/ImageModify";
-import { useInfoApi, useImgApi } from "../../../../hook/api/profileApi";
+import { infoApi, imgApi } from "../../../../hook/api";
 import { useRequest } from "../../../../hook/useRequest";
 import useProfileInfoModify from "../../../../hook/profile/useProfileInfoModify";
 
@@ -14,7 +14,7 @@ const ProfileInfoModify = ({
   imgState,
   setImgState,
 
-  userId
+  userId,
 }) => {
   const { postInfoApi, postImgApi } = useProfileInfoModify(
     setModifying,
@@ -22,28 +22,28 @@ const ProfileInfoModify = ({
     imgState,
     setImgState,
 
-    userId
+    userId,
   );
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     // stack은 지금은 무조건 배열상태로 들어가게 임시방편함
     if (e.target.name === "stacks") {
       setInfo({
         ...info,
-        [e.target.name]: [e.target.value]
+        [e.target.name]: [e.target.value],
       });
     }
     // 나머지는 원래 방식대로
     else {
       setInfo({
         ...info,
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,
       });
     }
     console.log(info);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const { grade, ...withOutGrade } = info;
     postInfoApi(userId, withOutGrade);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import refreshToken from "../auth/refreshToken";
+import { loginApi } from "../api";
 import { useAlert } from "../";
 
 const axios = require("axios");
@@ -22,7 +22,8 @@ const useProjectUpdateState = () => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           res = await axios
             .put(
               `${process.env.REACT_APP_BASE_URL}projects/${projectId}`,
@@ -33,7 +34,7 @@ const useProjectUpdateState = () => {
                   "Content-Type": "application/json;charset=UTF-8",
                   Accept: "application/hal+json",
                 },
-              }
+              },
             )
             .catch((error) => {
               throw error;
@@ -60,11 +61,12 @@ const useProjectUpdateState = () => {
             "Content-Type": "multipart/form-data;charset=UTF-8",
             Accept: "application/hal+json",
           },
-        }
+        },
       )
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           res = await axios
             .post(
               `${process.env.REACT_APP_BASE_URL}projects/image/${projectId}`,
@@ -75,7 +77,7 @@ const useProjectUpdateState = () => {
                   "Content-Type": "multipart/form-data;charset=UTF-8",
                   Accept: "application/hal+json",
                 },
-              }
+              },
             )
             .catch((error) => {
               throw error;
@@ -183,7 +185,7 @@ const useProjectUpdateEffect = (
   error,
   UpdateImgApi,
   projectImg,
-  projectId
+  projectId,
 ) => {
   const history = useHistory();
   const [alertData, alertAction] = useAlert();

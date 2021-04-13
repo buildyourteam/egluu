@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import { useImgApi } from "../api/profileApi";
+import { imgApi } from "../api";
 import { useRequest } from "../useRequest";
 export const useImage = (
   imgState,
   setImgState,
 
-  userId
+  userId,
 ) => {
-  const { getImg } = useImgApi();
+  const { getImg } = imgApi();
 
   const [
     { data, fulfilled, pending, rejected, error },
@@ -28,7 +28,6 @@ export const useImage = (
   useEffect(() => {
     if (rejected) {
       if (error) {
-        // console.log(error.response.data);
         if (error.response.data.error === "302") {
           setImgState({
             ...imgState,

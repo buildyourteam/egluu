@@ -4,22 +4,30 @@ import {
   Root,
   ProjectList,
   Profile,
-  Register,
-  Login,
   ProjectDetail,
   ProjectCreate,
   ProjectUpdate,
-  PeopleList
+  PeopleList,
+  LoginPage,
+  RegisterPage,
 } from "./pages";
 import { AlertModal } from "./components";
 import { useLoginAuth } from "./hook/auth/useLogin";
+import "antd/dist/antd.css";
 
 function App() {
   useLoginAuth();
   return (
     <Router>
       <Switch>
+        <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
         <Route exact path="/" component={Root} />
+        <Route path="/projects" component={ProjectList} />
+        <Route path="/createProject" component={ProjectCreate} />
+        <Route path="/projectDetail/:id" component={ProjectDetail} />
+        <Route path="/projectUpdate/:id" component={ProjectUpdate} />
+        {/* <Route exact path="/" component={Root} />
         <Route path="/projects" component={ProjectList} />
         <Route path="/peoples" component={PeopleList} />
         <Route path="/createProject" component={ProjectCreate} />
@@ -27,7 +35,7 @@ function App() {
         <Route path="/projectUpdate/:id" component={ProjectUpdate} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/profile/:userId" component={Profile} />
+        <Route path="/profile/:userId" component={Profile} /> */}
       </Switch>
       <AlertModal />
     </Router>

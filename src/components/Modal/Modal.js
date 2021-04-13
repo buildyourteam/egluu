@@ -40,11 +40,11 @@ const CenterModal = (props) => {
 };
 
 const AlertModal = (props) => {
-  const [alertData, alertAction] = useAlert();
+  const { alertState, alertAction } = useAlert();
 
   return (
     <div>
-      <Modal isOpen={alertData.isOpen}>
+      <Modal isOpen={alertState.isOpen}>
         <ModalHeader>
           <div
             style={{
@@ -67,8 +67,7 @@ const AlertModal = (props) => {
             </div>
           </div>
         </ModalHeader>
-        {alertData.sentence}
-        {/* <ModalFooter>{props.footer}</ModalFooter> */}
+        {alertState.sentence}
       </Modal>
     </div>
   );

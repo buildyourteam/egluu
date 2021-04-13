@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import refreshToken from "../auth/refreshToken";
+import { loginApi } from "../api";
 
 const axios = require("axios");
 
@@ -21,7 +21,7 @@ export const useProjectApplyState = (api) => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
           res = await axios
             .get(`${api}/${id}`, {
               headers: {
@@ -52,7 +52,8 @@ export const useProjectApplyState = (api) => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           await axios
             .post(api, data, {
               headers: {
@@ -82,7 +83,8 @@ export const useProjectApplyState = (api) => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           await axios
             .put(api, data, {
               headers: {
@@ -159,7 +161,7 @@ export const useProjectApplyEffect = (
   applyPutRes,
   detailGet,
   applyLink,
-  afterAction
+  afterAction,
 ) => {
   const history = useHistory();
   useEffect(() => {
@@ -215,7 +217,8 @@ export const useProjectDetailApplyState = (api) => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           res = await axios
             .get(`${api}`, {
               headers: {
@@ -246,11 +249,12 @@ export const useProjectDetailApplyState = (api) => {
             "Content-Type": "application/json;charset=UTF-8",
             Accept: "application/hal+json",
           },
-        }
+        },
       )
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           await axios
             .put(api, {
               headers: {
@@ -280,7 +284,8 @@ export const useProjectDetailApplyState = (api) => {
       })
       .catch(async (error) => {
         if (error.response.data.error === "007") {
-          token = await refreshToken();
+          token = await loginApi.refreshToken();
+
           await axios
             .delete(api, {
               headers: {
@@ -319,7 +324,7 @@ export const useProjectDetailApplyEffect = (
   applySet,
   userId,
   close,
-  applyAction
+  applyAction,
 ) => {
   const history = useHistory();
   useEffect(() => {

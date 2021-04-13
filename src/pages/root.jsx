@@ -80,7 +80,7 @@ export default function Root() {
         <div id="pagination_div">
           <Pagination
             id="pagination"
-            count={people.page.totalPages}
+            // count={people.page.totalPages}
             onChange={(e, page) => {
               getPeopleList(page - 1);
             }}
