@@ -29,7 +29,7 @@ const ModifyPlanProjects = ({ list, setList, userId }) => {
       rejected: hideProjectRejected,
       error: hideProjectError,
     },
-    { run: hideProjectApi },
+    { run: hideProjectFetchApi },
   ] = useRequest(hideProject);
 
   const [
@@ -70,7 +70,7 @@ const ModifyPlanProjects = ({ list, setList, userId }) => {
   );
 
   const handleHide = (id) => {
-    hideProjectApi(userId, id);
+    hideProjectFetchApi(userId, id);
   };
 
   const handleDisplay = (id) => {

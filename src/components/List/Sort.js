@@ -181,6 +181,7 @@ export function PeopleSort({
         <Grid item xs={6} sm={2}>
           <FormControl className={classes.formControl}>
             <Select
+              disabled // tmp
               name="role"
               value={role}
               onChange={handleChange}
@@ -201,6 +202,7 @@ export function PeopleSort({
         <Grid item xs={6} sm={2}>
           <FormControl className={classes.formControl}>
             <Select
+              disabled // tmp
               name="grade"
               value={grade}
               onChange={handleChange}
@@ -219,6 +221,7 @@ export function PeopleSort({
         <Grid item xs={6} sm={2}>
           <FormControl className={classes.formControl}>
             <Select
+              disabled // tmp
               name="region"
               value={region}
               onChange={handleChange}
@@ -242,6 +245,7 @@ export function PeopleSort({
           >
             <InputLabel>Search</InputLabel>
             <OutlinedInput
+              disabled // tmp
               value={search}
               onChange={handleChangeSearch}
               label="Search"
@@ -249,7 +253,12 @@ export function PeopleSort({
           </FormControl>
         </Grid>
         <Grid item xs={1} style={{ display: "flex" }}>
-          <Button onClick={() => getPage(role, region, grade)}>search</Button>
+          <Button
+            disabled // tmp
+            onClick={() => getPage(role, region, grade)}
+          >
+            search
+          </Button>
         </Grid>
       </Grid>
     </>

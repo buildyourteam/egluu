@@ -35,7 +35,7 @@ const useProfileInfoModify = (
     },
     { run: postImgApi },
   ] = useRequest(postImg);
-  const [alertData, alertAction] = useAlert();
+  const { alertAction } = useAlert();
 
   useEffect(() => {
     if (imgFulfilled && infoFulfilled) {
