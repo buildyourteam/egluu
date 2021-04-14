@@ -29,15 +29,6 @@ function App() {
         <Route path="/projectUpdate/:id" component={ProjectUpdate} />
         <Route path="/peoples" component={PeopleList} />
         <Route path="/profile/:userId" component={Profile} />
-        {/* <Route exact path="/" component={Root} />
-        <Route path="/projects" component={ProjectList} />
-        <Route path="/peoples" component={PeopleList} />
-        <Route path="/createProject" component={ProjectCreate} />
-        <Route path="/projectDetail/:id" component={ProjectDetail} />
-        <Route path="/projectUpdate/:id" component={ProjectUpdate} />
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
-        <Route path="/profile/:userId" component={Profile} /> */}
       </Switch>
       <AlertModal />
     </Router>
