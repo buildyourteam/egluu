@@ -244,7 +244,7 @@ const useProjectCreateEffectTs = (
   createState: CreateStateType,
   createAction: CreateActionType,
 ) => {
-//   const [alertData, alertAction] = useAlert();
+    const { alertAction } = useAlert();
 
   useEffect(() => {
     if (createState.createProject.fulfilled) {
@@ -257,7 +257,7 @@ const useProjectCreateEffectTs = (
 
   useEffect(() => {
     if (createState.createProject.rejected) {
-    //   alertAction.open(createState.createProject.error.response.data.message);
+      alertAction.open(createState.createProject.error.response.data.message);
       console.log(createState.createProject.error);
     }
   }, [createState.createProject.rejected]);

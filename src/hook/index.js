@@ -7,21 +7,5 @@ export { default as useMove } from "./usePageMove";
 //   useWantedPeopleListEffect,
 // } from "./profile";
 export { useRegisterEffect } from "./auth/useRegister";
-export {
-  useProjectListState,
-  useProjectListEffect,
-  useDeadlineProjectListEffect,
-  useProjectDetailState,
-  useProjectDetailEffect,
-  useProjectRecruitEffect,
-  useProjectCreateState,
-  useProjectCreateEffect,
-  useProjectUpdateState,
-  useProjectUpdateEffect,
-  useProjectApplyState,
-  useProjectApplyEffect,
-  useProjectDetailApplyState,
-  useProjectDetailApplyEffect,
-} from "./project";
 export { default as useAlert } from "./useAlert";
 export { useProjectListStateTs, useProjectListEffectTs } from "./projectTs";
