@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/egluu/static/css/main.0cf9a934.chunk.css",
-    "main.js": "/egluu/static/js/main.2960a729.chunk.js",
-    "main.js.map": "/egluu/static/js/main.2960a729.chunk.js.map",
+    "main.js": "/egluu/static/js/main.ac7ed121.chunk.js",
+    "main.js.map": "/egluu/static/js/main.ac7ed121.chunk.js.map",
     "runtime-main.js": "/egluu/static/js/runtime-main.fd3febab.js",
     "runtime-main.js.map": "/egluu/static/js/runtime-main.fd3febab.js.map",
     "static/css/2.cab98286.chunk.css": "/egluu/static/css/2.cab98286.chunk.css",
     "static/js/2.2e669e2b.chunk.js": "/egluu/static/js/2.2e669e2b.chunk.js",
     "static/js/2.2e669e2b.chunk.js.map": "/egluu/static/js/2.2e669e2b.chunk.js.map",
     "index.html": "/egluu/index.html",
-    "precache-manifest.4ef1f9734de4efdbabc224d05ec15422.js": "/egluu/precache-manifest.4ef1f9734de4efdbabc224d05ec15422.js",
+    "precache-manifest.74db595bec77409e6204a27551474516.js": "/egluu/precache-manifest.74db595bec77409e6204a27551474516.js",
     "service-worker.js": "/egluu/service-worker.js",
     "static/css/2.cab98286.chunk.css.map": "/egluu/static/css/2.cab98286.chunk.css.map",
     "static/css/main.0cf9a934.chunk.css.map": "/egluu/static/css/main.0cf9a934.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.cab98286.chunk.css",
     "static/js/2.2e669e2b.chunk.js",
     "static/css/main.0cf9a934.chunk.css",
-    "static/js/main.2960a729.chunk.js"
+    "static/js/main.ac7ed121.chunk.js"
   ]
 }

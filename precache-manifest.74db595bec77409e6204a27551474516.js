@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "85a2387f5a103e6c7fc9cad501f028b6",
+    "revision": "832ad1e66f79bc4588e1a89b933c2fbf",
     "url": "/egluu/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/egluu/static/css/2.cab98286.chunk.css"
   },
   {
-    "revision": "16d44f370f6a0d030994",
+    "revision": "6e3d30884387fa71cb78",
     "url": "/egluu/static/css/main.0cf9a934.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/egluu/static/js/2.2e669e2b.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "16d44f370f6a0d030994",
-    "url": "/egluu/static/js/main.2960a729.chunk.js"
+    "revision": "6e3d30884387fa71cb78",
+    "url": "/egluu/static/js/main.ac7ed121.chunk.js"
   },
   {
     "revision": "d1e5635da2b03476457d",
