@@ -90,7 +90,7 @@ export default function Root() {
             xxl: 4,
           }}
           dataSource={projectPage.projectList}
-          renderItem={(item) => (
+          renderItem={(item: any) => (
             <List.Item>
               <ProjectBox
                 data={item}
@@ -101,7 +101,7 @@ export default function Root() {
         />
         <div id="pagination_div">
           <Pagination
-            onChange={(page, pageSize) =>
+            onChange={(page: any) =>
               projectAction.getDeadLineProjectListApi(page - 1)
             }
             pageSize={8}
@@ -122,7 +122,7 @@ export default function Root() {
             xxl: 6,
           }}
           dataSource={peoplePage.peopleList}
-          renderItem={(item) => (
+          renderItem={(item: any) => (
             <List.Item>
               <PeopleBox data={item} url={`/profile/${item.userId}`} />
             </List.Item>
@@ -130,9 +130,7 @@ export default function Root() {
         />
         <div id="pagination_div" style={{ marginTop: "30px" }}>
           <Pagination
-            onChange={(page, pageSize) =>
-              peopleAction.getWantedPeopleList(page - 1)
-            }
+            onChange={(page: any) => peopleAction.getWantedPeopleList(page - 1)}
             pageSize={8}
             current={peoplePage.page.number + 1}
             total={peoplePage.page.totalPages * 8}

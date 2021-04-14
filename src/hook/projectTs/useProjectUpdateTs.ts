@@ -244,7 +244,7 @@ const useProjectUpdateEffectTs = (
   projectId: string,
 ) => {
   const history = useHistory();
-//   const [alertData, alertAction] = useAlert();
+   const { alertAction} = useAlert();
   const originImg = useSelector(
     (state: any) => state.project.projectDetail.img,
   );  
@@ -260,7 +260,7 @@ const useProjectUpdateEffectTs = (
 
   useEffect(() => {
     if (updateState.updateProject.rejected) {
-      //   alertAction.open(updateState.updateProject.error.response.data.message);
+        alertAction.open(updateState.updateProject.error.response.data.message);
       console.log(updateState.updateProject.error);
     }
   }, [updateState.updateProject.rejected]);

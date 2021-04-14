@@ -120,7 +120,6 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
   const [project, setProject] = useState<ProjectDetailType>(projectDetail);
   const [apply, setApply] = useState<ApplyType[]>([]);
   const [recruit, setRecruit] = useState<RecruitDtoListType[]>([]);
-  //   const [alertData, alertAction] = useAlert();
   const [check, setCheck] = useState<checkType>({
     apply: false,
     recruit: false,
@@ -133,7 +132,6 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
     apply: 0,
     recruit: 0,
   });
-  const [teamReader, setTeamReader] = useState(false);
 
   const fetchGetDetail = async (projectId: string): Promise<any> => {
     let token = window.sessionStorage.getItem("accessToken");
@@ -232,7 +230,7 @@ const useProjectDetailStateTs = (): ProjectDetailStateType => {
           throw error;
         }
       });
-    // history.push("/projects");
+    history.push("/projects");
   };
 
   const [getProject, { run: getProjectApi }] = useRequest(fetchGetDetail);
@@ -376,7 +374,7 @@ const useProjectDetailEffectTs = (
   projectAction: ProjectActionType,
   projectId: string,
 ) => {
-  //   const [alertData, alertAction] = useAlert();
+    const { alertAction } = useAlert();
 
   useEffect(() => {
     projectAction.getProjectApi(projectId);
@@ -398,7 +396,7 @@ const useProjectDetailEffectTs = (
   useEffect(() => {
     if (project.getProject.rejected) {
       console.log(project.getProject.error.response);
-      //   alertAction.open(error.response.data.message);
+        alertAction.open(project.getProject.error.response.data.message);
     }
   }, [project.getProject.rejected]);
 };

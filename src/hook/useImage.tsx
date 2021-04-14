@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useAlert } from ".";
 import { RequestState } from "./useRequest";
 
 
@@ -7,7 +8,7 @@ export const useImageSave = (
   postImg: RequestState,
   nextUrl: string
 ) => {
-  //   const [alertData, alertAction] = useAlert();
+    const { alertAction } = useAlert();
     const history = useHistory();
 
   useEffect(() => {
@@ -19,7 +20,7 @@ export const useImageSave = (
 
   useEffect(() => {
     if (postImg.rejected) {
-      //   alertAction.open(createState.createProject.error.response.data.message);
+        alertAction.open(postImg.error.response.data.message);
       console.log(postImg.error);
     }
   }, [postImg.rejected]);
