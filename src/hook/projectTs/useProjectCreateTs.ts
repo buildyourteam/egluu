@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { loginApi } from "../api";
 import { useAlert, useRequest } from "../";
 import { RequestState } from "../useRequest";
@@ -281,57 +280,3 @@ const projectDetail = {
     etc: 0,
   },
 };
-
-// const projectApplicantDtoList = [
-//   {
-//     userId: "testApplicant1",
-//     userName: "테스터",
-//     status: "UNREAD",
-//     role: "DEVELOPER",
-//     _links: {
-//       self: {
-//         href: "https://api.eskiiimo.com/projects/1/apply/testApplicant1",
-//       },
-//     },
-//   },
-//   {
-//     userId: "testApplicant2",
-//     userName: "테스터",
-//     status: "UNREAD",
-//     role: "DEVELOPER",
-//     _links: {
-//       self: {
-//         href: "https://api.eskiiimo.com/projects/1/apply/testApplicant2",
-//       },
-//     },
-//   },
-// ];
-
-// const recruitDtoList = [
-//   {
-//     userName: "유저01",
-//     selfDescription: "프로젝트 영입하고 싶습니다.",
-//     role: "DEVELOPER",
-//     status: "UNREAD",
-//     projectId: 11,
-//     projectName: "project1",
-//     _links: {
-//       self: {
-//         href: "https://api.eskiiimo.com/profile/tester/recruit/11",
-//       },
-//     },
-//   },
-//   {
-//     userName: "유저02",
-//     selfDescription: "프로젝트 영입하고 싶습니다.",
-//     role: "DEVELOPER",
-//     status: "UNREAD",
-//     projectId: 11,
-//     projectName: "project1",
-//     _links: {
-//       self: {
-//         href: "https://api.eskiiimo.com/profile/tester/recruit/11",
-//       },
-//     },
-//   },
-// ];

@@ -1,5 +1,5 @@
 {
-  "homepage" : "https://buildyourteam.github.io/egluu/",
+  "homepage": "https://buildyourteam.github.io/egluu/",
   "name": "tempreact",
   "version": "0.1.0",
   "private": true,
@@ -18,8 +18,8 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "date-fns": "^2.15.0",
+    "dayjs": "^1.10.6",
     "eslint-config-prettier": "^6.11.0",
-    "moment-timezone": "^0.5.31",
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -31,7 +31,6 @@
     "react-scripts": "3.4.1",
     "reactstrap": "^8.5.1",
     "redux": "^4.0.5",
-    "sass": "^1.32.8",
     "typescript": "^3.9.6"
   },
   "scripts": {
@@ -71,6 +70,8 @@
   "devDependencies": {
     "@types/react-redux": "^7.1.15",
     "@types/react-router-dom": "^5.1.7",
-    "@types/reactstrap": "^8.7.2"
+    "@types/reactstrap": "^8.7.2",
+    "cra-bundle-analyzer": "^0.1.0",
+    "webpack-bundle-analyzer": "^4.4.2"
   }
 }

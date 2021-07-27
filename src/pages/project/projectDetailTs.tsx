@@ -132,7 +132,6 @@ export default function ProjectDetail() {
                 modalFlag={project.check.applyModal}
                 close={projectAction.closeApply}
               >
-                {console.log(project.project._links)}
                 <ApplyProject
                   questions={project.project.questions}
                   projectId={projectId}
@@ -347,7 +346,6 @@ export default function ProjectDetail() {
                       dataSource={project.recruit}
                       pagination={{
                         onChange: (page) => {
-                          console.log(page);
                         },
                         pageSize: 1,
                       }}

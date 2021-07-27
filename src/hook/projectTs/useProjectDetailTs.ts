@@ -395,7 +395,6 @@ const useProjectDetailEffectTs = (
 
   useEffect(() => {
     if (project.getProject.rejected) {
-      console.log(project.getProject.error.response);
         alertAction.open(project.getProject.error.response.data.message);
     }
   }, [project.getProject.rejected]);
