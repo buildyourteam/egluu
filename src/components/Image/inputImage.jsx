@@ -1,19 +1,5 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useRef, useCallback } from "react";
+import React from "react";
 import { useDropzone } from "react-dropzone";
-
-const params = {
-  pagination: {
-    el: ".swiper-pagination",
-    type: "bullets",
-    clickable: true,
-  },
-  observer: true,
-  spaceBetween: 30,
-  lazy: {
-    loadPrevNext: true,
-  },
-};
 
 function ImgInput({ img, saveImg }) {
   const { getRootProps, getInputProps } = useDropzone({

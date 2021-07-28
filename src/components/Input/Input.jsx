@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import InputBase from "@material-ui/core/InputBase";
 import {
   fade,
-  ThemeProvider,
   withStyles,
-  makeStyles,
-  createMuiTheme,
 } from "@material-ui/core/styles";
 
 const BootstrapInputUI = withStyles((theme) => ({

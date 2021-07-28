@@ -1,54 +1,78 @@
-import { Button, Form, Input, Typography } from "antd";
 import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
+import FormControl from "@material-ui/core/FormControl";
 import { Layout } from "../../components";
-import "./Login.css";
 import { useLoginEffect } from "../../hook/auth";
 
-const { Title } = Typography;
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  title: {
+    textAlign: "center",
+  },
+  formWrap: {
+    maxWidth: "280px",
+    margin: "auto",
+    marginTop: "50px",
+  },
+  registInput: {
+    width: "100%",
+  },
+}));
 
 function LoginPage() {
-  const {loading, onFinish, onFinishFailed} = useLoginEffect();
+  const classes = useStyles();
+  const {loading, user, onFinish, onFinishFailed, handleInput} = useLoginEffect();
+
   return (
     <Layout>
-      <Title level={3} className="login_title">
+      <Typography variant="h5" className={classes.title}>
         Login
-      </Title>
-      <div className="login_box">
-        <Form {...layout} onFinish={onFinish} onFinishFailed={onFinishFailed}>
-          <Form.Item
-            label="UserId"
-            name="userId"
-            rules={[{ required: true, message: "ID를 입력하셔야 합니다." }]}
-          >
-            <Input className="login_input" />
-          </Form.Item>
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "비밀번호를 입력하셔야 합니다.",
-                whitespace: true,
-              },
-            ]}
-          >
-            <Input type="password" className="login_input" />
-          </Form.Item>
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit" loading={loading}>
+      </Typography>
+      <div className={classes.formWrap}>
+        <form className={classes.root} onSubmit={onFinish}>
+          <FormControl variant="filled" className={classes.registInput}>
+            <InputLabel htmlFor="userId" shrink>
+              UserId
+            </InputLabel>
+            <Input
+              id="userId"
+              name="userId"
+              type="text"
+              value={user.userId}
+              onChange={handleInput}
+            />
+          </FormControl>
+          <FormControl variant="filled" className={classes.registInput}>
+            <InputLabel htmlFor="password" shrink>
+              Password
+            </InputLabel>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              value={user.password}
+              onChange={handleInput}
+            />
+          </FormControl>
+          <div>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={loading || user.userId === "" || user.password === ""}
+              color="primary"
+            >
               로그인
             </Button>
-          </Form.Item>
-        </Form>
+          </div>
+        </form>
       </div>
     </Layout>
   );

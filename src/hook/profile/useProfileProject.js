@@ -11,9 +11,9 @@ const useProfileProject = (
   setList,
   hiding,
 
-  userId
+  userId,
 ) => {
-  const check = useSelector(state => state.profile.isHideChange);
+  const check = useSelector((state) => state.profile.isHideChange);
 
   // hide 변경사항이 있으면 다시 get요청
   useEffect(() => {

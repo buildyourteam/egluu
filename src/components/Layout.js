@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useLogoutAuth } from "../hook/auth/useLogin";
 import { setToken } from "../reducers/login";
-
 import {
   Collapse,
   Navbar,
@@ -12,7 +10,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  NavbarText,
   Button,
 } from "reactstrap";
 import "./Layout.css";

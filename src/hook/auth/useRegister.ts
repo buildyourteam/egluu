@@ -1,12 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAlert, useMove } from "..";
 import { useRequest } from "../";
 import { registerApi } from "../api";
 
+type registerType = {
+  userId: string;
+  userEmail: string;
+  name: string;
+  password: string;
+};
+
 type RegisterType = {
   loading: boolean;
+  register: registerType;
   onFinish: (values: any) => void;
   onFinishFailed: (errorInfo: any) => void;
+  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function useRegisterEffect(): RegisterType {
@@ -14,14 +23,31 @@ export function useRegisterEffect(): RegisterType {
   const [registerPromiseState, { run: postRegisterFetch }] = useRequest(
     registerApi().postRegister,
   );
+    const [register, setRegister] = useState<registerType>({
+      userId: "",
+      userEmail: '',
+      name: '',
+      password: ''
+    });
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-    postRegisterFetch(values);
+  const onFinish = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    console.log("Success:", register);
+    postRegisterFetch(register);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.persist();
+    setRegister((value) => {
+      return {
+        ...value,
+        [e.target.name]: e.target.value,
+      };
+    });
   };
 
   useMove(registerPromiseState.fulfilled, "login");
@@ -40,5 +66,11 @@ export function useRegisterEffect(): RegisterType {
     }
   }, [registerPromiseState.rejected]);
 
-  return { loading: registerPromiseState.pending, onFinish, onFinishFailed };
+  return {
+    loading: registerPromiseState.pending,
+    register,
+    onFinish,
+    onFinishFailed,
+    handleInput,
+  };
 }

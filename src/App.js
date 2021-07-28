@@ -1,19 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-// import {
-//   Root,
-//   ProjectList,
-//   Profile,
-//   ProjectDetail,
-//   ProjectCreate,
-//   ProjectUpdate,
-//   PeopleList,
-//   LoginPage,
-//   RegisterPage,
-// } from "./pages";
 import { AlertModal } from "./components";
 import { useLoginAuth } from "./hook/auth/useLogin";
-import "antd/dist/antd.css";
 
 const Root = lazy(() => import("./pages/rootTs"));
 const ProjectList = lazy(() => import("./pages/project/projectListTs"));

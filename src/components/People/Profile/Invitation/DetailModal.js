@@ -9,7 +9,7 @@ import {
   Col,
   Badge,
   Card,
-  CardText
+  CardText,
 } from "reactstrap";
 import { useInvitationDetailEffect } from "../../../../hook/profile/useInvitation";
 
@@ -28,7 +28,7 @@ const DetailModal = ({ pid, userId, modal, toggle }) => {
 
   const [
     { invitaionDetail, activityName },
-    { handleAccept, handleReject }
+    { handleAccept, handleReject },
   ] = useInvitationDetailEffect(userId, pid, toggleNested);
 
   return (

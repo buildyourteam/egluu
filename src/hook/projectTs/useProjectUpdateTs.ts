@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { loginApi } from "../api";
 import { useAlert, useRequest } from "../";
-import { AxiosError } from "axios";
 import { RequestState } from "../useRequest";
 
 const axios = require("axios");

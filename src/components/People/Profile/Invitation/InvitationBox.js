@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, CardTitle, CardText, Row, Col, Badge } from "reactstrap";
+import { Card, CardTitle, CardText, Row, Col, Badge } from "reactstrap";
 import DetailModal from "./DetailModal";
 const InvitationBox = ({ data, userId }) => {
   const [detailModal, setDetailModal] = useState(false);

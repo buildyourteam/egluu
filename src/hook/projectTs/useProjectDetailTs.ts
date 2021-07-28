@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useAlert, useRequest } from "../";
 import { useHistory } from "react-router-dom";
 import { loginApi } from "../api";
@@ -399,30 +398,6 @@ const useProjectDetailEffectTs = (
     }
   }, [project.getProject.rejected]);
 };
-
-// const useProjectRecruitEffect = (
-//   data,
-//   fulfilled,
-//   rejected,
-//   error,
-//   inputState,
-// ) => {
-// //   const [alertData, alertAction] = useAlert();
-
-//   useEffect(() => {
-//     if (fulfilled) {
-//       // inputDetail(data);
-//       inputState(recruitDtoList);
-//     }
-//   }, [fulfilled]);
-
-//   useEffect(() => {
-//     if (rejected) {
-//     //   alertAction.open(error.response.data.message);
-//       console.log(error);
-//     }
-//   }, [rejected]);
-// };
 
 export {
   useProjectDetailStateTs,

@@ -1,65 +1,100 @@
-import React, { useState, useEffect } from "react";
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from "reactstrap";
+import React, {useState, useEffect} from "react";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const role = ["DEVELOPER", "DESIGNER", "PLANNER", "ETC"];
 
 const DropdownRole = (props) => {
-  const { dropdownCaret, dropdownHeader, action, pick } = props;
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { dropdownCaret, action, pick } = props;
+  const [dropdownOpen, setDropdownOpen] = useState(null);
   const [caret, setCaret] = useState(dropdownCaret);
+    const handleClick = (event) => {
+        setDropdownOpen(event.currentTarget);
+    };
+    const handleClose = () => {
+        setDropdownOpen(null);
+    };
+    const handleClickItem = (menu) => {
+        action(menu);
+        setDropdownOpen(null);
+    }
   useEffect(() => {
     if (pick !== "") setCaret(pick);
   }, [pick]);
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
   return (
-    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle caret style={props.style}>
+    <div>
+      <Button
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
         {caret}
-      </DropdownToggle>
-      <DropdownMenu style={props.style}>
-        <DropdownItem onClick={(e) => action("DEVELOPER")}>
+      </Button>
+      <Menu
+        id="simple-menu"
+        anchorEl={dropdownOpen}
+        keepMounted
+        open={dropdownOpen}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={(e) => handleClickItem("DEVELOPER")}>
           DEVELOPER
-        </DropdownItem>
-        <DropdownItem onClick={(e) => action("DESIGNER")}>
+        </MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("DESIGNER")}>
           DESIGNER
-        </DropdownItem>
-        <DropdownItem onClick={(e) => action("PLANNER")}>PLANNER</DropdownItem>
-        <DropdownItem onClick={(e) => action("ETC")}>ETC</DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+        </MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("PLANNER")}>PLANNER</MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("ETC")}>ETC</MenuItem>
+      </Menu>
+    </div>
   );
 };
 
 const DropdownField = (props) => {
-  const { dropdownCaret, dropdownHeader, action, pick } = props;
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { dropdownCaret, action, pick } = props;
+  const [dropdownOpen, setDropdownOpen] = useState(null);
   const [caret, setCaret] = useState(dropdownCaret);
+  const handleClick = (event) => {
+    setDropdownOpen(event.currentTarget);
+  };
+  const handleClose = () => {
+    setDropdownOpen(null);
+  };
+  const handleClickItem = (menu) => {
+    action(menu);
+    setDropdownOpen(null);
+  };
   useEffect(() => {
     if (pick !== "") setCaret(pick);
   }, [pick]);
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
   return (
-    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle style={props.style} caret>
+    <div>
+      <Button
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
         {caret}
-      </DropdownToggle>
-      <DropdownMenu style={props.style}>
-        <DropdownItem onClick={(e) => action("APP")}>APP</DropdownItem>
-        <DropdownItem onClick={(e) => action("WEB")}>WEB</DropdownItem>
-        <DropdownItem onClick={(e) => action("AI")}>AI</DropdownItem>
-        <DropdownItem onClick={(e) => action("HW")}>HW</DropdownItem>
-        <DropdownItem onClick={(e) => action("BLOCKCHAIN")}>
+      </Button>
+      <Menu
+        id="simple-menu"
+        anchorEl={dropdownOpen}
+        keepMounted
+        open={dropdownOpen}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={(e) => handleClickItem("APP")}>APP</MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("WEB")}>WEB</MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("AI")}>AI</MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("HW")}>HW</MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("BLOCKCHAIN")}>
           BLOCKCHAIN
-        </DropdownItem>
-        <DropdownItem onClick={(e) => action("SYSTEM")}>SYSTEM</DropdownItem>
-        <DropdownItem onClick={(e) => action("ETC")}>ETC</DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+        </MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("SYSTEM")}>SYSTEM</MenuItem>
+        <MenuItem onClick={(e) => handleClickItem("ETC")}>ETC</MenuItem>
+      </Menu>
+    </div>
   );
 };
 export { DropdownRole, DropdownField };

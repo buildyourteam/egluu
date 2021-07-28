@@ -1,27 +1,27 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import { Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import { useDropzone } from "react-dropzone";
 const ImageModify = ({ state, setState }) => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
-    onDrop: acceptedFiles => {
-      const imgFile = acceptedFiles.map(file =>
+    onDrop: (acceptedFiles) => {
+      const imgFile = acceptedFiles.map((file) =>
         Object.assign(file, {
-          url: URL.createObjectURL(file)
-        })
+          url: URL.createObjectURL(file),
+        }),
       );
       setState({ imgUrl: imgFile[0], isImgChange: true });
-    }
+    },
   });
 
   const params = {
     pagination: {
       el: ".swiper-pagination",
       type: "bullets",
-      clickable: true
+      clickable: true,
     },
     observer: true,
-    spaceBetween: 30
+    spaceBetween: 30,
   };
 
   return (

@@ -1,17 +1,13 @@
 import React from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   Layout,
   DropdownRole,
-  HalfDrawer,
   CenterModal,
-  BootstrapInput,
 } from "../../components";
-import "../main.css";
 import { Link } from "react-router-dom";
 import { setProject } from "../../reducers/project";
-import "./projectDetail.css";
 import {
   useProjectDetailStateTs,
   useProjectDetailEffectTs,
@@ -20,15 +16,109 @@ import {
   useViewProjectApplyStateTs,
   useViewProjectApplyEffectTs,
 } from "../../hook/projectTs";
-import { Button, Switch, List, Typography, Card, Input } from "antd";
+import Input from "@material-ui/core/Input";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import Switch from "@material-ui/core/Switch";
+import TextField from "@material-ui/core/TextField";
+
 const ReactMarkdown = require("react-markdown");
 
-const { Title } = Typography;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: "10px",
+  },
+  fullDiv: {
+    width: "100%",
+    minHeight: "36px",
+    "&::after": {
+      display: "block",
+      clear: "both",
+      content: '"',
+    },
+  },
+  floatRBtn: {
+    float: "right",
+  },
+  inputGrid: {
+    "&::after": {
+      clear: "both",
+      content: '""',
+      display: "block",
+    },
+  },
+  halfDivLeft: {
+    padding: "10px 10px 10px 0",
+    float: "left",
+    width: "50%",
+    "& > img": {
+      width: "100%",
+      height: "100%",
+    },
+  },
+  halfDivRight: {
+    padding: "10px",
+    float: "right",
+    width: "50%",
+    "& > h4": {
+      color: "gray",
+      margin: "0px 0px 30px 0px",
+    },
+  },
+  inputImg: {
+    width: "380px",
+    height: "380px",
+    margin: "auto",
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  fullInput: {
+    width: "100%",
+  },
+  inputLabel: {
+    marginTop: "5px",
+    marginBottom: "2px",
+  },
+  divider: {
+    height: 28,
+    margin: 4,
+  },
+  delBtn: {
+    marginLeft: "20px",
+  },
+  tag: {
+    backgroundColor: "gray",
+    borderRadius: "25px",
+    width: "auto",
+    padding: "5px 10px",
+    opacity: "0.7",
+    color: "white",
+    fontSize: "15px",
+  },
+  tagCase: {
+    padding: "20px 0px 20px 0px",
+  },
+  intoduction: {
+    display: "block",
+  },
+  applyList: {
+    lineHeight: "22px",
+    marginRight: "10px",
+    display: "inline-block",
+  },
+}));
 
 export default function ProjectDetail() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const history = useHistory();
+  const classes = useStyles();
   const url = location.pathname.split("/");
   const projectId = url[2];
   const { project, projectAction } = useProjectDetailStateTs();
@@ -83,18 +173,24 @@ export default function ProjectDetail() {
 
   return (
     <Layout>
-      <div id="root">
-        <div className="full_div">
+      <div className={classes.root}>
+        <div className={classes.fullDiv}>
           {project.check.reader ? (
-            <div id="button">
+            <div className={classes.floatRBtn}>
               <Link to={`/projectUpdate/${url[2]}`}>
-                <Button onClick={handleClickUpdate}>수정하기</Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClickUpdate}
+                >
+                  수정하기
+                </Button>
               </Link>
               <Button
-                danger
                 onClick={projectAction.openDelete}
-                style={{ marginLeft: "20px" }}
-                color="danger"
+                className={classes.delBtn}
+                color="secondary"
+                variant="contained"
               >
                 삭제하기
               </Button>
@@ -103,10 +199,11 @@ export default function ProjectDetail() {
                 modalFlag={project.check.delete}
                 close={projectAction.closeDelete}
                 footer={
-                  <div className="full_div">
-                    <div id="button">
+                  <div className={classes.fullDiv}>
+                    <div className={classes.floatRBtn}>
                       <Button
-                        color="danger"
+                        variant="contained"
+                        color="secondary"
                         onClick={() =>
                           projectAction.deleteProjectApi(projectId)
                         }
@@ -118,13 +215,17 @@ export default function ProjectDetail() {
                 }
               >
                 <div style={{ height: "12px" }} />
-                <Title level={3}>정말로 삭제하시겠습니까?</Title>
+                <Typography variant="h3">정말로 삭제하시겠습니까?</Typography>
                 <div style={{ height: "12px" }} />
               </CenterModal>
             </div>
           ) : (
-            <div id="button">
-              <Button type="primary" onClick={projectAction.openApply}>
+            <div className={classes.floatRBtn}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={projectAction.openApply}
+              >
                 지원서
               </Button>
               <CenterModal
@@ -143,86 +244,87 @@ export default function ProjectDetail() {
             </div>
           )}
         </div>
-        <div className="input_grid">
-          <div className="half_div_left">
+        <div className={classes.inputGrid}>
+          <div className={classes.halfDivLeft}>
             <img
               id="cover"
               src={`${process.env.REACT_APP_BASE_URL}projects/image/${url[2]}`}
               alt="temp"
             />
           </div>
-          <div className="half_div_right">
-            {/* <div id="tag_case"> */}
+          <div className={classes.halfDivRight}>
             <div>
               <span id="tag">{project.project.projectField}</span>
             </div>
-            <Title level={1}>{project.project.projectName}</Title>
-            <Title level={4}>{project.project.teamName}</Title>
-            <Title level={5}>마감일 : {project.project.endDate}</Title>
-            <div id="list">
-              <div className="half_div_left">
+            <Typography variant="h3">{project.project.projectName}</Typography>
+            <Typography variant="h4">{project.project.teamName}</Typography>
+            <Typography variant="h5">
+              마감일 : {project.project.endDate}
+            </Typography>
+            <div>
+              <div className={classes.halfDivLeft}>
                 <List
-                  className="demo-loadmore-list"
-                  itemLayout="horizontal"
-                  size="large"
-                  header={<div>모집 중 인원</div>}
-                  bordered
-                  loading={project.getProject.pending}
-                  dataSource={needList}
-                  renderItem={(item) => {
+                  component="nav"
+                  subheader={
+                    <ListSubheader component="div">모집 중 인원</ListSubheader>
+                  }
+                >
+                  {needList.map((item, idx) => {
                     return (
-                      <List.Item key={item.title}>
-                        <List.Item.Meta title={<div>{item.title}</div>} />
-                        <div>{item.number}명</div>
-                      </List.Item>
+                      <ListItem
+                        key={item.title}
+                        disabled={project.getProject.pending}
+                      >
+                        <ListItemText
+                          primary={item.title}
+                          secondary={`${item.number}명`}
+                        />
+                      </ListItem>
                     );
-                  }}
-                />
+                  })}
+                </List>
               </div>
-              <div className="half_div_right">
+              <div className={classes.halfDivRight}>
                 <List
-                  className="demo-loadmore-list"
-                  itemLayout="horizontal"
-                  size="large"
-                  header={<div>전체 인원</div>}
-                  bordered
-                  loading={project.getProject.pending}
-                  dataSource={allList}
-                  renderItem={(item) => {
+                  component="nav"
+                  subheader={
+                    <ListSubheader component="div">전체 인원</ListSubheader>
+                  }
+                >
+                  {allList.map((item, idx) => {
                     return (
-                      <List.Item key={item.title}>
-                        <List.Item.Meta title={<div>{item.title}</div>} />
-                        <div>{item.number}명</div>
-                      </List.Item>
+                      <ListItem
+                        key={item.title}
+                        disabled={project.getProject.pending}
+                      >
+                        <ListItemText
+                          primary={item.title}
+                          secondary={`${item.number}명`}
+                        />
+                      </ListItem>
                     );
-                  }}
-                />
+                  })}
+                </List>
               </div>
             </div>
           </div>
         </div>
-        <Title level={3}>소개</Title>
+        <Typography variant="h5">소개</Typography>
         <ReactMarkdown
           source={project.project.introduction}
-          className="introduction"
+          className={classes.intoduction}
         />
         {project.check.reader && (
           <div>
             <div>
-              <Title
-                level={5}
-                style={{
-                  lineHeight: "22px",
-                  marginRight: "10px",
-                  display: "inline-block",
-                }}
-              >
+              <Typography variant="body1" className={classes.applyList}>
                 지원자 목록
-              </Title>
+              </Typography>
               <Switch
-                onChange={(checked: boolean) =>
-                  projectAction.checkSwitch("apply", checked)
-                }
+                onChange={(
+                  event: React.ChangeEvent<HTMLInputElement>,
+                  checked: boolean,
+                ) => projectAction.checkSwitch("apply", checked)}
               />
               {project.check.apply &&
                 (project.apply.length === 0 ? (
@@ -230,7 +332,7 @@ export default function ProjectDetail() {
                 ) : (
                   <div>
                     <List
-                      itemLayout="vertical"
+                      component="nav"
                       style={{
                         backgroundColor:
                           project.apply[project.pagination.apply].state ===
@@ -241,60 +343,36 @@ export default function ProjectDetail() {
                             ? "rgb(212, 237, 218, 0.3)"
                             : "#ffffff",
                       }}
-                      dataSource={project.apply}
-                      header={
-                        <div>
-                          <b>지원 현황</b>
-                        </div>
+                      subheader={
+                        <ListSubheader component="div">지원 현황</ListSubheader>
                       }
-                      pagination={{
-                        onChange: (page) => {
-                          console.log(page);
-                        },
-                        pageSize: 1,
-                      }}
-                      renderItem={(item) => {
-                        return (
-                          <List.Item key={item.userName}>{item.role}</List.Item>
-                        );
-                      }}
                     >
-                      {/* <ListItem>
-                      <ListItemText
-                        primary={`이름 : ${
-                          project.apply[project.pagination.apply].userName
-                        }`}
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary={`역할 : ${
-                          project.apply[project.pagination.apply].role
-                        }`}
-                      />
-                    </ListItem> */}
-                      <Button onClick={projectAction.openDetailApply}>
-                        상세보기
-                      </Button>
-                      <Button
-                        disabled={project.pagination.apply === 0}
-                        onClick={() =>
-                          projectAction.clickPagination("apply", -1)
-                        }
-                      >
-                        이전
-                      </Button>
-                      <Button
-                        disabled={
-                          project.apply.length - project.pagination.apply < 2
-                        }
-                        onClick={() =>
-                          projectAction.clickPagination("apply", 1)
-                        }
-                      >
-                        다음
-                      </Button>
+                      {project.apply.map((item, idx) => {
+                        return (
+                          <ListItem button key={item.userName}>
+                            <ListItemText primary={item.role} />
+                            <ListItemText primary="Inbox" />
+                          </ListItem>
+                        );
+                      })}
                     </List>
+                    <Button onClick={projectAction.openDetailApply}>
+                      상세보기
+                    </Button>
+                    <Button
+                      disabled={project.pagination.apply === 0}
+                      onClick={() => projectAction.clickPagination("apply", -1)}
+                    >
+                      이전
+                    </Button>
+                    <Button
+                      disabled={
+                        project.apply.length - project.pagination.apply < 2
+                      }
+                      onClick={() => projectAction.clickPagination("apply", 1)}
+                    >
+                      다음
+                    </Button>
                     <CenterModal
                       header="지원자 상세 정보"
                       modalFlag={project.check.applyDetail}
@@ -318,8 +396,9 @@ export default function ProjectDetail() {
                 ))}
             </div>
             <div style={{ marginTop: "10px" }}>
-              <Title
-                level={5}
+              <Typography
+                variant="body1"
+                className={classes.applyList}
                 style={{
                   lineHeight: "22px",
                   marginRight: "10px",
@@ -327,11 +406,12 @@ export default function ProjectDetail() {
                 }}
               >
                 요청 목록
-              </Title>
+              </Typography>
               <Switch
-                onChange={(checked: boolean) =>
-                  projectAction.checkSwitch("recruit", checked)
-                }
+                onChange={(
+                  event: React.ChangeEvent<HTMLInputElement>,
+                  checked: boolean,
+                ) => projectAction.checkSwitch("recruit", checked)}
               />
               {project.check.recruit &&
                 (project.recruit.length === 0 ? (
@@ -339,59 +419,41 @@ export default function ProjectDetail() {
                 ) : (
                   <div>
                     <List
-                      itemLayout="vertical"
-                      size="large"
-                      header={<div>지원 상태</div>}
-                      bordered
-                      dataSource={project.recruit}
-                      pagination={{
-                        onChange: (page) => {
-                        },
-                        pageSize: 1,
+                      component="nav"
+                      style={{
+                        backgroundColor:
+                          project.apply[project.pagination.apply].state ===
+                          "REJECT"
+                            ? "#eeeeee"
+                            : project.apply[project.pagination.apply].state ===
+                              "ACCEPT"
+                            ? "rgb(212, 237, 218, 0.3)"
+                            : "#ffffff",
                       }}
-                      renderItem={(item) => {
+                      subheader={
+                        <ListSubheader component="div">지원 상태</ListSubheader>
+                      }
+                    >
+                      {project.recruit.map((item, idx) => {
                         return (
-                          <List.Item>
-                            <Card title={item.userName}>
-                              <div>역할: {item.role}</div>
-                              <div>자기소개: {item.introduction}</div>
-                              <div>상태: {item.state}</div>
-                            </Card>
-                          </List.Item>
+                          <ListItem button key={item.userName}>
+                            <ListItemText primary={item.userName} />
+                            <ListItemText
+                              primary="역할"
+                              secondary={item.role}
+                            />
+                            <ListItemText
+                              primary="역할"
+                              secondary={item.introduction}
+                            />
+                            <ListItemText
+                              primary="역할"
+                              secondary={item.state}
+                            />
+                          </ListItem>
                         );
-                      }}
-                    />
-                    {/* <List dense>
-                    <ListItem>
-                      <ListItemText
-                        primary={`이름 : ${
-                          project.recruit[project.pagination.recruit].userName
-                        }`}
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary={`역할 : ${
-                          project.recruit[project.pagination.recruit].role
-                        }`}
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary={`자기소개 : ${
-                          project.recruit[project.pagination.recruit]
-                            .introduction
-                        }`}
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary={`상태 : ${
-                          project.recruit[project.pagination.recruit].state
-                        }`}
-                      />
-                    </ListItem>
-                  </List> */}
+                      })}
+                    </List>
                     <Button
                       disabled={project.pagination.recruit === 0}
                       onClick={() =>
@@ -455,13 +517,16 @@ const ApplyProject = (props: any) => {
       >
         자기 소개
       </label>
-      <Input.TextArea
+      <TextField
         id="introduction"
         name="introduction"
         placeholder="자기소개"
-        onChange={(e) => applyAction.inputApply(e.target.name, e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          applyAction.inputApply(e.target.name, e.target.value)
+        }
         value={apply.apply.introduction}
-        autoSize={{ minRows: 3, maxRows: 10 }}
+        rows={4}
+        multiline
       />
       <DropdownRole
         style={{ width: "100%", marginTop: "12px" }}
@@ -473,8 +538,9 @@ const ApplyProject = (props: any) => {
         <div id="button">
           {apply.applied ? (
             <Button
-              type="primary"
-              loading={apply.putApply.pending}
+              color="primary"
+              variant="contained"
+              disabled={apply.putApply.pending}
               onClick={() => {
                 applyAction.putApplyApi(
                   {
@@ -490,8 +556,9 @@ const ApplyProject = (props: any) => {
             </Button>
           ) : (
             <Button
-              type="primary"
-              loading={apply.postApply.pending}
+              color="primary"
+              variant="contained"
+              disabled={apply.postApply.pending}
               onClick={() => {
                 applyAction.postApplyApi(
                   {
@@ -530,20 +597,20 @@ const ViewProjectApply = (props: any) => {
       <div style={{ height: "12px" }} />
       {applyDetail.apply.answers.map((a: string, i: number) => (
         <div>
-          <Title level={5}>
+          <Typography variant="h5">
             {" "}
             {i + 1}번 질문 : {applyDetail.apply.questions[i]}
-          </Title>
-          <Title level={5}>{a}</Title>
+          </Typography>
+          <Typography variant="h5">{a}</Typography>
           <div style={{ height: "12px" }} />
         </div>
       ))}
       <label htmlFor="exampleEmail" style={{ marginBottom: "0px" }}>
         자기 소개
       </label>
-      <Title level={5}>{applyDetail.apply.introduction}</Title>
+      <Typography variant="h5">{applyDetail.apply.introduction}</Typography>
       <div style={{ height: "12px" }} />
-      <Title level={5}>지원 분야 : {applyDetail.apply.role}</Title>
+      <Typography variant="h5">지원 분야 : {applyDetail.apply.role}</Typography>
       <div style={{ height: "12px" }} />
       <div className="full_div">
         <div id="button">
