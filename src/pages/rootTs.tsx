@@ -34,7 +34,7 @@ export default function Root() {
   return (
     <Layout>
       <div>
-        {/* <Jumbotron /> */}
+        <Jumbotron />
         <Typography variant="h5">마감임박 프로젝트 </Typography>
         <Grid container spacing={3}>
           {projectPage.projectList.map((item, idx) => {
