@@ -58,7 +58,6 @@ export default function Layout({ children }) {
       <Navbar color="" light expand="md" className="nav_header">
         <NavbarBrand tag={Link} to="/">
           Egluu
-          {/* <img src={logo} alt="menubar" id="menu-img" width="100" /> */}
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

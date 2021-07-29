@@ -1,7 +1,7 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
 import { Paper } from "@material-ui/core";
-
+import { useLazyLoading } from "../../hook";
 function Jumbotron() {
   const items = [
     {
@@ -35,7 +35,7 @@ function Jumbotron() {
   ];
 
   return (
-    <Carousel >
+    <Carousel autoPlay={false}>
       {items.map((item, i) => (
         <Item key={i} item={item} />
       ))}
@@ -44,6 +44,8 @@ function Jumbotron() {
 }
 
 function Item(props) {
+  const lazy = useLazyLoading();
+
   return (
     <Paper>
       <img
@@ -54,8 +56,9 @@ function Item(props) {
           textAlign: "center",
           background: "#364d79",
         }}
-        src={props.item.src}
+        data-src={props.item.src}
         alt={props.item.altText}
+        ref={lazy.target}
       />
     </Paper>
   );

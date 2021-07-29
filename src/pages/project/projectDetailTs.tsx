@@ -26,7 +26,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Switch from "@material-ui/core/Switch";
 import TextField from "@material-ui/core/TextField";
-
+import { useLazyLoading } from "../../hook";
+import preview from "../../asset/preview.png";
 const ReactMarkdown = require("react-markdown");
 
 const useStyles = makeStyles((theme) => ({
@@ -124,7 +125,7 @@ export default function ProjectDetail() {
   const { project, projectAction } = useProjectDetailStateTs();
 
   useProjectDetailEffectTs(project, projectAction, url[2]);
-
+  const lazy = useLazyLoading();
   const handleClickUpdate = () => {
     const updateProject = {
       img: [`${process.env.REACT_APP_BASE_URL}projects/image/${url[2]}`],
@@ -248,7 +249,9 @@ export default function ProjectDetail() {
           <div className={classes.halfDivLeft}>
             <img
               id="cover"
-              src={`${process.env.REACT_APP_BASE_URL}projects/image/${url[2]}`}
+              ref={lazy.target}
+              src={preview}
+              data-src={`${process.env.REACT_APP_BASE_URL}projects/image/${url[2]}`}
               alt="temp"
             />
           </div>
