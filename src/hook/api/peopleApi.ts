@@ -1,5 +1,4 @@
 import axios from "axios";
-import { loginApi } from "./";
 
 type info = {
   userId: String;

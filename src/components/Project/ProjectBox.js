@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -9,17 +9,24 @@ import {
   CardSubtitle,
   Row,
   Col,
-  Progress
+  Progress,
 } from "reactstrap";
-import sampleimg from "../icon/baseImg.png";
 import "./Project.css";
-const moment = require("moment-timezone"); //상단에 선언
+import dayjs from "dayjs";
+import { useLazyLoading } from "../../hook";
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
 
 export default function ProjectBox(props) {
   const staticProjectData = props.data;
-  const nowDay = Date.parse(moment().tz("Asia/Seoul").format());
+  const nowDay = Date.parse(dayjs());
+  const lazy = useLazyLoading();
+
   const dday = Math.floor(
-    (Date.parse(staticProjectData.endDate) - nowDay) / (24 * 3600 * 1000)
+    (Date.parse(staticProjectData.endDate) - nowDay) / (24 * 3600 * 1000),
   );
   // 0으로 나눌 경우 예외처리!
   const developerPercent =
@@ -53,16 +60,17 @@ export default function ProjectBox(props) {
     <div id="ProjectBoxCard">
       <Link
         to={{
-          pathname: `${props.url}`
+          pathname: `${props.url}`,
         }}
         style={{ textDecoration: "none", color: "#000000" }}
       >
         <Card>
-          <CardImg
-            width="240px"
+          <img
+            width="230px"
             height="180px"
-            src={`${process.env.REACT_APP_BASE_URL}projects/image/${staticProjectData.projectId}`}
+            data-src={`${process.env.REACT_APP_BASE_URL}projects/image/${staticProjectData.projectId}`}
             alt="Card image cap"
+            ref={lazy.target}
           />
           <CardBody>
             <CardTitle>{staticProjectData.projectName}</CardTitle>

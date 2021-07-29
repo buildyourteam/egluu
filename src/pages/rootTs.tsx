@@ -1,7 +1,5 @@
 import React from "react";
-import { Layout, ProjectBox, PeopleBox } from "../components";
-import "./main.css";
-import { Pagination, Carousel, List, Typography } from "antd";
+import { Layout, ProjectBox, PeopleBox, Jumbotron } from "../components";
 import {
   useProjectListStateTs,
   useDeadlineProjectListEffect,
@@ -10,10 +8,23 @@ import {
   usePeopleListStateTs,
   useWantedPeopleListEffectTs,
 } from "../hook/peopleTs";
+import Pagination from "@material-ui/lab/Pagination";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
-const { Title } = Typography;
+const useStyles = makeStyles((theme) => ({
+  pagination: {
+    "& > *": {
+      marginTop: theme.spacing(2),
+      justifyContent: "center",
+      display: "flex",
+    },
+  },
+}));
 
 export default function Root() {
+  const classes = useStyles();
   const { projectPage, projectAction } = useProjectListStateTs();
   useDeadlineProjectListEffect(projectPage, projectAction);
 
@@ -23,117 +34,50 @@ export default function Root() {
   return (
     <Layout>
       <div>
-        <Carousel autoplay>
-          <div>
-            <img
-              style={{
-                height: "480px",
-                color: "#fff",
-                lineHeight: "480px",
-                textAlign: "center",
-                background: "#364d79",
-              }}
-              src="https://picsum.photos/id/1/1000/480"
-              alt="image"
-            />
-          </div>
-          <div>
-            <img
-              style={{
-                height: "480px",
-                color: "#fff",
-                lineHeight: "480px",
-                textAlign: "center",
-                background: "#364d79",
-              }}
-              src="https://picsum.photos/id/2/1000/480"
-              alt="image"
-            />
-          </div>
-          <div>
-            <img
-              style={{
-                height: "480px",
-                color: "#fff",
-                lineHeight: "480px",
-                textAlign: "center",
-                background: "#364d79",
-              }}
-              src="https://picsum.photos/id/3/1000/480"
-              alt="image"
-            />
-          </div>
-          <div>
-            <img
-              style={{
-                height: "480px",
-                color: "#fff",
-                lineHeight: "480px",
-                textAlign: "center",
-                background: "#364d79",
-              }}
-              src="https://picsum.photos/id/4/1000/480"
-              alt="image"
-            />
-          </div>
-        </Carousel>
-        <Title level={3}>마감임박 프로젝트 </Title>
-        <List
-          loading={projectPage.DeadLineProjectListPromise.pending}
-          grid={{
-            gutter: 10,
-            xs: 2,
-            sm: 3,
-            md: 4,
-            lg: 4,
-            xl: 4,
-            xxl: 4,
-          }}
-          dataSource={projectPage.projectList}
-          renderItem={(item: any) => (
-            <List.Item>
-              <ProjectBox
-                data={item}
-                url={`/projectDetail/${item.projectId}`}
-              />
-            </List.Item>
-          )}
-        />
+        {/* <Jumbotron /> */}
+        <Typography variant="h5">마감임박 프로젝트 </Typography>
+        <Grid container spacing={3}>
+          {projectPage.projectList.map((item, idx) => {
+            return (
+              <Grid item xs={3} key={idx}>
+                <ProjectBox
+                  data={item}
+                  url={`/projectDetail/${item.projectId}`}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
         <div id="pagination_div">
           <Pagination
-            onChange={(page: any) =>
-              projectAction.getDeadLineProjectListApi(page - 1)
-            }
-            pageSize={8}
-            current={projectPage.page.number + 1}
-            total={projectPage.page.totalPages * 8}
+            className={classes.pagination}
+            onChange={(e, page: number) => {
+              projectAction.setPage({ ...projectPage.page, number: page });
+              projectAction.getDeadLineProjectListApi(page - 1);
+            }}
+            page={projectPage.page.number + 1}
+            count={projectPage.page.totalPages}
           />
         </div>
-        <Title level={3}>프로젝트를 찾는 사람들</Title>
-        <List
-          loading={peoplePage.WantedPeopleListPromise.pending}
-          grid={{
-            gutter: 10,
-            xs: 2,
-            sm: 3,
-            md: 6,
-            lg: 6,
-            xl: 6,
-            xxl: 6,
-          }}
-          dataSource={peoplePage.peopleList}
-          renderItem={(item: any) => (
-            <List.Item>
-              <PeopleBox data={item} url={`/profile/${item.userId}`} />
-            </List.Item>
-          )}
-        />
+        <Typography variant="h5">프로젝트를 찾는 사람들</Typography>
+        <Grid container spacing={3} >
+          {peoplePage.peopleList.map((item, idx) => {
+            return (
+              <Grid item xs={2} key={idx}>
+                <PeopleBox data={item} url={`/profile/${item.userId}`} />
+              </Grid>
+            );
+          })}
+        </Grid>
         <div id="pagination_div" style={{ marginTop: "30px" }}>
           <Pagination
-            onChange={(page: any) => peopleAction.getWantedPeopleList(page - 1)}
-            pageSize={8}
-            current={peoplePage.page.number + 1}
-            total={peoplePage.page.totalPages * 8}
+            className={classes.pagination}
+            onChange={(e, page: number) => {
+              projectAction.setPage({ ...projectPage.page, number: page });
+              peopleAction.getWantedPeopleList(page - 1);
+            }}
+            page={peoplePage.page.number + 1}
+            count={peoplePage.page.totalPages}
           />
         </div>
       </div>

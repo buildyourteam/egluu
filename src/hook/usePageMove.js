@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 export default function useMove(condition, destination) {
   const history = useHistory();
@@ -12,5 +12,5 @@ export default function useMove(condition, destination) {
     if (condition) {
       history.push(`./${destination}`);
     }
-  }, [condition])
+  }, [condition]);
 }

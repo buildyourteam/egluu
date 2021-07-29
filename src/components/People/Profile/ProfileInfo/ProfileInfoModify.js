@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import React from "react";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import ImageModify from "../ProfileImage/ImageModify";
-import { infoApi, imgApi } from "../../../../hook/api";
-import { useRequest } from "../../../../hook/useRequest";
 import useProfileInfoModify from "../../../../hook/profile/useProfileInfoModify";
 
 const ProfileInfoModify = ({

@@ -23,7 +23,7 @@ const useProfileProjectModify = (
   setList,
 
   hideList,
-  setHideList
+  setHideList,
 ) => {
   // 처음 로딩 시 숨겨진 프로젝트 목록 불러오기
   useEffect(() => {
@@ -45,17 +45,17 @@ const useProfileProjectModify = (
       let moveData = {};
       // 일반 state list에서 선택한 project 제거
       setList(
-        list.filter(a => {
+        list.filter((a) => {
           if (a.projectId === resHideProject.projectId) {
             moveData = a;
             return false;
           }
           return true;
-        })
+        }),
       );
 
       // 숨김 state list에서 위에서 선택된 project 추가
-      setHideList(hideList => {
+      setHideList((hideList) => {
         const newList = hideList.concat(moveData);
         return newList;
       });
@@ -68,16 +68,16 @@ const useProfileProjectModify = (
       let moveData = {};
       // 숨김 state list에서 선택한 project 제거
       setHideList(
-        hideList.filter(a => {
+        hideList.filter((a) => {
           if (a.projectId === resDisplayProject.projectId) {
             moveData = a;
             return false;
           }
           return true;
-        })
+        }),
       );
       // 일반 state list에 선택된 프로젝트 추가
-      setList(list => {
+      setList((list) => {
         const newList = list.concat(moveData);
         return newList;
       });
