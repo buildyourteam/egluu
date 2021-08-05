@@ -54,7 +54,6 @@ Typescript, Javascript(es6), HTML, CSS, React Hook, Redux
 
 ## Dependencies
 - [material-ui](https://material-ui.com/)
-- [bootstrap](https://getbootstrap.com/) (will delete)
 - [redux](https://react-redux.js.org/)
 - [axios](https://github.com/axios/axios)
 - [date-fns](https://www.npmjs.com/package/date-fns)
