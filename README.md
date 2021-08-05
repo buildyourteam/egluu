@@ -1,14 +1,14 @@
 <h1 align="center">Buildyourteam Frontend</h1>
 
 ## Index
-- [Getting started](/Getting)
-- [Rendering](/Rendering)
-- [Language, Framework](/Language)
-- [Structure](/Structure)
-- [Dependencies](/Dependencies)
-- [DevDependencies](/DevDependencies)
-- [Deploy](/Deploy)
-- [License](/License)
+- [Getting started](#getting-started)
+- [Rendering](#rendering)
+- [Language, Framework](#language-framework)
+- [Structure](#structure)
+- [Dependencies](#dependencies)
+- [DevDependencies](#devdependencies)
+- [Deploy](#deploy)
+- [License](#license)
 
 This project was bootstrapped with Create React App.
 <br>
@@ -27,7 +27,7 @@ npx cra-bundle-analyzer
 ## Rendering
 - SPA
 
-## Language,Framework
+## Language Framework
 Typescript, Javascript(es6), HTML, CSS, React Hook, Redux
 
 ## Structure
